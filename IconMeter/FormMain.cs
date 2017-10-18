@@ -240,6 +240,12 @@ namespace IconMeter
 				rkApp.DeleteValue("MyApp", false);
 			}
 		}
+
+		private void FormMain_Load(object sender, EventArgs e)
+		{
+
+		}
+
 		private void UpdateReadings()
 		{
 			lastCpuUsage = cpuCounter.NextValue();

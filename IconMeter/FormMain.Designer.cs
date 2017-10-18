@@ -50,6 +50,7 @@
 			this.checkBoxUseVerticalBar = new System.Windows.Forms.CheckBox();
 			this.checkBoxRunAtStartup = new System.Windows.Forms.CheckBox();
 			this.buttonCancel = new System.Windows.Forms.Button();
+			this.label2 = new System.Windows.Forms.Label();
 			this.contextMenuStripMain.SuspendLayout();
 			this.SuspendLayout();
 			// 
@@ -74,41 +75,43 @@
             this.toolStripMenuItem1,
             this.closeToolStripMenuItem});
 			this.contextMenuStripMain.Name = "contextMenuStripMain";
-			this.contextMenuStripMain.Size = new System.Drawing.Size(161, 70);
+			this.contextMenuStripMain.Size = new System.Drawing.Size(126, 54);
 			// 
 			// settingsToolStripMenuItem
 			// 
 			this.settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
-			this.settingsToolStripMenuItem.Size = new System.Drawing.Size(160, 30);
+			this.settingsToolStripMenuItem.Size = new System.Drawing.Size(125, 22);
 			this.settingsToolStripMenuItem.Text = "Settings...";
 			this.settingsToolStripMenuItem.Click += new System.EventHandler(this.settingsToolStripMenuItem_Click);
 			// 
 			// toolStripMenuItem1
 			// 
 			this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-			this.toolStripMenuItem1.Size = new System.Drawing.Size(157, 6);
+			this.toolStripMenuItem1.Size = new System.Drawing.Size(122, 6);
 			// 
 			// closeToolStripMenuItem
 			// 
 			this.closeToolStripMenuItem.Name = "closeToolStripMenuItem";
-			this.closeToolStripMenuItem.Size = new System.Drawing.Size(160, 30);
+			this.closeToolStripMenuItem.Size = new System.Drawing.Size(125, 22);
 			this.closeToolStripMenuItem.Text = "Close";
 			this.closeToolStripMenuItem.Click += new System.EventHandler(this.closeToolStripMenuItem_Click);
 			// 
 			// label1
 			// 
 			this.label1.AutoSize = true;
-			this.label1.Location = new System.Drawing.Point(36, 15);
+			this.label1.Location = new System.Drawing.Point(29, 16);
+			this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
 			this.label1.Name = "label1";
-			this.label1.Size = new System.Drawing.Size(42, 20);
+			this.label1.Size = new System.Drawing.Size(29, 13);
 			this.label1.TabIndex = 1;
 			this.label1.Text = "CPU";
 			// 
 			// buttonCpuColor
 			// 
-			this.buttonCpuColor.Location = new System.Drawing.Point(131, 11);
+			this.buttonCpuColor.Location = new System.Drawing.Point(90, 10);
+			this.buttonCpuColor.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
 			this.buttonCpuColor.Name = "buttonCpuColor";
-			this.buttonCpuColor.Size = new System.Drawing.Size(75, 23);
+			this.buttonCpuColor.Size = new System.Drawing.Size(66, 24);
 			this.buttonCpuColor.TabIndex = 2;
 			this.buttonCpuColor.UseVisualStyleBackColor = true;
 			this.buttonCpuColor.Click += new System.EventHandler(this.buttonColor_Click);
@@ -116,18 +119,20 @@
 			// checkBoxMemory
 			// 
 			this.checkBoxMemory.AutoSize = true;
-			this.checkBoxMemory.Location = new System.Drawing.Point(12, 41);
+			this.checkBoxMemory.Location = new System.Drawing.Point(11, 43);
+			this.checkBoxMemory.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
 			this.checkBoxMemory.Name = "checkBoxMemory";
-			this.checkBoxMemory.Size = new System.Drawing.Size(91, 24);
+			this.checkBoxMemory.Size = new System.Drawing.Size(63, 17);
 			this.checkBoxMemory.TabIndex = 3;
 			this.checkBoxMemory.Text = "Memory";
 			this.checkBoxMemory.UseVisualStyleBackColor = true;
 			// 
 			// buttonMemoryColor
 			// 
-			this.buttonMemoryColor.Location = new System.Drawing.Point(131, 41);
+			this.buttonMemoryColor.Location = new System.Drawing.Point(90, 38);
+			this.buttonMemoryColor.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
 			this.buttonMemoryColor.Name = "buttonMemoryColor";
-			this.buttonMemoryColor.Size = new System.Drawing.Size(75, 23);
+			this.buttonMemoryColor.Size = new System.Drawing.Size(66, 24);
 			this.buttonMemoryColor.TabIndex = 4;
 			this.buttonMemoryColor.UseVisualStyleBackColor = true;
 			this.buttonMemoryColor.Click += new System.EventHandler(this.buttonColor_Click);
@@ -135,9 +140,10 @@
 			// checkBoxDisk
 			// 
 			this.checkBoxDisk.AutoSize = true;
-			this.checkBoxDisk.Location = new System.Drawing.Point(12, 71);
+			this.checkBoxDisk.Location = new System.Drawing.Point(11, 71);
+			this.checkBoxDisk.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
 			this.checkBoxDisk.Name = "checkBoxDisk";
-			this.checkBoxDisk.Size = new System.Drawing.Size(66, 24);
+			this.checkBoxDisk.Size = new System.Drawing.Size(47, 17);
 			this.checkBoxDisk.TabIndex = 5;
 			this.checkBoxDisk.Text = "Disk";
 			this.checkBoxDisk.UseVisualStyleBackColor = true;
@@ -145,27 +151,30 @@
 			// checkBoxNetwork
 			// 
 			this.checkBoxNetwork.AutoSize = true;
-			this.checkBoxNetwork.Location = new System.Drawing.Point(12, 101);
+			this.checkBoxNetwork.Location = new System.Drawing.Point(11, 99);
+			this.checkBoxNetwork.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
 			this.checkBoxNetwork.Name = "checkBoxNetwork";
-			this.checkBoxNetwork.Size = new System.Drawing.Size(93, 24);
+			this.checkBoxNetwork.Size = new System.Drawing.Size(66, 17);
 			this.checkBoxNetwork.TabIndex = 6;
 			this.checkBoxNetwork.Text = "Network";
 			this.checkBoxNetwork.UseVisualStyleBackColor = true;
 			// 
 			// buttonDiskColor
 			// 
-			this.buttonDiskColor.Location = new System.Drawing.Point(131, 71);
+			this.buttonDiskColor.Location = new System.Drawing.Point(90, 66);
+			this.buttonDiskColor.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
 			this.buttonDiskColor.Name = "buttonDiskColor";
-			this.buttonDiskColor.Size = new System.Drawing.Size(75, 23);
+			this.buttonDiskColor.Size = new System.Drawing.Size(66, 24);
 			this.buttonDiskColor.TabIndex = 7;
 			this.buttonDiskColor.UseVisualStyleBackColor = true;
 			this.buttonDiskColor.Click += new System.EventHandler(this.buttonColor_Click);
 			// 
 			// buttonReceiveColor
 			// 
-			this.buttonReceiveColor.Location = new System.Drawing.Point(131, 101);
+			this.buttonReceiveColor.Location = new System.Drawing.Point(90, 94);
+			this.buttonReceiveColor.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
 			this.buttonReceiveColor.Name = "buttonReceiveColor";
-			this.buttonReceiveColor.Size = new System.Drawing.Size(75, 23);
+			this.buttonReceiveColor.Size = new System.Drawing.Size(66, 24);
 			this.buttonReceiveColor.TabIndex = 8;
 			this.buttonReceiveColor.Text = "Receive";
 			this.buttonReceiveColor.UseVisualStyleBackColor = true;
@@ -173,9 +182,10 @@
 			// 
 			// buttonSendColor
 			// 
-			this.buttonSendColor.Location = new System.Drawing.Point(212, 102);
+			this.buttonSendColor.Location = new System.Drawing.Point(160, 94);
+			this.buttonSendColor.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
 			this.buttonSendColor.Name = "buttonSendColor";
-			this.buttonSendColor.Size = new System.Drawing.Size(75, 23);
+			this.buttonSendColor.Size = new System.Drawing.Size(66, 24);
 			this.buttonSendColor.TabIndex = 9;
 			this.buttonSendColor.Text = "Send";
 			this.buttonSendColor.UseVisualStyleBackColor = true;
@@ -184,7 +194,8 @@
 			// buttonOK
 			// 
 			this.buttonOK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-			this.buttonOK.Location = new System.Drawing.Point(168, 257);
+			this.buttonOK.Location = new System.Drawing.Point(93, 199);
+			this.buttonOK.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
 			this.buttonOK.Name = "buttonOK";
 			this.buttonOK.Size = new System.Drawing.Size(75, 23);
 			this.buttonOK.TabIndex = 10;
@@ -195,9 +206,10 @@
 			// checkBoxUseVerticalBar
 			// 
 			this.checkBoxUseVerticalBar.AutoSize = true;
-			this.checkBoxUseVerticalBar.Location = new System.Drawing.Point(12, 131);
+			this.checkBoxUseVerticalBar.Location = new System.Drawing.Point(11, 133);
+			this.checkBoxUseVerticalBar.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
 			this.checkBoxUseVerticalBar.Name = "checkBoxUseVerticalBar";
-			this.checkBoxUseVerticalBar.Size = new System.Drawing.Size(148, 24);
+			this.checkBoxUseVerticalBar.Size = new System.Drawing.Size(101, 17);
 			this.checkBoxUseVerticalBar.TabIndex = 11;
 			this.checkBoxUseVerticalBar.Text = "Use Vertical bar";
 			this.checkBoxUseVerticalBar.UseVisualStyleBackColor = true;
@@ -205,9 +217,10 @@
 			// checkBoxRunAtStartup
 			// 
 			this.checkBoxRunAtStartup.AutoSize = true;
-			this.checkBoxRunAtStartup.Location = new System.Drawing.Point(12, 161);
+			this.checkBoxRunAtStartup.Location = new System.Drawing.Point(11, 154);
+			this.checkBoxRunAtStartup.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
 			this.checkBoxRunAtStartup.Name = "checkBoxRunAtStartup";
-			this.checkBoxRunAtStartup.Size = new System.Drawing.Size(137, 24);
+			this.checkBoxRunAtStartup.Size = new System.Drawing.Size(93, 17);
 			this.checkBoxRunAtStartup.TabIndex = 12;
 			this.checkBoxRunAtStartup.Text = "Run at startup";
 			this.checkBoxRunAtStartup.UseVisualStyleBackColor = true;
@@ -215,7 +228,8 @@
 			// buttonCancel
 			// 
 			this.buttonCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-			this.buttonCancel.Location = new System.Drawing.Point(249, 257);
+			this.buttonCancel.Location = new System.Drawing.Point(172, 199);
+			this.buttonCancel.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
 			this.buttonCancel.Name = "buttonCancel";
 			this.buttonCancel.Size = new System.Drawing.Size(75, 23);
 			this.buttonCancel.TabIndex = 13;
@@ -223,11 +237,22 @@
 			this.buttonCancel.UseVisualStyleBackColor = true;
 			this.buttonCancel.Click += new System.EventHandler(this.buttonCancel_Click);
 			// 
+			// label2
+			// 
+			this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.label2.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+			this.label2.Location = new System.Drawing.Point(9, 189);
+			this.label2.Name = "label2";
+			this.label2.Size = new System.Drawing.Size(239, 2);
+			this.label2.TabIndex = 14;
+			// 
 			// FormMain
 			// 
-			this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
+			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(336, 292);
+			this.ClientSize = new System.Drawing.Size(258, 233);
+			this.Controls.Add(this.label2);
 			this.Controls.Add(this.buttonCancel);
 			this.Controls.Add(this.checkBoxRunAtStartup);
 			this.Controls.Add(this.checkBoxUseVerticalBar);
@@ -242,12 +267,14 @@
 			this.Controls.Add(this.buttonCpuColor);
 			this.Controls.Add(this.label1);
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+			this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
 			this.MaximizeBox = false;
 			this.MinimizeBox = false;
 			this.Name = "FormMain";
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
 			this.Text = "Icon Meter";
 			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormMain_FormClosing);
+			this.Load += new System.EventHandler(this.FormMain_Load);
 			this.Shown += new System.EventHandler(this.FormMain_Shown);
 			this.contextMenuStripMain.ResumeLayout(false);
 			this.ResumeLayout(false);
@@ -277,6 +304,7 @@
 		private System.Windows.Forms.CheckBox checkBoxUseVerticalBar;
 		private System.Windows.Forms.CheckBox checkBoxRunAtStartup;
 		private System.Windows.Forms.Button buttonCancel;
+		private System.Windows.Forms.Label label2;
 	}
 }
 
