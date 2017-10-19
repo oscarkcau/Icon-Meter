@@ -51,6 +51,7 @@
 			this.checkBoxRunAtStartup = new System.Windows.Forms.CheckBox();
 			this.buttonCancel = new System.Windows.Forms.Button();
 			this.label2 = new System.Windows.Forms.Label();
+			this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.contextMenuStripMain.SuspendLayout();
 			this.SuspendLayout();
 			// 
@@ -72,27 +73,30 @@
 			this.contextMenuStripMain.ImageScalingSize = new System.Drawing.Size(24, 24);
 			this.contextMenuStripMain.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.settingsToolStripMenuItem,
+            this.aboutToolStripMenuItem,
             this.toolStripMenuItem1,
             this.closeToolStripMenuItem});
 			this.contextMenuStripMain.Name = "contextMenuStripMain";
-			this.contextMenuStripMain.Size = new System.Drawing.Size(126, 54);
+			this.contextMenuStripMain.Size = new System.Drawing.Size(161, 122);
 			// 
 			// settingsToolStripMenuItem
 			// 
+			this.settingsToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("settingsToolStripMenuItem.Image")));
 			this.settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
-			this.settingsToolStripMenuItem.Size = new System.Drawing.Size(125, 22);
+			this.settingsToolStripMenuItem.Size = new System.Drawing.Size(160, 30);
 			this.settingsToolStripMenuItem.Text = "Settings...";
 			this.settingsToolStripMenuItem.Click += new System.EventHandler(this.settingsToolStripMenuItem_Click);
 			// 
 			// toolStripMenuItem1
 			// 
 			this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-			this.toolStripMenuItem1.Size = new System.Drawing.Size(122, 6);
+			this.toolStripMenuItem1.Size = new System.Drawing.Size(157, 6);
 			// 
 			// closeToolStripMenuItem
 			// 
+			this.closeToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("closeToolStripMenuItem.Image")));
 			this.closeToolStripMenuItem.Name = "closeToolStripMenuItem";
-			this.closeToolStripMenuItem.Size = new System.Drawing.Size(125, 22);
+			this.closeToolStripMenuItem.Size = new System.Drawing.Size(160, 30);
 			this.closeToolStripMenuItem.Text = "Close";
 			this.closeToolStripMenuItem.Click += new System.EventHandler(this.closeToolStripMenuItem_Click);
 			// 
@@ -109,7 +113,7 @@
 			// buttonCpuColor
 			// 
 			this.buttonCpuColor.Location = new System.Drawing.Point(90, 10);
-			this.buttonCpuColor.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+			this.buttonCpuColor.Margin = new System.Windows.Forms.Padding(2);
 			this.buttonCpuColor.Name = "buttonCpuColor";
 			this.buttonCpuColor.Size = new System.Drawing.Size(66, 24);
 			this.buttonCpuColor.TabIndex = 2;
@@ -120,7 +124,7 @@
 			// 
 			this.checkBoxMemory.AutoSize = true;
 			this.checkBoxMemory.Location = new System.Drawing.Point(11, 43);
-			this.checkBoxMemory.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+			this.checkBoxMemory.Margin = new System.Windows.Forms.Padding(2);
 			this.checkBoxMemory.Name = "checkBoxMemory";
 			this.checkBoxMemory.Size = new System.Drawing.Size(63, 17);
 			this.checkBoxMemory.TabIndex = 3;
@@ -130,7 +134,7 @@
 			// buttonMemoryColor
 			// 
 			this.buttonMemoryColor.Location = new System.Drawing.Point(90, 38);
-			this.buttonMemoryColor.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+			this.buttonMemoryColor.Margin = new System.Windows.Forms.Padding(2);
 			this.buttonMemoryColor.Name = "buttonMemoryColor";
 			this.buttonMemoryColor.Size = new System.Drawing.Size(66, 24);
 			this.buttonMemoryColor.TabIndex = 4;
@@ -141,7 +145,7 @@
 			// 
 			this.checkBoxDisk.AutoSize = true;
 			this.checkBoxDisk.Location = new System.Drawing.Point(11, 71);
-			this.checkBoxDisk.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+			this.checkBoxDisk.Margin = new System.Windows.Forms.Padding(2);
 			this.checkBoxDisk.Name = "checkBoxDisk";
 			this.checkBoxDisk.Size = new System.Drawing.Size(47, 17);
 			this.checkBoxDisk.TabIndex = 5;
@@ -152,7 +156,7 @@
 			// 
 			this.checkBoxNetwork.AutoSize = true;
 			this.checkBoxNetwork.Location = new System.Drawing.Point(11, 99);
-			this.checkBoxNetwork.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+			this.checkBoxNetwork.Margin = new System.Windows.Forms.Padding(2);
 			this.checkBoxNetwork.Name = "checkBoxNetwork";
 			this.checkBoxNetwork.Size = new System.Drawing.Size(66, 17);
 			this.checkBoxNetwork.TabIndex = 6;
@@ -162,7 +166,7 @@
 			// buttonDiskColor
 			// 
 			this.buttonDiskColor.Location = new System.Drawing.Point(90, 66);
-			this.buttonDiskColor.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+			this.buttonDiskColor.Margin = new System.Windows.Forms.Padding(2);
 			this.buttonDiskColor.Name = "buttonDiskColor";
 			this.buttonDiskColor.Size = new System.Drawing.Size(66, 24);
 			this.buttonDiskColor.TabIndex = 7;
@@ -172,7 +176,7 @@
 			// buttonReceiveColor
 			// 
 			this.buttonReceiveColor.Location = new System.Drawing.Point(90, 94);
-			this.buttonReceiveColor.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+			this.buttonReceiveColor.Margin = new System.Windows.Forms.Padding(2);
 			this.buttonReceiveColor.Name = "buttonReceiveColor";
 			this.buttonReceiveColor.Size = new System.Drawing.Size(66, 24);
 			this.buttonReceiveColor.TabIndex = 8;
@@ -183,7 +187,7 @@
 			// buttonSendColor
 			// 
 			this.buttonSendColor.Location = new System.Drawing.Point(160, 94);
-			this.buttonSendColor.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+			this.buttonSendColor.Margin = new System.Windows.Forms.Padding(2);
 			this.buttonSendColor.Name = "buttonSendColor";
 			this.buttonSendColor.Size = new System.Drawing.Size(66, 24);
 			this.buttonSendColor.TabIndex = 9;
@@ -195,7 +199,7 @@
 			// 
 			this.buttonOK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
 			this.buttonOK.Location = new System.Drawing.Point(93, 199);
-			this.buttonOK.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+			this.buttonOK.Margin = new System.Windows.Forms.Padding(2);
 			this.buttonOK.Name = "buttonOK";
 			this.buttonOK.Size = new System.Drawing.Size(75, 23);
 			this.buttonOK.TabIndex = 10;
@@ -207,7 +211,7 @@
 			// 
 			this.checkBoxUseVerticalBar.AutoSize = true;
 			this.checkBoxUseVerticalBar.Location = new System.Drawing.Point(11, 133);
-			this.checkBoxUseVerticalBar.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+			this.checkBoxUseVerticalBar.Margin = new System.Windows.Forms.Padding(2);
 			this.checkBoxUseVerticalBar.Name = "checkBoxUseVerticalBar";
 			this.checkBoxUseVerticalBar.Size = new System.Drawing.Size(101, 17);
 			this.checkBoxUseVerticalBar.TabIndex = 11;
@@ -218,7 +222,7 @@
 			// 
 			this.checkBoxRunAtStartup.AutoSize = true;
 			this.checkBoxRunAtStartup.Location = new System.Drawing.Point(11, 154);
-			this.checkBoxRunAtStartup.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+			this.checkBoxRunAtStartup.Margin = new System.Windows.Forms.Padding(2);
 			this.checkBoxRunAtStartup.Name = "checkBoxRunAtStartup";
 			this.checkBoxRunAtStartup.Size = new System.Drawing.Size(93, 17);
 			this.checkBoxRunAtStartup.TabIndex = 12;
@@ -229,7 +233,7 @@
 			// 
 			this.buttonCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
 			this.buttonCancel.Location = new System.Drawing.Point(172, 199);
-			this.buttonCancel.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+			this.buttonCancel.Margin = new System.Windows.Forms.Padding(2);
 			this.buttonCancel.Name = "buttonCancel";
 			this.buttonCancel.Size = new System.Drawing.Size(75, 23);
 			this.buttonCancel.TabIndex = 13;
@@ -246,6 +250,14 @@
 			this.label2.Name = "label2";
 			this.label2.Size = new System.Drawing.Size(239, 2);
 			this.label2.TabIndex = 14;
+			// 
+			// aboutToolStripMenuItem
+			// 
+			this.aboutToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("aboutToolStripMenuItem.Image")));
+			this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
+			this.aboutToolStripMenuItem.Size = new System.Drawing.Size(160, 30);
+			this.aboutToolStripMenuItem.Text = "About";
+			this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
 			// 
 			// FormMain
 			// 
@@ -267,7 +279,7 @@
 			this.Controls.Add(this.buttonCpuColor);
 			this.Controls.Add(this.label1);
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-			this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+			this.Margin = new System.Windows.Forms.Padding(2);
 			this.MaximizeBox = false;
 			this.MinimizeBox = false;
 			this.Name = "FormMain";
@@ -305,6 +317,7 @@
 		private System.Windows.Forms.CheckBox checkBoxRunAtStartup;
 		private System.Windows.Forms.Button buttonCancel;
 		private System.Windows.Forms.Label label2;
+		private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
 	}
 }
 

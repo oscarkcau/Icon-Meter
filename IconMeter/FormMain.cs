@@ -76,6 +76,10 @@ namespace IconMeter
 
 			timerMain.Enabled = true;
 		}
+		private void FormMain_Load(object sender, EventArgs e)
+		{
+
+		}
 		private void FormMain_FormClosing(object sender, FormClosingEventArgs e)
 		{
 			if (e.CloseReason == CloseReason.UserClosing && isClosing == false)
@@ -130,6 +134,11 @@ namespace IconMeter
 			allowShowForm = true;
 			this.Visible = true;
 			UpdateControlsFromSettings();
+		}
+		private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			AboutBox a = new AboutBox();
+			a.ShowDialog();
 		}
 		private void timerMain_Tick(object sender, EventArgs e)
 		{
@@ -240,12 +249,6 @@ namespace IconMeter
 				rkApp.DeleteValue("MyApp", false);
 			}
 		}
-
-		private void FormMain_Load(object sender, EventArgs e)
-		{
-
-		}
-
 		private void UpdateReadings()
 		{
 			lastCpuUsage = cpuCounter.NextValue();

@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("IconMeter")]
+[assembly: AssemblyTitle("Icon Meter")]
 [assembly: AssemblyDescription("Small notifyicon system performance meter for MS Windows")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Oscar Au")]
-[assembly: AssemblyProduct("IconMeter")]
-[assembly: AssemblyCopyright("Copyright ©  2017")]
+[assembly: AssemblyCompany("Maybe Useless Software")]
+[assembly: AssemblyProduct("Icon Meter")]
+[assembly: AssemblyCopyright("Copyright © Oscar Au 2017")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
