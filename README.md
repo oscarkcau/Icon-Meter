@@ -1,6 +1,8 @@
 # Icon-Meter
 Small notifyicon system performance meter for MS Windows.
 
+![](/IconMeter/capture.png)
+
 I need a small system performance meter for my windows tablet thus make a small Winform application with c#. It display a small notifyicon which visualizes the current CPU, memory, disk and network loading in small bars.
 Icon Meter has the following features:
 
@@ -22,8 +24,7 @@ The following coding features were implemented for the function
 
 ## Installation
 
-Download and run the installer:
-link to add later
+Download and run the [installer](/IconMeterSetup/Release/IconMeterSetup.msi).
 
 ## Usage
 
