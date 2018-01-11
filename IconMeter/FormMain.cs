@@ -194,7 +194,7 @@ namespace IconMeter
 		}
 		private void InitializePerformanceCounters()
 		{
-			cpuCounter = new PerformanceCounter("Processor", "% Processor Time", "_Total");
+			cpuCounter = new PerformanceCounter("Processor Information", "% Processor Utility", "_Total");
 			memoryCounter = new PerformanceCounter("Memory", "% Committed Bytes In Use");
 			diskCounter = new PerformanceCounter("PhysicalDisk", "% Disk Time", "_Total");
 
