@@ -24,7 +24,7 @@ The following coding features were implemented for the function
 
 ## Installation
 
-Download and run the [installer](/IconMeterSetup/Release/IconMeterSetup.msi).
+Download and run the lastest [installer](https://github.com/oscarkcau/Icon-Meter/releases/latest).
 
 ## Usage
 
