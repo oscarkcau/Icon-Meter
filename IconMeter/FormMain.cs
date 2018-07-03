@@ -135,6 +135,10 @@ namespace IconMeter
 			this.Visible = true;
 			UpdateControlsFromSettings();
 		}
+		private void resetIconMeterToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			ResetPerformanceCounters();
+		}
 		private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			AboutBox a = new AboutBox();

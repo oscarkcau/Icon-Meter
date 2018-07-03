@@ -121,10 +121,10 @@
     <value>17, 17</value>
   </metadata>
   <metadata name="notifyIconMain.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>131, 17</value>
+    <value>214, 23</value>
   </metadata>
   <metadata name="contextMenuStripMain.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>315, 17</value>
+    <value>463, 16</value>
   </metadata>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="settingsToolStripMenuItem.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
@@ -142,6 +142,21 @@
         NC48WCwTIiJF9P36+pqtzczMSGaz+XuMBwcHDpJHJw+JANPtcRwnUWjke3p6WkJQj9bIu8vlAp1O932Q
         qJaWlvyzs7Mi+hPm5+eVSCJQN1JgNBqFsbExJfoWNBqNODIyMnyU+4UEqqmpKYXdbpcjYYck4z2A8fHx
         DhLIJyYmFEjw92X6XSh7EjsmtFptAuX+5zqD7B9xW973601VKQAAAABJRU5ErkJggg==
+</value>
+  </data>
+  <data name="resetIconMeterToolStripMenuItem.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAAK/INwWK6QAAAAlwSFlzAAAd
+        hwAAHYcBj+XxZQAAABl0RVh0U29mdHdhcmUAcGFpbnQubmV0IDQuMC4yMfEgaZUAAAILSURBVDhPpZF9
+        T1JhGMb9HHyDVjbtzVaNrBa+JTEREzVBT6PkCGlp5KDjPHCGJCX2AhJCkEUDpq02S51LNBWNVjK1zpdh
+        V885m0fQ80euP67tea7ruX/37ucuAfBfkjUPI1mzarSSvuK5wCtdZ3GOOYUzA2X8ib5SWu5t0aXxdZ1C
+        E6zKdqU64Eo/gnedw/AqC9uXXjT61Si/fyxbaj2iKKwpAjRPXs8OzPZi/KdPLB7dGMbjjBPMkg3ssgOt
+        YZ0IKayRDoYpHf1wvgeRnB+hX8/h2/Dg7ofbMKcouJYc4FYYArGj4WU9yu4dlcaRANTHZj5IOoc2nyHw
+        4ykaJmrz6oCKrRm7zF71KvPu1SE4FvvRN2PByQfHtw4ATDOteP87grfbITAL/WiK1bO7Wc3YpXjHZAvc
+        K4PiKBX2cmLvA3TNtSPJRxHfmcBQ2gZ9XCMBBFX7KuFZY8F9Y3B+8DSx9gG6F4x8bMuPN9tBRHMB3Exq
+        8/p3Gpsueg2aV9W4kzRiJMNBGKUlottd714Ha5qi3esOpPiYOIrwkW0JLYnE9aJ7miJbcWNkzYn22A0o
+        nRViJgEEWRc7s97vLBJ/hFHCME43iY8EaSN1ME9RMCUMUD25KPlFgJ7lWwoLgXAZO8K5F6A+6Ym9l2vD
+        tVCPq4o86VAoy9dO2jxv4E2f28j1YF4oWfMwkjX/XSj5C2o8uznkfudQAAAAAElFTkSuQmCC
 </value>
   </data>
   <data name="aboutToolStripMenuItem.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
@@ -179,7 +194,7 @@
 </value>
   </data>
   <metadata name="colorDialogMain.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>564, 17</value>
+    <value>874, 19</value>
   </metadata>
   <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
