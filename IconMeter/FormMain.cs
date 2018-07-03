@@ -142,7 +142,14 @@ namespace IconMeter
 		}
 		private void timerMain_Tick(object sender, EventArgs e)
 		{
-			UpdateReadings();
+			try
+			{
+				UpdateReadings();
+			}
+			catch (Exception) //when (ex is InvalidOperationException)
+			{
+				ResetPerformanceCounters();
+			}
 
 			UpdateIcon();
 		}
@@ -206,6 +213,29 @@ namespace IconMeter
 				networkReceiveCounters.Add(new PerformanceCounter("Network Interface", "Bytes Received/sec", name));
 				networkSendCounters.Add(new PerformanceCounter("Network Interface", "Bytes Sent/sec", name));
 			}
+		}
+		private void ResetPerformanceCounters()
+		{
+			timerMain.Stop();
+			DisposePerformanceCounters();
+			System.Threading.Thread.Sleep(2000);
+			InitializePerformanceCounters();
+			timerMain.Start();
+		}
+		private void DisposePerformanceCounters()
+		{
+			cpuCounter?.Dispose();
+			memoryCounter?.Dispose();
+			diskCounter?.Dispose();
+
+			cpuCounter = null;
+			memoryCounter = null;
+			diskCounter = null;
+
+			foreach (var pc in networkReceiveCounters) pc?.Dispose();
+			foreach (var pc in networkSendCounters) pc?.Dispose();
+			networkReceiveCounters.Clear();
+			networkSendCounters.Clear();
 		}
 		private void UpdateControlsFromSettings()
 		{
