@@ -28,22 +28,28 @@ namespace IconMeter
 			[XmlElement(Type = typeof(XmlColor))] public Color DiskColor { get; set; }
 			[XmlElement(Type = typeof(XmlColor))] public Color NetworkReceiveColor { get; set; }
 			[XmlElement(Type = typeof(XmlColor))] public Color NetworkSendColor { get; set; }
-			public bool  ShowMemoryUsage { get; set; }
+			[XmlElement(Type = typeof(XmlColor))] public Color LogicalProcessorColor { get; set; }
+			public bool ShowCpuUsage { get; set; }
+			public bool ShowMemoryUsage { get; set; }
 			public bool ShowDiskUsage { get; set; }
 			public bool ShowNetworkUsage { get; set; }
+			public bool ShowLogicalProcessorsUsage { get; set; }
 			public bool UseVerticalBars { get; set; }
 			public bool RunAtStartup { get; set; }
 
 			public Settings()
 			{
-				CpuColor = Color.Red;
+				CpuColor = Color.OrangeRed;
 				MemoryColor = Color.DodgerBlue;
 				DiskColor = Color.LimeGreen;
 				NetworkReceiveColor = Color.Yellow;
 				NetworkSendColor = Color.Goldenrod;
+				LogicalProcessorColor = Color.OrangeRed;
+				ShowCpuUsage = true;
 				ShowMemoryUsage = true;
 				ShowDiskUsage = true;
 				ShowNetworkUsage = true;
+				ShowLogicalProcessorsUsage = false;
 				UseVerticalBars = true;
 				RunAtStartup = false;
 			}
@@ -53,6 +59,7 @@ namespace IconMeter
 		PerformanceCounter cpuCounter, memoryCounter, diskCounter;
 		List<PerformanceCounter> networkReceiveCounters = new List<PerformanceCounter>();
 		List<PerformanceCounter> networkSendCounters = new List<PerformanceCounter>();
+		List<PerformanceCounter> logicalProcessorsCounter = new List<PerformanceCounter>();
 		float lastCpuUsage = 0;
 		float lastMemoryUsage = 0;
 		float lastDiskUsage = 0;
@@ -60,17 +67,18 @@ namespace IconMeter
 		float lastNetworkSend = 0;
 		Queue<float> previousNetwordReceive = new Queue<float>();
 		Queue<float> previousNetwordSend = new Queue<float>();
+		float[] logicalProcessorUsage = null;
 		bool isClosing = false;
 		bool allowShowForm = false;
 
 		// Constructor and event handlers
 		public FormMain()
-        {
-            InitializeComponent();
-
-			InitializePerformanceCounters();
+		{
+			InitializeComponent();
 
 			LoadSettings();
+
+			InitializePerformanceCounters();
 
 			UpdateAutoStartSetting();
 
@@ -94,6 +102,20 @@ namespace IconMeter
 		}
 		private void buttonOK_Click(object sender, EventArgs e)
 		{
+			// make sure at least one meter in main icon is selected
+			if (!(checkBoxCpu.Checked || checkBoxMemory.Checked || checkBoxDisk.Checked || checkBoxNetwork.Checked))
+			{
+				// otherwise shown error message
+				MessageBox.Show(this,
+					"At least one of the following meters should be selected: \nCPU / Memory / Disk / Network",
+					"Icom Meter",
+					MessageBoxButtons.OK,
+					MessageBoxIcon.Information
+					);
+				// and does not hide the setting dialog
+				return;
+			}
+
 			UpdateSettingsFromControls();
 			SaveSettings();
 			UpdateAutoStartSetting();
@@ -156,6 +178,16 @@ namespace IconMeter
 			}
 
 			UpdateIcon();
+
+			if (settings.ShowLogicalProcessorsUsage)
+			{
+				UpdateLogicalProcessorIcon();
+				this.notifyIconLogicalProcessor.Visible = true;
+			}
+			else
+			{
+				this.notifyIconLogicalProcessor.Visible = false;
+			}
 		}
 
 		// override function for disable show window on startup
@@ -211,13 +243,24 @@ namespace IconMeter
 
 			PerformanceCounterCategory networkCounterCategory
 				= new PerformanceCounterCategory("Network Interface");
-
 			foreach (string name in networkCounterCategory.GetInstanceNames())
 			{
 				networkReceiveCounters.Add(new PerformanceCounter("Network Interface", "Bytes Received/sec", name));
 				networkSendCounters.Add(new PerformanceCounter("Network Interface", "Bytes Sent/sec", name));
 			}
-		}
+
+			var processorCategory = new PerformanceCounterCategory("Processor Information");
+			var logicalProcessorNames = processorCategory.GetInstanceNames()
+				.Where(s => !s.Contains("Total"))
+				.OrderBy(s => s);
+			int nLogicalProcessors = logicalProcessorNames.Count();
+			foreach (string name in logicalProcessorNames)
+			{
+				logicalProcessorsCounter.Add(new PerformanceCounter("Processor Information", "% Processor Utility", name));
+			}
+			this.logicalProcessorUsage = new float[nLogicalProcessors];
+			this.notifyIconLogicalProcessor.Text = nLogicalProcessors + " Logical Processor(s)";
+		}		 
 		private void ResetPerformanceCounters()
 		{
 			timerMain.Stop();
@@ -231,15 +274,16 @@ namespace IconMeter
 			cpuCounter?.Dispose();
 			memoryCounter?.Dispose();
 			diskCounter?.Dispose();
-
 			cpuCounter = null;
 			memoryCounter = null;
 			diskCounter = null;
 
 			foreach (var pc in networkReceiveCounters) pc?.Dispose();
 			foreach (var pc in networkSendCounters) pc?.Dispose();
+			foreach (var pc in logicalProcessorsCounter) pc?.Dispose();
 			networkReceiveCounters.Clear();
 			networkSendCounters.Clear();
+			logicalProcessorsCounter.Clear();
 		}
 		private void UpdateControlsFromSettings()
 		{
@@ -248,9 +292,13 @@ namespace IconMeter
 			this.buttonDiskColor.BackColor = settings.DiskColor;
 			this.buttonReceiveColor.BackColor = settings.NetworkReceiveColor;
 			this.buttonSendColor.BackColor = settings.NetworkSendColor;
+			this.buttonLogicalProcessorsColor.BackColor = settings.LogicalProcessorColor;
+
+			this.checkBoxCpu.Checked = settings.ShowCpuUsage;
 			this.checkBoxMemory.Checked = settings.ShowMemoryUsage;
 			this.checkBoxDisk.Checked = settings.ShowDiskUsage;
 			this.checkBoxNetwork.Checked = settings.ShowNetworkUsage;
+			this.checkBoxLogicalProcessors.Checked = settings.ShowLogicalProcessorsUsage;
 			this.checkBoxUseVerticalBar.Checked = settings.UseVerticalBars;
 			this.checkBoxRunAtStartup.Checked = settings.RunAtStartup;
 		}
@@ -260,10 +308,14 @@ namespace IconMeter
 			settings.MemoryColor = buttonMemoryColor.BackColor;
 			settings.DiskColor = buttonDiskColor.BackColor;
 			settings.NetworkReceiveColor = buttonReceiveColor.BackColor;
+			settings.LogicalProcessorColor = buttonLogicalProcessorsColor.BackColor;
 			settings.NetworkSendColor = buttonSendColor.BackColor;
+
+			settings.ShowCpuUsage = checkBoxCpu.Checked;
 			settings.ShowMemoryUsage = checkBoxMemory.Checked;
 			settings.ShowDiskUsage = checkBoxDisk.Checked;
 			settings.ShowNetworkUsage = checkBoxNetwork.Checked;
+			settings.ShowLogicalProcessorsUsage = checkBoxLogicalProcessors.Checked;
 			settings.UseVerticalBars = checkBoxUseVerticalBar.Checked;
 			settings.RunAtStartup = checkBoxRunAtStartup.Checked;
 		}
@@ -307,6 +359,12 @@ namespace IconMeter
 				if (previousNetwordSend.Count > 60)
 					previousNetwordSend.Dequeue();
 			}
+
+			if (settings.ShowLogicalProcessorsUsage)
+			{
+				for (int i = 0; i < logicalProcessorsCounter.Count; i++)
+					logicalProcessorUsage[i] = logicalProcessorsCounter[i].NextValue();
+			}
 		}
 		private void UpdateIcon()
 		{
@@ -318,10 +376,11 @@ namespace IconMeter
 			Brush brush4 = new SolidBrush(settings.NetworkReceiveColor);
 			Brush brush5 = new SolidBrush(settings.NetworkSendColor);
 
-			int nReading = 1;
+			int nReading = 0;
+			if (settings.ShowCpuUsage) nReading++;
 			if (settings.ShowMemoryUsage) nReading++;
 			if (settings.ShowDiskUsage) nReading++;
-			if (settings.ShowNetworkUsage) nReading+=2;
+			if (settings.ShowNetworkUsage) nReading += 2;
 			int barHeight = 16 / nReading;
 
 
@@ -335,18 +394,21 @@ namespace IconMeter
 			if (settings.UseVerticalBars)
 			{
 				int left = 0;
-				float h = (lastCpuUsage * 16 / 100);
-				g.FillRectangle(brush1, left, 16 - h, barHeight, h);
-				left += barHeight;
+				if (settings.ShowCpuUsage)
+				{
+					float h = (lastCpuUsage * 16 / 100);
+					g.FillRectangle(brush1, left, 16 - h, barHeight, h);
+					left += barHeight;
+				}
 				if (settings.ShowMemoryUsage)
 				{
-					h = (lastMemoryUsage * 16 / 100);
+					float h = (lastMemoryUsage * 16 / 100);
 					g.FillRectangle(brush2, left, 16 - h, barHeight, h);
 					left += barHeight;
 				}
 				if (settings.ShowDiskUsage)
 				{
-					h = (lastDiskUsage * 16 / 100);
+					float h = (lastDiskUsage * 16 / 100);
 					g.FillRectangle(brush3, left, 16 - h, barHeight, h);
 					left += barHeight;
 				}
@@ -356,7 +418,7 @@ namespace IconMeter
 					float maxNetworkSend = previousNetwordSend.Max();
 					float maxNetword = Math.Max(maxNetworkReceive, maxNetworkSend);
 
-					h = (lastNetworkSend * 16 / maxNetword);
+					float h = (lastNetworkSend * 16 / maxNetword);
 					g.FillRectangle(brush5, left, 16 - h, barHeight, h);
 					left += barHeight;
 					h = (lastNetworkReceive * 16 / maxNetword);
@@ -366,8 +428,11 @@ namespace IconMeter
 			else // use horizontal bars
 			{
 				int top = 0;
-				g.FillRectangle(brush1, 0, top, (lastCpuUsage * 16 / 100), barHeight);
-				top += barHeight;
+				if (settings.ShowCpuUsage)
+				{
+					g.FillRectangle(brush1, 0, top, (lastCpuUsage * 16 / 100), barHeight);
+					top += barHeight;
+				}
 				if (settings.ShowMemoryUsage)
 				{
 					g.FillRectangle(brush2, 0, top, (lastMemoryUsage * 16 / 100), barHeight);
@@ -422,6 +487,53 @@ namespace IconMeter
 			if (sb.Length > 64) sb.Remove(64, sb.Length - 64);
 
 			notifyIconMain.Text = sb.ToString();
+		}
+		private void UpdateLogicalProcessorIcon()
+		{
+			Bitmap bitmapText = new Bitmap(16, 16);
+			Graphics g = System.Drawing.Graphics.FromImage(bitmapText);
+			Brush br = new SolidBrush(settings.LogicalProcessorColor);
+			Pen shadowPen = new Pen(Color.FromArgb(128, Color.Black));
+			int nReadings = this.logicalProcessorsCounter.Count;
+			float barHeight = 16 / nReadings;
+
+			g.Clear(Color.Transparent);
+			Pen pen = new Pen(Color.DarkGray);
+			g.DrawLine(pen, 0, 0, 0, 15);
+			g.DrawLine(pen, 0, 15, 15, 15);
+			g.DrawLine(pen, 15, 15, 15, 0);
+			g.DrawLine(pen, 15, 0, 0, 0);
+
+
+			if (settings.UseVerticalBars)
+			{
+				float left = 0;
+				for (int i = 0; i < nReadings; i++)
+				{
+					float h = (logicalProcessorUsage[i] * 16 / 100);
+					g.FillRectangle(br, left, 16 - h, barHeight, h);
+					left += barHeight;
+					g.DrawLine(shadowPen, left - 1, 16 - h + 0.5f, left - 1, 16);
+				}
+			}
+			else // use horizontal bars
+			{
+				float top = 0;
+				for (int i = 0; i < nReadings; i++)
+				{
+					float h = (logicalProcessorUsage[i] * 16 / 100);
+					g.FillRectangle(br, 0, top, h, barHeight);
+					top += barHeight;
+					g.DrawLine(shadowPen, 0, top - 1, h - 0.5f, top - 1);
+				}
+			}
+
+			// create icon from bitmap
+			IntPtr hIcon = (bitmapText.GetHicon());
+			Icon newIcon = Icon.FromHandle(hIcon);
+			Icon oldIcon = notifyIconLogicalProcessor.Icon;
+			notifyIconLogicalProcessor.Icon = newIcon;
+			if (oldIcon != null) DestroyIcon(oldIcon.Handle); // remember to delete the old icon
 		}
 	}
 
