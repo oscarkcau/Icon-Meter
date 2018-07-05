@@ -20,6 +20,7 @@ namespace IconMeter
 		[DllImport("user32.dll", CharSet = CharSet.Auto)]
 		extern static bool DestroyIcon(IntPtr handle);
 
+		// internal setting class
 		[Serializable]
 		public class Settings
 		{
@@ -55,41 +56,46 @@ namespace IconMeter
 			}
 		}
 
+		// private fields
 		Settings settings = new Settings();
+		string settingsFilename = AppDomain.CurrentDomain.BaseDirectory + "settings.xml";
 		PerformanceCounter cpuCounter, memoryCounter, diskCounter;
-		List<PerformanceCounter> networkReceiveCounters = new List<PerformanceCounter>();
-		List<PerformanceCounter> networkSendCounters = new List<PerformanceCounter>();
-		List<PerformanceCounter> logicalProcessorsCounter = new List<PerformanceCounter>();
 		float lastCpuUsage = 0;
 		float lastMemoryUsage = 0;
 		float lastDiskUsage = 0;
 		float lastNetworkReceive = 0;
 		float lastNetworkSend = 0;
-		Queue<float> previousNetwordReceive = new Queue<float>();
-		Queue<float> previousNetwordSend = new Queue<float>();
 		float[] logicalProcessorUsage = null;
 		bool isClosing = false;
 		bool allowShowForm = false;
+
+		// private readonly fields
+		readonly List<PerformanceCounter> networkReceiveCounters = new List<PerformanceCounter>();
+		readonly List<PerformanceCounter> networkSendCounters = new List<PerformanceCounter>();
+		readonly List<PerformanceCounter> logicalProcessorsCounter = new List<PerformanceCounter>();
+		readonly Queue<float> previousNetwordReceive = new Queue<float>();
+		readonly Queue<float> previousNetwordSend = new Queue<float>();
 
 		// Constructor and event handlers
 		public FormMain()
 		{
 			InitializeComponent();
 
+			// load saved settings from file
 			LoadSettings();
 
-			InitializePerformanceCounters();
-
+			// update auto start system setting (if necessary)
 			UpdateAutoStartSetting();
 
-			timerMain.Enabled = true;
-		}
-		private void FormMain_Load(object sender, EventArgs e)
-		{
+			// initialize necessary performance counters
+			InitializePerformanceCounters();
 
+			// start collect readings
+			timerMain.Enabled = true;
 		}
 		private void FormMain_FormClosing(object sender, FormClosingEventArgs e)
 		{
+			// hide form when user close the form through UI
 			if (e.CloseReason == CloseReason.UserClosing && isClosing == false)
 			{
 				e.Cancel = true;
@@ -98,6 +104,7 @@ namespace IconMeter
 		}
 		private void FormMain_Shown(object sender, EventArgs e)
 		{
+			// update form controls with the current settings
 			UpdateControlsFromSettings();
 		}
 		private void buttonOK_Click(object sender, EventArgs e)
@@ -116,21 +123,36 @@ namespace IconMeter
 				return;
 			}
 
+			// update settings from controls' properties
 			UpdateSettingsFromControls();
+
+			// save settings to file
 			SaveSettings();
+
+			// update auto start system setting (if necessary)
 			UpdateAutoStartSetting();
+
+			// hide the form
 			this.Hide();
+
+			// dispose and reinitialize all performance counters
+			ResetPerformanceCounters();
 		}
 		private void buttonCancel_Click(object sender, EventArgs e)
 		{
+			// hide the form
 			this.Hide();
 		}
 		private void buttonColor_Click(object sender, EventArgs e)
 		{
+			// get the background color of the sender button
 			Button b = sender as Button;
 			this.colorDialogMain.Color = b.BackColor;
 
+			// show color dialog to allow user to specify a new color
 			DialogResult ret = colorDialogMain.ShowDialog(this);
+
+			// update button background color if a new color is selected
 			if (ret == DialogResult.OK)
 			{
 				b.BackColor = colorDialogMain.Color;
@@ -138,53 +160,64 @@ namespace IconMeter
 		}
 		private void notifyIconMain_MouseDoubleClick(object sender, MouseEventArgs e)
 		{
+			// start Task Manager
 			if (e.Button == MouseButtons.Left)
 			{
 				Process p = new Process();
 				p.StartInfo.FileName = "taskmgr";
-				p.StartInfo.CreateNoWindow = true;
 				p.Start();
 			}
 		}
 		private void closeToolStripMenuItem_Click(object sender, EventArgs e)
-		{
+		{ 
+			// close this the application (thus close this main form)
 			isClosing = true;
 			Application.Exit();
 		}
 		private void settingsToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			allowShowForm = true;
+			// show this form
+			allowShowForm = true; // this flag is used for override function SetVisibleCore()
 			this.Visible = true;
+
+			// update controls from current settings
 			UpdateControlsFromSettings();
 		}
 		private void resetIconMeterToolStripMenuItem_Click(object sender, EventArgs e)
 		{
+			// dispose and reinitialize all performance counters
 			ResetPerformanceCounters();
 		}
 		private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
 		{
+			// show AboutBox dialog
 			AboutBox a = new AboutBox();
 			a.ShowDialog();
 		}
 		private void timerMain_Tick(object sender, EventArgs e)
 		{
+			// try to update readings from performance counters
 			try
 			{
 				UpdateReadings();
 			}
 			catch (Exception) //when (ex is InvalidOperationException)
 			{
+				// dispose and reinitialize all performance counters if there is exception
 				ResetPerformanceCounters();
 			}
 
+			// update main notify icons and tooltip text
 			UpdateIcon();
+			UpdateNotifyIconTooltipText();
 
+			// update logical processor notify icon if it is in used
 			if (settings.ShowLogicalProcessorsUsage)
 			{
 				UpdateLogicalProcessorIcon();
 				this.notifyIconLogicalProcessor.Visible = true;
 			}
-			else
+			else // otherwise hide it
 			{
 				this.notifyIconLogicalProcessor.Visible = false;
 			}
@@ -199,6 +232,9 @@ namespace IconMeter
 		// main procedures
 		private void SaveIconToFile(string filename)
 		{
+			// save current notify icon to file
+			// input: filename
+
 			using (FileStream s = new FileStream(filename, FileMode.Create))
 			{
 				this.notifyIconMain.Icon.Save(s);
@@ -206,12 +242,13 @@ namespace IconMeter
 		}
 		private void SaveSettings()
 		{
+			// serialize current setting to xml file
+
 			try
 			{
 				XmlSerializer serializer = new XmlSerializer(typeof(Settings));
-				string filename = AppDomain.CurrentDomain.BaseDirectory + "settings.xml";
 
-				using (StreamWriter writer = new StreamWriter(filename))
+				using (StreamWriter writer = new StreamWriter(this.settingsFilename))
 				{
 					serializer.Serialize(writer, this.settings);
 					writer.Close();
@@ -221,13 +258,14 @@ namespace IconMeter
 		}
 		private void LoadSettings()
 		{
+			// deserialize current setting from xml file
+
 			try
 			{
-				string filename = AppDomain.CurrentDomain.BaseDirectory + "settings.xml";
-				if (File.Exists(filename) == false) return;
+				if (File.Exists(this.settingsFilename) == false) return;
 
 				XmlSerializer serializer = new XmlSerializer(typeof(Settings));
-				using (StreamReader reader = new StreamReader(filename))
+				using (StreamReader reader = new StreamReader(this.settingsFilename))
 				{
 					this.settings = (Settings)serializer.Deserialize(reader);
 					reader.Close();
@@ -237,40 +275,63 @@ namespace IconMeter
 		}
 		private void InitializePerformanceCounters()
 		{
-			cpuCounter = new PerformanceCounter("Processor Information", "% Processor Utility", "_Total");
-			memoryCounter = new PerformanceCounter("Memory", "% Committed Bytes In Use");
-			diskCounter = new PerformanceCounter("PhysicalDisk", "% Disk Time", "_Total");
+			// initialize necessary performance counters depending on current setting
 
-			PerformanceCounterCategory networkCounterCategory
-				= new PerformanceCounterCategory("Network Interface");
-			foreach (string name in networkCounterCategory.GetInstanceNames())
+			if (settings.ShowCpuUsage)
 			{
-				networkReceiveCounters.Add(new PerformanceCounter("Network Interface", "Bytes Received/sec", name));
-				networkSendCounters.Add(new PerformanceCounter("Network Interface", "Bytes Sent/sec", name));
+				cpuCounter = new PerformanceCounter("Processor Information", "% Processor Utility", "_Total");
 			}
 
-			var processorCategory = new PerformanceCounterCategory("Processor Information");
-			var logicalProcessorNames = processorCategory.GetInstanceNames()
-				.Where(s => !s.Contains("Total"))
-				.OrderBy(s => s);
-			int nLogicalProcessors = logicalProcessorNames.Count();
-			foreach (string name in logicalProcessorNames)
+			if (settings.ShowMemoryUsage)
 			{
-				logicalProcessorsCounter.Add(new PerformanceCounter("Processor Information", "% Processor Utility", name));
+				memoryCounter = new PerformanceCounter("Memory", "% Committed Bytes In Use");
 			}
-			this.logicalProcessorUsage = new float[nLogicalProcessors];
-			this.notifyIconLogicalProcessor.Text = nLogicalProcessors + " Logical Processor(s)";
+
+			if (settings.ShowNetworkUsage)
+			{
+				diskCounter = new PerformanceCounter("PhysicalDisk", "% Disk Time", "_Total");
+			}
+
+			if (settings.ShowNetworkUsage)
+			{
+				PerformanceCounterCategory networkCounterCategory
+					= new PerformanceCounterCategory("Network Interface");
+				foreach (string name in networkCounterCategory.GetInstanceNames())
+				{
+					networkReceiveCounters.Add(new PerformanceCounter("Network Interface", "Bytes Received/sec", name));
+					networkSendCounters.Add(new PerformanceCounter("Network Interface", "Bytes Sent/sec", name));
+				}
+			}
+
+			if (settings.ShowLogicalProcessorsUsage)
+			{
+				var processorCategory = new PerformanceCounterCategory("Processor Information");
+				var logicalProcessorNames = processorCategory.GetInstanceNames()
+					.Where(s => !s.Contains("Total"))
+					.OrderBy(s => s);
+				int nLogicalProcessors = logicalProcessorNames.Count();
+				foreach (string name in logicalProcessorNames)
+				{
+					logicalProcessorsCounter.Add(new PerformanceCounter("Processor Information", "% Processor Utility", name));
+				}
+				this.logicalProcessorUsage = new float[nLogicalProcessors];
+				this.notifyIconLogicalProcessor.Text = nLogicalProcessors + " Logical Processor(s)";
+			}
 		}		 
 		private void ResetPerformanceCounters()
 		{
-			timerMain.Stop();
-			DisposePerformanceCounters();
-			System.Threading.Thread.Sleep(2000);
-			InitializePerformanceCounters();
-			timerMain.Start();
+			// dispose and reinitialize all performance counters
+
+			timerMain.Stop();					// stop timer to avoid getting new readings
+			DisposePerformanceCounters();		// dispose all PC
+			System.Threading.Thread.Sleep(2000);// pause for a short while (2 sec)
+			InitializePerformanceCounters();	// initialize PC
+			timerMain.Start();					// start timer again for getting new readings
 		}
 		private void DisposePerformanceCounters()
 		{
+			// dispose all performance counters
+
 			cpuCounter?.Dispose();
 			memoryCounter?.Dispose();
 			diskCounter?.Dispose();
@@ -287,6 +348,8 @@ namespace IconMeter
 		}
 		private void UpdateControlsFromSettings()
 		{
+			// update control properties with the current settings
+
 			this.buttonCpuColor.BackColor = settings.CpuColor;
 			this.buttonMemoryColor.BackColor = settings.MemoryColor;
 			this.buttonDiskColor.BackColor = settings.DiskColor;
@@ -304,6 +367,8 @@ namespace IconMeter
 		}
 		private void UpdateSettingsFromControls()
 		{
+			// update current settings from control properties
+
 			settings.CpuColor = buttonCpuColor.BackColor;
 			settings.MemoryColor = buttonMemoryColor.BackColor;
 			settings.DiskColor = buttonDiskColor.BackColor;
@@ -337,9 +402,11 @@ namespace IconMeter
 		}
 		private void UpdateReadings()
 		{
-			lastCpuUsage = cpuCounter.NextValue();
-			lastMemoryUsage = memoryCounter.NextValue();
-			lastDiskUsage = diskCounter.NextValue();
+			// get the next readings from performance counters
+
+			if (settings.ShowCpuUsage) lastCpuUsage = cpuCounter.NextValue();
+			if (settings.ShowMemoryUsage) lastMemoryUsage = memoryCounter.NextValue();
+			if (settings.ShowDiskUsage) lastDiskUsage = diskCounter.NextValue();
 
 			if (settings.ShowNetworkUsage)
 			{
@@ -368,14 +435,20 @@ namespace IconMeter
 		}
 		private void UpdateIcon()
 		{
+			// Update main notify icon
+
+			// create bitmap and corresponding graphics object
 			Bitmap bitmapText = new Bitmap(16, 16);
 			Graphics g = System.Drawing.Graphics.FromImage(bitmapText);
+
+			// build some brushes
 			Brush brush1 = new SolidBrush(settings.CpuColor);
 			Brush brush2 = new SolidBrush(settings.MemoryColor);
 			Brush brush3 = new SolidBrush(settings.DiskColor);
 			Brush brush4 = new SolidBrush(settings.NetworkReceiveColor);
 			Brush brush5 = new SolidBrush(settings.NetworkSendColor);
-
+			
+			// compute bar height
 			int nReading = 0;
 			if (settings.ShowCpuUsage) nReading++;
 			if (settings.ShowMemoryUsage) nReading++;
@@ -383,7 +456,7 @@ namespace IconMeter
 			if (settings.ShowNetworkUsage) nReading += 2;
 			int barHeight = 16 / nReading;
 
-
+			// clear background and draw bounding box
 			g.Clear(Color.Transparent);
 			Pen pen = new Pen(Color.DarkGray);
 			g.DrawLine(pen, 0, 0, 0, 15);
@@ -391,70 +464,62 @@ namespace IconMeter
 			g.DrawLine(pen, 15, 15, 15, 0);
 			g.DrawLine(pen, 15, 0, 0, 0);
 
-			if (settings.UseVerticalBars)
+			// render all bars
+			int leftOrTop = 0;
+			if (settings.ShowCpuUsage)
 			{
-				int left = 0;
-				if (settings.ShowCpuUsage)
-				{
-					float h = (lastCpuUsage * 16 / 100);
-					g.FillRectangle(brush1, left, 16 - h, barHeight, h);
-					left += barHeight;
-				}
-				if (settings.ShowMemoryUsage)
-				{
-					float h = (lastMemoryUsage * 16 / 100);
-					g.FillRectangle(brush2, left, 16 - h, barHeight, h);
-					left += barHeight;
-				}
-				if (settings.ShowDiskUsage)
-				{
-					float h = (lastDiskUsage * 16 / 100);
-					g.FillRectangle(brush3, left, 16 - h, barHeight, h);
-					left += barHeight;
-				}
-				if (settings.ShowNetworkUsage)
-				{
-					float maxNetworkReceive = previousNetwordReceive.Max();
-					float maxNetworkSend = previousNetwordSend.Max();
-					float maxNetword = Math.Max(maxNetworkReceive, maxNetworkSend);
-
-					float h = (lastNetworkSend * 16 / maxNetword);
-					g.FillRectangle(brush5, left, 16 - h, barHeight, h);
-					left += barHeight;
-					h = (lastNetworkReceive * 16 / maxNetword);
-					g.FillRectangle(brush4, left, 16 - h, barHeight, h);
-				}
-			}
-			else // use horizontal bars
-			{
-				int top = 0;
-				if (settings.ShowCpuUsage)
-				{
-					g.FillRectangle(brush1, 0, top, (lastCpuUsage * 16 / 100), barHeight);
-					top += barHeight;
-				}
-				if (settings.ShowMemoryUsage)
-				{
-					g.FillRectangle(brush2, 0, top, (lastMemoryUsage * 16 / 100), barHeight);
-					top += barHeight;
-				}
-				if (settings.ShowDiskUsage)
-				{
-					g.FillRectangle(brush3, 0, top, (lastDiskUsage * 16 / 100), barHeight);
-					top += barHeight;
-				}
-				if (settings.ShowNetworkUsage)
-				{
-					float maxNetworkReceive = previousNetwordReceive.Max();
-					float maxNetworkSend = previousNetwordSend.Max();
-					float maxNetword = Math.Max(maxNetworkReceive, maxNetworkSend);
-
-					g.FillRectangle(brush5, 0, top, (lastNetworkSend * 16 / maxNetword), barHeight);
-					top += barHeight;
-					g.FillRectangle(brush4, 0, top, (lastNetworkReceive * 16 / maxNetword), barHeight);
-				}
+				float h = (lastCpuUsage * 16 / 100.0f);
+				if (settings.UseVerticalBars)
+					g.FillRectangle(brush1, leftOrTop, 16 - h, barHeight, h);
+				else
+					g.FillRectangle(brush1, 0, leftOrTop, h, barHeight);
+				leftOrTop += barHeight;
 			}
 
+			if (settings.ShowMemoryUsage)
+			{
+				float h = (lastMemoryUsage * 16 / 100.0f);
+				if (settings.UseVerticalBars)
+					g.FillRectangle(brush2, leftOrTop, 16 - h, barHeight, h);
+				else
+					g.FillRectangle(brush2, 0, leftOrTop, h, barHeight);
+				leftOrTop += barHeight;
+			}
+
+			if (settings.ShowDiskUsage)
+			{
+				float h = (lastDiskUsage * 16 / 100.0f);
+				if (settings.UseVerticalBars)
+					g.FillRectangle(brush3, leftOrTop, 16 - h, barHeight, h);
+				else
+					g.FillRectangle(brush3, 0, leftOrTop, h, barHeight);
+				leftOrTop += barHeight;
+			}
+
+			if (settings.ShowNetworkUsage)
+			{
+				// compute the moving maximum network flow value
+				float maxNetworkReceive = previousNetwordReceive.Max();
+				float maxNetworkSend = previousNetwordSend.Max();
+				float maxNetword = Math.Max(maxNetworkReceive, maxNetworkSend);
+
+				// compute relative flow
+				float send = (lastNetworkSend * 16 / maxNetword);
+				float receive = (lastNetworkReceive * 16 / maxNetword);
+
+				// render the bars
+				if (settings.UseVerticalBars)
+				{
+					g.FillRectangle(brush5, leftOrTop, 16 - send, barHeight, send);
+					g.FillRectangle(brush4, leftOrTop + barHeight, 16 - receive, barHeight, receive);
+				}
+				else
+				{
+					g.FillRectangle(brush5, 0, leftOrTop, send, barHeight);
+					g.FillRectangle(brush4, 0, leftOrTop + barHeight, receive, barHeight);
+				}
+			}
+			
 			// create icon from bitmap
 			IntPtr hIcon = (bitmapText.GetHicon());
 			Icon newIcon = Icon.FromHandle(hIcon);
@@ -462,41 +527,30 @@ namespace IconMeter
 			notifyIconMain.Icon = newIcon;
 			if (oldIcon != null) DestroyIcon(oldIcon.Handle); // remember to delete the old icon
 
-			float nr = lastNetworkReceive / 1024;
-			float ns = lastNetworkSend / 1024;
-			string unit = "KBps";
-			if (nr > 1024 || ns > 1024)
-			{
-				nr = lastNetworkReceive / 1024;
-				ns = lastNetworkSend / 1024;
-				unit = "MBps";
-			}
-
-			// build the icon's tooltip text
-			StringBuilder sb = new StringBuilder();
-			sb.AppendLine("CPU " + Math.Round(lastCpuUsage) + "%");
-			sb.AppendLine("Memory " + Math.Round(lastMemoryUsage) + "%");
-			sb.AppendLine("Disk " + Math.Round(lastDiskUsage) + "%");
-			if (settings.ShowNetworkUsage)
-			{
-				sb.Append("Network R:" + nr.ToString("0.0"));
-				sb.Append(" S:" + ns.ToString("0.0") + " " + unit);
-			}
-
-			// make sure the tooltip text has at most 64 characters
-			if (sb.Length > 64) sb.Remove(64, sb.Length - 64);
-
-			notifyIconMain.Text = sb.ToString();
+			// remember to dispose brushes
+			brush1.Dispose();
+			brush2.Dispose();
+			brush3.Dispose();
+			brush4.Dispose();
+			brush5.Dispose();
 		}
 		private void UpdateLogicalProcessorIcon()
 		{
+			// Update logical processor notify icon
+
+			// create bitmap and corresponding graphics object
 			Bitmap bitmapText = new Bitmap(16, 16);
 			Graphics g = System.Drawing.Graphics.FromImage(bitmapText);
-			Brush br = new SolidBrush(settings.LogicalProcessorColor);
+
+			// build some brushes and pens
+			Brush barBrush = new SolidBrush(settings.LogicalProcessorColor);
 			Pen shadowPen = new Pen(Color.FromArgb(128, Color.Black));
+
+			// compute bar height
 			int nReadings = this.logicalProcessorsCounter.Count;
 			float barHeight = 16 / nReadings;
 
+			// clear background and draw bounding box
 			g.Clear(Color.Transparent);
 			Pen pen = new Pen(Color.DarkGray);
 			g.DrawLine(pen, 0, 0, 0, 15);
@@ -504,14 +558,14 @@ namespace IconMeter
 			g.DrawLine(pen, 15, 15, 15, 0);
 			g.DrawLine(pen, 15, 0, 0, 0);
 
-
+			// render all bars
 			if (settings.UseVerticalBars)
 			{
 				float left = 0;
 				for (int i = 0; i < nReadings; i++)
 				{
 					float h = (logicalProcessorUsage[i] * 16 / 100);
-					g.FillRectangle(br, left, 16 - h, barHeight, h);
+					g.FillRectangle(barBrush, left, 16 - h, barHeight, h);
 					left += barHeight;
 					g.DrawLine(shadowPen, left - 1, 16 - h + 0.5f, left - 1, 16);
 				}
@@ -522,7 +576,7 @@ namespace IconMeter
 				for (int i = 0; i < nReadings; i++)
 				{
 					float h = (logicalProcessorUsage[i] * 16 / 100);
-					g.FillRectangle(br, 0, top, h, barHeight);
+					g.FillRectangle(barBrush, 0, top, h, barHeight);
 					top += barHeight;
 					g.DrawLine(shadowPen, 0, top - 1, h - 0.5f, top - 1);
 				}
@@ -534,47 +588,44 @@ namespace IconMeter
 			Icon oldIcon = notifyIconLogicalProcessor.Icon;
 			notifyIconLogicalProcessor.Icon = newIcon;
 			if (oldIcon != null) DestroyIcon(oldIcon.Handle); // remember to delete the old icon
+
+			// remember to dispose objects
+			barBrush.Dispose();
+			shadowPen.Dispose();
+		}
+		private void UpdateNotifyIconTooltipText()
+		{
+			// update notify icon's tooltip text
+
+			// detemine unit for network flow readings
+			float nr = lastNetworkReceive / 1024;
+			float ns = lastNetworkSend / 1024;
+			string unit = "KBps";
+			if (nr > 1024 || ns > 1024)
+			{
+				nr = lastNetworkReceive / 1024;
+				ns = lastNetworkSend / 1024;
+				unit = "MBps";
+			}
+
+			// build the text
+			StringBuilder sb = new StringBuilder();
+			if (settings.ShowCpuUsage) sb.AppendLine("CPU " + Math.Round(lastCpuUsage) + "%");
+			if (settings.ShowMemoryUsage) sb.AppendLine("Memory " + Math.Round(lastMemoryUsage) + "%");
+			if (settings.ShowDiskUsage) sb.AppendLine("Disk " + Math.Round(lastDiskUsage) + "%");
+			if (settings.ShowNetworkUsage)
+			{
+				sb.Append("Network R:" + nr.ToString("0.0"));
+				sb.Append(" S:" + ns.ToString("0.0") + " " + unit);
+			}
+
+			// make sure the tooltip text has at most 64 characters
+			if (sb.Length > 64) sb.Remove(64, sb.Length - 64);
+
+			// update the text value
+			notifyIconMain.Text = sb.ToString();
 		}
 	}
 
-	// helper class for serializing color values
-	public class XmlColor
-	{
-		private Color color_ = Color.Black;
 
-		public XmlColor() { }
-		public XmlColor(Color c) { color_ = c; }
-
-		public Color ToColor()
-		{
-			return color_;
-		}
-		public void FromColor(Color c)
-		{
-			color_ = c;
-		}
-		public static implicit operator Color(XmlColor x)
-		{
-			return x.ToColor();
-		}
-		public static implicit operator XmlColor(Color c)
-		{
-			return new XmlColor(c);
-		}
-
-		[XmlAttribute]
-		public string Web
-		{
-			get
-			{
-				var converter = new ColorConverter();
-				return converter.ConvertToString(color_);
-			}
-			set
-			{
-				var converter = new ColorConverter();
-				color_ = (Color) converter.ConvertFromString(value);
-			}
-		}
-	}
 }
