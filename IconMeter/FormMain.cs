@@ -17,6 +17,8 @@ namespace IconMeter
 {
 	public partial class FormMain : Form
 	{
+		//GetSystemMetrics(SM_CXSMICON)
+
 		[DllImport("user32.dll", CharSet = CharSet.Auto)]
 		extern static bool DestroyIcon(IntPtr handle);
 
@@ -279,7 +281,16 @@ namespace IconMeter
 
 			if (settings.ShowCpuUsage)
 			{
-				cpuCounter = new PerformanceCounter("Processor Information", "% Processor Utility", "_Total");
+				// in virtual machine the "Processor Information" category may not found,
+				// therefore use "Processor" category if exception occurs
+				try
+				{
+					cpuCounter = new PerformanceCounter("Processor Informance", "% Processor Utility", "_Total");
+				}
+				catch (Exception)
+				{
+					cpuCounter = new PerformanceCounter("Processor", "% Processor Time", "_Total");
+				}
 			}
 
 			if (settings.ShowMemoryUsage)
