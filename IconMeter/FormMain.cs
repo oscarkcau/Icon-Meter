@@ -300,7 +300,7 @@ namespace IconMeter
 
 			if (settings.ShowNetworkUsage)
 			{
-				diskCounter = new PerformanceCounter("PhysicalDisk", "% Disk Time", "_Total");
+				diskCounter = new PerformanceCounter("PhysicalDisk", "% Idle Time", "_Total");
 			}
 
 			if (settings.ShowNetworkUsage)
@@ -403,12 +403,12 @@ namespace IconMeter
 			if (settings.RunAtStartup)
 			{
 				// Add the value in the registry so that the application runs at startup
-				rkApp.SetValue("MyApp", Application.ExecutablePath);
+				rkApp.SetValue("IconMeter", Application.ExecutablePath);
 			}
 			else
 			{
 				// Remove the value from the registry so that the application doesn't start
-				rkApp.DeleteValue("MyApp", false);
+				rkApp.DeleteValue("IconMeter", false);
 			}
 		}
 		private void UpdateReadings()
@@ -417,7 +417,7 @@ namespace IconMeter
 
 			if (settings.ShowCpuUsage) lastCpuUsage = cpuCounter.NextValue();
 			if (settings.ShowMemoryUsage) lastMemoryUsage = memoryCounter.NextValue();
-			if (settings.ShowDiskUsage) lastDiskUsage = diskCounter.NextValue();
+			if (settings.ShowDiskUsage) lastDiskUsage = 100 - diskCounter.NextValue();
 
 			if (settings.ShowNetworkUsage)
 			{
