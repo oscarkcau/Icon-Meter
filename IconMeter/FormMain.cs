@@ -12,6 +12,7 @@ using System.Runtime.InteropServices;
 using System.Xml.Serialization;
 using System.IO;
 using Microsoft.Win32;
+using System.Reflection;
 
 namespace IconMeter
 {
@@ -60,7 +61,9 @@ namespace IconMeter
 
 		// private fields
 		Settings settings = new Settings();
-		string settingsFilename = AppDomain.CurrentDomain.BaseDirectory + "settings.xml";
+		readonly string settingsFilename = AppDomain.CurrentDomain.BaseDirectory + "settings.xml";
+		readonly string upArrow = "\u25b2";
+		readonly string downArrow = "\u25bc";
 		PerformanceCounter cpuCounter, memoryCounter, diskCounter;
 		float lastCpuUsage = 0;
 		float lastMemoryUsage = 0;
@@ -521,13 +524,13 @@ namespace IconMeter
 				// render the bars
 				if (settings.UseVerticalBars)
 				{
-					g.FillRectangle(brush5, leftOrTop, 16 - send, barHeight, send);
-					g.FillRectangle(brush4, leftOrTop + barHeight, 16 - receive, barHeight, receive);
+					g.FillRectangle(brush4, leftOrTop, 16 - receive, barHeight, receive);
+					g.FillRectangle(brush5, leftOrTop + barHeight, 16 - send, barHeight, send);
 				}
 				else
 				{
-					g.FillRectangle(brush5, 0, leftOrTop, send, barHeight);
-					g.FillRectangle(brush4, 0, leftOrTop + barHeight, receive, barHeight);
+					g.FillRectangle(brush4, 0, leftOrTop, receive, barHeight);
+					g.FillRectangle(brush5, 0, leftOrTop + barHeight, send, barHeight);
 				}
 			}
 			
@@ -626,16 +629,28 @@ namespace IconMeter
 			if (settings.ShowDiskUsage) sb.AppendLine("Disk " + Math.Round(lastDiskUsage) + "%");
 			if (settings.ShowNetworkUsage)
 			{
-				sb.Append("Network R:" + nr.ToString("0.0"));
-				sb.Append(" S:" + ns.ToString("0.0") + " " + unit);
+				sb.Append($"Network {downArrow}:" + nr.ToString("0.0"));
+				sb.Append($" {upArrow}:" + ns.ToString("0.0") + " " + unit);
 			}
 
-			// make sure the tooltip text has at most 64 characters
-			if (sb.Length > 64) sb.Remove(64, sb.Length - 64);
+			// make sure the tooltip text has at most 128 characters
+			if (sb.Length >= 128) sb.Remove(127, sb.Length - 127);
 
 			// update the text value
-			notifyIconMain.Text = sb.ToString();
+			SetNotifyIconText(notifyIconMain, sb.ToString());
 		}
+		private void SetNotifyIconText(NotifyIcon ni, string text)
+		{
+			// set notify icon text with text up to 127 characters
+
+			if (text.Length >= 128) throw new ArgumentOutOfRangeException("Text limited to 127 characters");
+			Type t = typeof(NotifyIcon);
+			BindingFlags hidden = BindingFlags.NonPublic | BindingFlags.Instance;
+			t.GetField("text", hidden).SetValue(ni, text);
+			if ((bool)t.GetField("added", hidden).GetValue(ni))
+				t.GetMethod("UpdateIcon", hidden).Invoke(ni, new object[] { true });
+		}
+
 	}
 
 
