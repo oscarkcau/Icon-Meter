@@ -326,7 +326,14 @@ namespace IconMeter
 				int nLogicalProcessors = logicalProcessorNames.Count();
 				foreach (string name in logicalProcessorNames)
 				{
-					logicalProcessorsCounter.Add(new PerformanceCounter("Processor Information", "% Processor Utility", name));
+					try
+					{
+						logicalProcessorsCounter.Add(new PerformanceCounter("Processor Information", "% Processor Utility", name));
+					}
+					catch
+					{
+						logicalProcessorsCounter.Add(new PerformanceCounter("Processor Information", "% Processor Time", name));
+					}
 				}
 				this.logicalProcessorUsage = new float[nLogicalProcessors];
 				this.notifyIconLogicalProcessor.Text = nLogicalProcessors + " Logical Processor(s)";
@@ -607,6 +614,21 @@ namespace IconMeter
 			barBrush.Dispose();
 			shadowPen.Dispose();
 		}
+
+		private void FormMain_Load(object sender, EventArgs e)
+		{
+			// update window client size to fix scaling problem in different OS versions
+			this.ClientSize = new Size(
+				this.ClientSize.Width,
+				this.buttonCancel.Bottom + (this.ClientSize.Width - this.buttonCancel.Right)
+				);
+
+			// update anchor styles after updating window client size
+			this.buttonOK.Anchor = AnchorStyles.Right | AnchorStyles.Bottom;
+			this.buttonCancel.Anchor = AnchorStyles.Right | AnchorStyles.Bottom;
+			this.labelSeparationBar3.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Bottom;
+		}
+
 		private void UpdateNotifyIconTooltipText()
 		{
 			// update notify icon's tooltip text

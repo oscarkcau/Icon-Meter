@@ -208,8 +208,8 @@
 			// 
 			// buttonOK
 			// 
-			this.buttonOK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-			this.buttonOK.Location = new System.Drawing.Point(186, 441);
+			this.buttonOK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.buttonOK.Location = new System.Drawing.Point(134, 441);
 			this.buttonOK.Margin = new System.Windows.Forms.Padding(4);
 			this.buttonOK.Name = "buttonOK";
 			this.buttonOK.Size = new System.Drawing.Size(150, 44);
@@ -242,8 +242,8 @@
 			// 
 			// buttonCancel
 			// 
-			this.buttonCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-			this.buttonCancel.Location = new System.Drawing.Point(344, 441);
+			this.buttonCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.buttonCancel.Location = new System.Drawing.Point(292, 441);
 			this.buttonCancel.Margin = new System.Windows.Forms.Padding(4);
 			this.buttonCancel.Name = "buttonCancel";
 			this.buttonCancel.Size = new System.Drawing.Size(150, 44);
@@ -254,13 +254,13 @@
 			// 
 			// labelSeparationBar3
 			// 
-			this.labelSeparationBar3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+			this.labelSeparationBar3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
 			this.labelSeparationBar3.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
 			this.labelSeparationBar3.Location = new System.Drawing.Point(18, 421);
 			this.labelSeparationBar3.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
 			this.labelSeparationBar3.Name = "labelSeparationBar3";
-			this.labelSeparationBar3.Size = new System.Drawing.Size(478, 4);
+			this.labelSeparationBar3.Size = new System.Drawing.Size(426, 4);
 			this.labelSeparationBar3.TabIndex = 14;
 			// 
 			// notifyIconLogicalProcessor
@@ -278,7 +278,7 @@
 			this.labelSeparationBar1.Location = new System.Drawing.Point(19, 241);
 			this.labelSeparationBar1.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
 			this.labelSeparationBar1.Name = "labelSeparationBar1";
-			this.labelSeparationBar1.Size = new System.Drawing.Size(478, 4);
+			this.labelSeparationBar1.Size = new System.Drawing.Size(426, 4);
 			this.labelSeparationBar1.TabIndex = 15;
 			// 
 			// checkBoxLogicalProcessors
@@ -300,7 +300,7 @@
 			this.labelSeparationBar2.Location = new System.Drawing.Point(19, 316);
 			this.labelSeparationBar2.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
 			this.labelSeparationBar2.Name = "labelSeparationBar2";
-			this.labelSeparationBar2.Size = new System.Drawing.Size(478, 4);
+			this.labelSeparationBar2.Size = new System.Drawing.Size(426, 4);
 			this.labelSeparationBar2.TabIndex = 17;
 			// 
 			// buttonLogicalProcessorsColor
@@ -328,7 +328,7 @@
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(516, 506);
+			this.ClientSize = new System.Drawing.Size(464, 506);
 			this.Controls.Add(this.checkBoxCpu);
 			this.Controls.Add(this.buttonLogicalProcessorsColor);
 			this.Controls.Add(this.labelSeparationBar2);
@@ -355,6 +355,7 @@
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
 			this.Text = "Icon Meter";
 			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormMain_FormClosing);
+			this.Load += new System.EventHandler(this.FormMain_Load);
 			this.Shown += new System.EventHandler(this.FormMain_Shown);
 			this.contextMenuStripMain.ResumeLayout(false);
 			this.ResumeLayout(false);
