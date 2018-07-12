@@ -23,6 +23,10 @@ namespace IconMeter
 		[DllImport("user32.dll", CharSet = CharSet.Auto)]
 		extern static bool DestroyIcon(IntPtr handle);
 
+		[DllImport("user32.dll", CharSet = CharSet.Auto)]
+		static extern int GetSystemMetrics(int nIndex);
+		const int SM_CXSMICON = 49;
+
 		// internal setting class
 		[Serializable]
 		public class Settings
@@ -97,6 +101,23 @@ namespace IconMeter
 
 			// start collect readings
 			timerMain.Enabled = true;
+
+			// set icon size in context menu strip with system icon size
+			int iconSize = GetSystemMetrics(SM_CXSMICON);
+			this.contextMenuStripMain.ImageScalingSize = new Size(iconSize, iconSize);
+		}
+		private void FormMain_Load(object sender, EventArgs e)
+		{
+			// update window client size to fix scaling problem in different OS versions
+			this.ClientSize = new Size(
+				this.ClientSize.Width,
+				this.buttonCancel.Bottom + (this.ClientSize.Width - this.buttonCancel.Right)
+				);
+
+			// update anchor styles after updating window client size
+			this.buttonOK.Anchor = AnchorStyles.Right | AnchorStyles.Bottom;
+			this.buttonCancel.Anchor = AnchorStyles.Right | AnchorStyles.Bottom;
+			this.labelSeparationBar3.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Bottom;
 		}
 		private void FormMain_FormClosing(object sender, FormClosingEventArgs e)
 		{
@@ -226,6 +247,7 @@ namespace IconMeter
 			{
 				this.notifyIconLogicalProcessor.Visible = false;
 			}
+
 		}
 
 		// override function for disable show window on startup
@@ -614,21 +636,6 @@ namespace IconMeter
 			barBrush.Dispose();
 			shadowPen.Dispose();
 		}
-
-		private void FormMain_Load(object sender, EventArgs e)
-		{
-			// update window client size to fix scaling problem in different OS versions
-			this.ClientSize = new Size(
-				this.ClientSize.Width,
-				this.buttonCancel.Bottom + (this.ClientSize.Width - this.buttonCancel.Right)
-				);
-
-			// update anchor styles after updating window client size
-			this.buttonOK.Anchor = AnchorStyles.Right | AnchorStyles.Bottom;
-			this.buttonCancel.Anchor = AnchorStyles.Right | AnchorStyles.Bottom;
-			this.labelSeparationBar3.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Bottom;
-		}
-
 		private void UpdateNotifyIconTooltipText()
 		{
 			// update notify icon's tooltip text
@@ -672,7 +679,6 @@ namespace IconMeter
 			if ((bool)t.GetField("added", hidden).GetValue(ni))
 				t.GetMethod("UpdateIcon", hidden).Invoke(ni, new object[] { true });
 		}
-
 	}
 
 

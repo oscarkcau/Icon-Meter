@@ -74,7 +74,7 @@
 			// 
 			// contextMenuStripMain
 			// 
-			this.contextMenuStripMain.ImageScalingSize = new System.Drawing.Size(24, 24);
+			this.contextMenuStripMain.ImageScalingSize = new System.Drawing.Size(32, 32);
 			this.contextMenuStripMain.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.settingsToolStripMenuItem,
             this.resetIconMeterToolStripMenuItem,
@@ -82,13 +82,13 @@
             this.toolStripMenuItem1,
             this.closeToolStripMenuItem});
 			this.contextMenuStripMain.Name = "contextMenuStripMain";
-			this.contextMenuStripMain.Size = new System.Drawing.Size(279, 154);
+			this.contextMenuStripMain.Size = new System.Drawing.Size(317, 206);
 			// 
 			// settingsToolStripMenuItem
 			// 
 			this.settingsToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("settingsToolStripMenuItem.Image")));
 			this.settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
-			this.settingsToolStripMenuItem.Size = new System.Drawing.Size(278, 36);
+			this.settingsToolStripMenuItem.Size = new System.Drawing.Size(316, 38);
 			this.settingsToolStripMenuItem.Text = "Settings...";
 			this.settingsToolStripMenuItem.Click += new System.EventHandler(this.settingsToolStripMenuItem_Click);
 			// 
@@ -96,7 +96,7 @@
 			// 
 			this.resetIconMeterToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("resetIconMeterToolStripMenuItem.Image")));
 			this.resetIconMeterToolStripMenuItem.Name = "resetIconMeterToolStripMenuItem";
-			this.resetIconMeterToolStripMenuItem.Size = new System.Drawing.Size(278, 36);
+			this.resetIconMeterToolStripMenuItem.Size = new System.Drawing.Size(316, 38);
 			this.resetIconMeterToolStripMenuItem.Text = "Reset Icon Meter";
 			this.resetIconMeterToolStripMenuItem.Click += new System.EventHandler(this.resetIconMeterToolStripMenuItem_Click);
 			// 
@@ -104,20 +104,20 @@
 			// 
 			this.aboutToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("aboutToolStripMenuItem.Image")));
 			this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-			this.aboutToolStripMenuItem.Size = new System.Drawing.Size(278, 36);
+			this.aboutToolStripMenuItem.Size = new System.Drawing.Size(316, 38);
 			this.aboutToolStripMenuItem.Text = "About";
 			this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
 			// 
 			// toolStripMenuItem1
 			// 
 			this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-			this.toolStripMenuItem1.Size = new System.Drawing.Size(275, 6);
+			this.toolStripMenuItem1.Size = new System.Drawing.Size(313, 6);
 			// 
 			// closeToolStripMenuItem
 			// 
 			this.closeToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("closeToolStripMenuItem.Image")));
 			this.closeToolStripMenuItem.Name = "closeToolStripMenuItem";
-			this.closeToolStripMenuItem.Size = new System.Drawing.Size(278, 36);
+			this.closeToolStripMenuItem.Size = new System.Drawing.Size(316, 38);
 			this.closeToolStripMenuItem.Text = "Close";
 			this.closeToolStripMenuItem.Click += new System.EventHandler(this.closeToolStripMenuItem_Click);
 			// 
