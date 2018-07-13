@@ -19,13 +19,11 @@ namespace IconMeter
 			this.labelVersion.Text = String.Format("Version {0}", AssemblyVersion);
 			this.labelCopyright.Text = AssemblyCopyright;
 			this.labelCompanyName.Text = AssemblyCompany;
-			this.textBoxDescription.Text = AssemblyDescription;
 		}
 
 		#region Assembly Attribute Accessors
 
-		public string AssemblyTitle
-		{
+		public string AssemblyTitle {
 			get
 			{
 				object[] attributes = Assembly.GetExecutingAssembly().GetCustomAttributes(typeof(AssemblyTitleAttribute), false);
@@ -41,16 +39,14 @@ namespace IconMeter
 			}
 		}
 
-		public string AssemblyVersion
-		{
+		public string AssemblyVersion {
 			get
 			{
 				return Assembly.GetExecutingAssembly().GetName().Version.ToString();
 			}
 		}
 
-		public string AssemblyDescription
-		{
+		public string AssemblyDescription {
 			get
 			{
 				object[] attributes = Assembly.GetExecutingAssembly().GetCustomAttributes(typeof(AssemblyDescriptionAttribute), false);
@@ -62,8 +58,7 @@ namespace IconMeter
 			}
 		}
 
-		public string AssemblyProduct
-		{
+		public string AssemblyProduct {
 			get
 			{
 				object[] attributes = Assembly.GetExecutingAssembly().GetCustomAttributes(typeof(AssemblyProductAttribute), false);
@@ -75,8 +70,7 @@ namespace IconMeter
 			}
 		}
 
-		public string AssemblyCopyright
-		{
+		public string AssemblyCopyright {
 			get
 			{
 				object[] attributes = Assembly.GetExecutingAssembly().GetCustomAttributes(typeof(AssemblyCopyrightAttribute), false);
@@ -88,8 +82,7 @@ namespace IconMeter
 			}
 		}
 
-		public string AssemblyCompany
-		{
+		public string AssemblyCompany {
 			get
 			{
 				object[] attributes = Assembly.GetExecutingAssembly().GetCustomAttributes(typeof(AssemblyCompanyAttribute), false);
