@@ -5,6 +5,8 @@ VisualStudioVersion = 15.0.27130.2036
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IconMeter", "IconMeter\IconMeter.csproj", "{D6C6934D-739E-4D3E-989D-816F5E24D579}"
 EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "IconMeterSetup", "IconMeterSetup\IconMeterSetup.vdproj", "{8B70748B-F679-49AE-AF38-A55F14C6E46E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,8 @@ Global
 		{D6C6934D-739E-4D3E-989D-816F5E24D579}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D6C6934D-739E-4D3E-989D-816F5E24D579}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D6C6934D-739E-4D3E-989D-816F5E24D579}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8B70748B-F679-49AE-AF38-A55F14C6E46E}.Debug|Any CPU.ActiveCfg = Debug
+		{8B70748B-F679-49AE-AF38-A55F14C6E46E}.Release|Any CPU.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
