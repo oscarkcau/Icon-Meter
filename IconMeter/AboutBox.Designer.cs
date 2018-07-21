@@ -34,8 +34,8 @@
 			this.labelVersion = new System.Windows.Forms.Label();
 			this.labelCopyright = new System.Windows.Forms.Label();
 			this.labelCompanyName = new System.Windows.Forms.Label();
-			this.okButton = new System.Windows.Forms.Button();
 			this.linkLabel1 = new System.Windows.Forms.LinkLabel();
+			this.okButton = new System.Windows.Forms.Button();
 			this.tableLayoutPanel.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.logoPictureBox)).BeginInit();
 			this.SuspendLayout();
@@ -128,17 +128,6 @@
 			this.labelCompanyName.Text = "Company Name";
 			this.labelCompanyName.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
 			// 
-			// okButton
-			// 
-			this.okButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-			this.okButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-			this.okButton.Location = new System.Drawing.Point(591, 221);
-			this.okButton.Margin = new System.Windows.Forms.Padding(6);
-			this.okButton.Name = "okButton";
-			this.okButton.Size = new System.Drawing.Size(150, 44);
-			this.okButton.TabIndex = 24;
-			this.okButton.Text = "&OK";
-			// 
 			// linkLabel1
 			// 
 			this.linkLabel1.AutoSize = true;
@@ -149,6 +138,17 @@
 			this.linkLabel1.TabStop = true;
 			this.linkLabel1.Text = "https://github.com/oscarkcau/Icon-Meter";
 			this.linkLabel1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel1_LinkClicked);
+			// 
+			// okButton
+			// 
+			this.okButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+			this.okButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+			this.okButton.Location = new System.Drawing.Point(591, 221);
+			this.okButton.Margin = new System.Windows.Forms.Padding(6);
+			this.okButton.Name = "okButton";
+			this.okButton.Size = new System.Drawing.Size(150, 44);
+			this.okButton.TabIndex = 24;
+			this.okButton.Text = "&OK";
 			// 
 			// AboutBox
 			// 
