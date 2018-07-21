@@ -94,5 +94,10 @@ namespace IconMeter
 			}
 		}
 		#endregion
+
+		private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+		{
+			System.Diagnostics.Process.Start(this.linkLabel1.Text);
+		}
 	}
 }
