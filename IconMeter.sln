@@ -7,6 +7,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IconMeter", "IconMeter\Icon
 EndProject
 Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "IconMeterSetup", "IconMeterSetup\IconMeterSetup.vdproj", "{8B70748B-F679-49AE-AF38-A55F14C6E46E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IconMeterWPF", "IconMeterWPF\IconMeterWPF.csproj", "{28C137B5-B237-4F32-A1BE-CDB2F397DEDF}"
+EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "IconMeterSetup64", "IconMeterSetup64\IconMeterSetup64.vdproj", "{9EBA88E2-5116-44F8-81DB-AD8368EB4268}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -14,11 +18,15 @@ Global
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{D6C6934D-739E-4D3E-989D-816F5E24D579}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D6C6934D-739E-4D3E-989D-816F5E24D579}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D6C6934D-739E-4D3E-989D-816F5E24D579}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D6C6934D-739E-4D3E-989D-816F5E24D579}.Release|Any CPU.Build.0 = Release|Any CPU
 		{8B70748B-F679-49AE-AF38-A55F14C6E46E}.Debug|Any CPU.ActiveCfg = Debug
 		{8B70748B-F679-49AE-AF38-A55F14C6E46E}.Release|Any CPU.ActiveCfg = Release
+		{28C137B5-B237-4F32-A1BE-CDB2F397DEDF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{28C137B5-B237-4F32-A1BE-CDB2F397DEDF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{28C137B5-B237-4F32-A1BE-CDB2F397DEDF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{28C137B5-B237-4F32-A1BE-CDB2F397DEDF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9EBA88E2-5116-44F8-81DB-AD8368EB4268}.Debug|Any CPU.ActiveCfg = Debug
+		{9EBA88E2-5116-44F8-81DB-AD8368EB4268}.Release|Any CPU.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -8,3 +8,7 @@
 
 /IconMeter/publish
 /IconMeterSetup/Release
+/IconMeterSetup64/Release
+/IconMeterWPF/bin
+/IconMeterWPF/obj
+/packages
