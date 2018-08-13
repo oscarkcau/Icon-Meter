@@ -6,6 +6,7 @@ Small notifyicon system performance meter for MS Windows.
 I need a small system performance meter for my windows tablet thus make a small Winform application with c#. It display small notifyicon which visualizes the current CPU, memory, disk and network loading in small bars.
 Icon Meter has the following features:
 
+* (Version 2.0) Reimplement using WPF for better support for Windows 10
 * Customizable bar colors
 * Optionally hide / display bars of memory, disk and network performance
 * (Version 1.1) Visualize individual logical processor usage
