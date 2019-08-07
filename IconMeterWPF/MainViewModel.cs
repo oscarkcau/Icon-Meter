@@ -18,18 +18,10 @@ namespace IconMeterWPF
 	{
 		// private fields
 		string settingsFilename = "";
-		Settings originalSettings;
-		Settings _settings;
 		PerformanceMeter _meter;
-		bool _showLogicalProcessorsUsage;
 
 		// properties
-		public Settings Settings { get => _settings; private set => SetField(ref _settings, value); }
 		public PerformanceMeter Meter { get => _meter; private set => SetField(ref _meter, value); }
-		public bool ShowLogicalProcessorsUsage { get => _showLogicalProcessorsUsage; private set => SetField(ref _showLogicalProcessorsUsage, value); }
-		public ICommand SaveAndReset { get; private set; }
-		public ICommand LoadAndReset { get; private set; }
-		public ICommand CancelSettingsUpdate { get; private set; }
 		public ICommand StartTaskManager { get; private set; }
 
 		// constructors
@@ -47,7 +39,7 @@ namespace IconMeterWPF
 			InitCommands();
 
 			// load settings from file and reset meter
-			_LoadAndReset();
+			Meter = new PerformanceMeter();
 		}
 
 		// private methods
@@ -56,65 +48,7 @@ namespace IconMeterWPF
 			//
 			// init ICommand objects for binding
 			//
-
-			SaveAndReset = new RelayCommand(_SaveAndReset);
-			LoadAndReset = new RelayCommand(_LoadAndReset);
-			CancelSettingsUpdate = new RelayCommand(_CancelSettingsUpdate);
 			StartTaskManager = new RelayCommand(_StartTaskManager);
-		}
-		void _SaveAndReset(object obj = null)
-		{
-			//
-			// save settings and reset meter
-			//
-
-			// update underlying setting object and save settings to file
-			originalSettings = Settings.Clone();
-			originalSettings.SaveToFile(this.settingsFilename);
-
-			// update exposed property 
-			ShowLogicalProcessorsUsage = Settings.ShowLogicalProcessorsUsage;
-
-			// update autostart setting
-			UpdateAutoStartSetting();
-
-			// update meter with new settings
-			Meter.ResetPerformanceMeter(originalSettings);
-		}
-		void _LoadAndReset(object obj = null)
-		{
-			//
-			// load settings from file and reset meter
-			//
-
-			// load settings and copy to exposed setting instance
-			try
-			{
-				originalSettings = Settings.LoadFromFile(settingsFilename);
-			}
-			catch { originalSettings = new Settings(); }
-			Settings = originalSettings.Clone();
-
-			// update exposed property 
-			ShowLogicalProcessorsUsage = Settings.ShowLogicalProcessorsUsage;
-
-			// update autostart setting
-			UpdateAutoStartSetting();
-
-			// reset existing meter or create new meter 
-			if (Meter == null)
-				Meter = new PerformanceMeter(originalSettings);
-			else
-				Meter.ResetPerformanceMeter(originalSettings);
-		}
-		void _CancelSettingsUpdate(object obj = null)
-		{
-			//
-			// Cancle setting update
-			//
-
-			// copy underlying settings to exposed instance
-			Settings = originalSettings.Clone();
 		}
 		void _StartTaskManager(object obj = null)
 		{
@@ -125,10 +59,11 @@ namespace IconMeterWPF
 		}
 		void UpdateAutoStartSetting()
 		{
+            
 			// The path to the key where Windows looks for startup applications
 			RegistryKey rkApp = Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
 
-			if (Settings.RunAtStartup)
+			if (Properties.Settings.Default.RunAtStartup)
 			{
 				// Add the value in the registry so that the application runs at startup
 				rkApp.SetValue("IconMeter", System.Reflection.Assembly.GetExecutingAssembly().Location);
@@ -138,7 +73,28 @@ namespace IconMeterWPF
 				// Remove the value from the registry so that the application doesn't start
 				rkApp.DeleteValue("IconMeter", false);
 			}
+            
 		}
+
+		// public methods
+		public void ReloadSettings()
+        {
+            Properties.Settings.Default.Reload();
+        }
+		public void SaveSettings()
+        {
+            Properties.Settings.Default.Save();
+			Meter.ResetPerformanceMeter();
+			this.UpdateAutoStartSetting();
+		}
+        public void PauseUpdate()
+        {
+			Meter.Pause();
+        }
+		public void ResumeUpdate()
+        {
+			Meter.Resume();
+        }
 
 		// INotifyPropertyChanged implementation
 		public event PropertyChangedEventHandler PropertyChanged;

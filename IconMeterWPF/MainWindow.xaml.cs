@@ -44,33 +44,31 @@ namespace IconMeterWPF
 		}
 
 		// event handlers
-		private void Meter_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+		private void Meter_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)  
 		{
 			// update tray icons if needed
 			var vm = this.DataContext as MainViewModel;
 			if (e.PropertyName == "MainTrayIcon") MainTaskbarIcon.Icon = vm.Meter.MainTrayIcon;
 			if (e.PropertyName == "LogicalProcessorsTrayIcon") LogicalProcessorsTaskbarIcon.Icon = vm.Meter.LogicalProcessorsTrayIcon;
 		}
-		private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
-		{
-			// cancel window closing and hide the window
-			e.Cancel = true;
+        private void ButtonOK_Click(object sender, RoutedEventArgs e)
+        {
 			this.Hide();
-
-			// disable any modify setting fields by calling CancelSettingsUpdate command
 			var vm = this.DataContext as MainViewModel;
-			vm.CancelSettingsUpdate.Execute(null);
-		}
-		private void ButtonOK_Click(object sender, RoutedEventArgs e)
+			vm.SaveSettings();
+			vm.ResumeUpdate();
+        }
+        private void ButtonCancel_Click(object sender, RoutedEventArgs e)
 		{
 			this.Hide();
-		}
-		private void ButtonCancel_Click(object sender, RoutedEventArgs e)
-		{
-			this.Hide();
+			var vm = this.DataContext as MainViewModel;
+			vm.ReloadSettings();
+			vm.ResumeUpdate();
 		}
 		private void MenuItemSettings_Click(object sender, RoutedEventArgs e)
 		{
+			var vm = this.DataContext as MainViewModel;
+			vm.PauseUpdate();
 			this.Show();
 		}
 		private void MenuItemAbout_Click(object sender, RoutedEventArgs e)
@@ -81,6 +79,22 @@ namespace IconMeterWPF
 		private void MenuItemClose_Click(object sender, RoutedEventArgs e)
 		{
 			System.Windows.Application.Current.Shutdown();
+		}
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            e.Cancel = true;
+            this.Hide();
+			var vm = this.DataContext as MainViewModel;
+			vm.ReloadSettings();
+			vm.ResumeUpdate();
+		}
+		private void MainTaskbarIcon_MouseLeave(object sender, MouseEventArgs e)
+		{
+			this.MainTaskbarIcon.ToolTipText = "";
+		}
+		private void LogicalProcessorsTaskbarIcon_MouseLeave(object sender, MouseEventArgs e)
+		{
+			this.LogicalProcessorsTaskbarIcon.ToolTipText = "";
 		}
 	}
 
@@ -106,4 +120,20 @@ namespace IconMeterWPF
 			return false;
 		}
 	}
+
+    public class DrawingColorToWindowsMediaColor : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            System.Drawing.Color c = (System.Drawing.Color)value;
+            return System.Windows.Media.Color.FromArgb(c.A, c.R, c.G, c.B);
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            System.Windows.Media.Color c = (System.Windows.Media.Color)value;
+            return System.Drawing.Color.FromArgb(c.A, c.R, c.G, c.B);
+        }
+    }
+
 }

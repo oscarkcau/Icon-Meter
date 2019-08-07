@@ -25,8 +25,8 @@ namespace IconMeterWPF
 		static extern int GetSystemMetrics(int nIndex);
 		const int SM_CXSMICON = 49;
 
-		// private fields
-		Settings settings;
+        // private fields
+        Properties.Settings settings;
 		PerformanceCounter cpuCounter, memoryCounter, diskCounter;
 		DispatcherTimer timer = new DispatcherTimer();
 		float totalMemorySize;
@@ -72,7 +72,7 @@ namespace IconMeterWPF
 		}
 
 		// constructor
-		public PerformanceMeter(Settings settings)
+		public PerformanceMeter()
 		{
 			totalMemorySize = (float)GetTotalMemorySize();
 
@@ -86,20 +86,29 @@ namespace IconMeterWPF
 			timer.Interval = new TimeSpan(0, 0, 1);
 
 			// initialize all performance counters
-			ResetPerformanceMeter(settings);
+			ResetPerformanceMeter();
 		}
 
 		// public method
-		public void ResetPerformanceMeter(Settings settings)
+		public void ResetPerformanceMeter()
 		{
 			// dispose all current performance counters
 			DisposePerformanceCounters();
 
-			// update the setting field
-			this.settings = settings;
+            // update the setting field
+            //this.settings = settings;
+            this.settings = Properties.Settings.Default;
 
-			// create all performance counters with new settings
-			InitializePerformanceCounters();
+            // create all performance counters with new settings
+            InitializePerformanceCounters();
+		}
+		public void Pause()
+		{
+			this.timer.Stop();
+		}
+		public void Resume()
+		{
+			this.timer.Start();
 		}
 
 		// event handler
@@ -129,7 +138,7 @@ namespace IconMeterWPF
 		{
 			// initialize necessary performance counters depending on current setting
 
-			if (settings.ShowCpuUsage)
+			//if (settings.ShowCpuUsage)
 			{
 				// in virtual machine the "Processor Information" category may not found,
 				// therefore use "Processor" category if exception occurs
@@ -143,18 +152,18 @@ namespace IconMeterWPF
 				}
 			}
 
-			if (settings.ShowMemoryUsage)
+			//if (settings.ShowMemoryUsage)
 			{
 				memoryCounter = new PerformanceCounter("Memory", "Available MBytes");
 					//"Memory", "% Committed Bytes In Use");
 			}
 
-			if (settings.ShowDiskUsage)
+			//if (settings.ShowDiskUsage)
 			{
 				diskCounter = new PerformanceCounter("PhysicalDisk", "% Idle Time", "_Total");
 			}
 
-			if (settings.ShowNetworkUsage)
+			//if (settings.ShowNetworkUsage)
 			{
 				PerformanceCounterCategory networkCounterCategory
 					= new PerformanceCounterCategory("Network Interface");
@@ -165,7 +174,7 @@ namespace IconMeterWPF
 				}
 			}
 
-			if (settings.ShowLogicalProcessorsUsage)
+			//if (settings.ShowLogicalProcessorsUsage)
 			{
 				var processorCategory = new PerformanceCounterCategory("Processor Information");
 				var logicalProcessorNames = processorCategory.GetInstanceNames()
@@ -252,13 +261,13 @@ namespace IconMeterWPF
 			List<(float, Brush)> list = new List<(float, Brush)>();
 
 			if (settings.ShowCpuUsage)
-				list.Add((lastCpuUsage, new SolidBrush(settings.CpuColor.ToGDIColor())));
+				list.Add((lastCpuUsage, new SolidBrush(settings.CpuColor)));
 
 			if (settings.ShowMemoryUsage)
-				list.Add((lastMemoryUsage, new SolidBrush(settings.MemoryColor.ToGDIColor())));
+				list.Add((lastMemoryUsage, new SolidBrush(settings.MemoryColor)));
 
 			if (settings.ShowDiskUsage)
-				list.Add((lastDiskUsage, new SolidBrush(settings.DiskColor.ToGDIColor())));
+				list.Add((lastDiskUsage, new SolidBrush(settings.DiskColor)));
 
 			if (settings.ShowNetworkUsage)
 			{
@@ -271,8 +280,8 @@ namespace IconMeterWPF
 				float send = (lastNetworkSend / maxNetword) * 100;
 				float receive = (lastNetworkReceive / maxNetword) * 100;
 
-				list.Add((send, new SolidBrush(settings.NetworkReceiveColor.ToGDIColor())));
-				list.Add((receive, new SolidBrush(settings.NetworkSendColor.ToGDIColor())));
+				list.Add((send, new SolidBrush(settings.NetworkReceiveColor)));
+				list.Add((receive, new SolidBrush(settings.NetworkSendColor)));
 			}
 
 			// build the new icon
@@ -287,7 +296,7 @@ namespace IconMeterWPF
 		Icon BuildLogicalProcessorIcon()
 		{
 			// create brush for drawing
-			Color color = settings.LogicalProcessorColor.ToGDIColor();
+			Color color = settings.LogicalProcessorColor;
 			Brush brush = new SolidBrush(color);
 
 			// build the new icon from logical processor readings
