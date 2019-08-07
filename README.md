@@ -3,7 +3,7 @@ Small notifyicon system performance meter for MS Windows.
 
 ![](/IconMeter/images/capture.png)
 
-I need a small system performance meter for my windows tablet thus make a small Winform application with c#. It display small notifyicon which visualizes the current CPU, memory, disk and network loading in small bars.
+I need a small and lightweight system performance meter for my windows tablet thus make a simple application with c#. It displays small notifyicons which visualize the current CPU, memory, disk and network loading in small bars.
 Icon Meter has the following features:
 
 * (Version 2.0) Reimplement using WPF for better support for Windows 10
@@ -18,8 +18,6 @@ Icon Meter has the following features:
 The following coding features were implemented for the function
 
 * Uses **Mutex** to allow only single running instance.
-* Uses simple **XML serialization** for storing settings.
-* Uses custom type converter to serialize System.Drawing.Color values.
 * Overrides **SetVisibleCore** method for hidden main window during program startup
 * Uses Registry key to enable autostart.
 * Draws dynamic icon using GDI+ 
