@@ -22,10 +22,10 @@
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
         <Image VerticalAlignment="Top" Source="images/maybe_useless.png" Grid.RowSpan="7" Margin="0"/>
-        <Label x:Name="LabelProductName" Content="Product Name" Grid.Column="1" Padding="10,5,5,0" FontWeight="Bold"/>
+        <Label x:Name="LabelProductName" Content="Product" Grid.Column="1" Padding="10,5,5,0" FontWeight="Bold"/>
         <Label x:Name="LabelVersion" Content="Version" Grid.Column="1" Grid.Row="1" Padding="10,5,5,0"/>
         <Label x:Name="LabelCopyright" Content="Copyright" Grid.Column="1" Grid.Row="2" Padding="10,5,5,0"/>
-        <Label x:Name="LabelCompanyName" Content="Company Name" Grid.Column="1" Grid.Row="3" Padding="10,5,5,0"/>
+        <Label x:Name="LabelCompanyName" Content="Group" Grid.Column="1" Grid.Row="3" Padding="10,5,5,0"/>
         <TextBlock Grid.Row="5" TextWrapping="Wrap" Grid.ColumnSpan="2" VerticalAlignment="Center">
             <Hyperlink NavigateUri="https://github.com/oscarkcau/Icon-Meter" RequestNavigate="Hyperlink_RequestNavigate">
             https://github.com/oscarkcau/Icon-Meter

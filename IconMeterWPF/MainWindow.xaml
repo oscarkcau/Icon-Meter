@@ -17,12 +17,12 @@
         <local:BoolToVisibility x:Key="BoolToVisibility"/>
         <local:DrawingColorToWindowsMediaColor x:Key="DrawingColorToWindowsMediaColor"/>
         <ContextMenu x:Key="SharedContextMenu" x:Shared="true">
-            <MenuItem x:Name="MenuItemSettings" Header="Settings" Click="MenuItemSettings_Click">
+            <MenuItem x:Name="MenuItemSettings" Header="{x:Static properties:Resources.Settings}" Click="MenuItemSettings_Click">
                 <MenuItem.Icon>
                     <Image Source="images\cog.png"/>
                 </MenuItem.Icon>
             </MenuItem>
-            <MenuItem x:Name="MenuItemAbout" Header="About Icon Meter" Click="MenuItemAbout_Click">
+            <MenuItem x:Name="MenuItemAbout" Header="{x:Static properties:Resources.About}" Click="MenuItemAbout_Click">
                 <MenuItem.Icon>
                     <Image Source="images\information.png"/>
                 </MenuItem.Icon>
@@ -30,7 +30,7 @@
 
             <Separator />
 
-            <MenuItem x:Name="MenuItemClose" Header="Close" Click="MenuItemClose_Click">
+            <MenuItem x:Name="MenuItemClose" Header="{x:Static properties:Resources.Close}" Click="MenuItemClose_Click">
                 <MenuItem.Icon>
                     <Image Source="images\cross.png"/>
                 </MenuItem.Icon>
@@ -79,11 +79,14 @@
             <ColumnDefinition/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <CheckBox Content="CPU" VerticalAlignment="Center" 
+        <CheckBox VerticalAlignment="Center"
+                  Content="{x:Static properties:Resources.CPU}"
                   IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=ShowCpuUsage}"/>
-        <CheckBox Content="Memory" VerticalAlignment="Center" Grid.Row="1" 
+        <CheckBox VerticalAlignment="Center" Grid.Row="1" 
+                  Content="{x:Static properties:Resources.Memory}"
                   IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=ShowMemoryUsage}"/>
-        <CheckBox Content="Disk" VerticalAlignment="Center" Grid.Row="2" 
+        <CheckBox VerticalAlignment="Center" Grid.Row="2" 
+                  Content="{x:Static properties:Resources.Disk}"
                   IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=ShowDiskUsage}"/>
         <xctk:ColorPicker x:Name="ButtonColorCPU" Grid.Column="2" Margin="4" 
                           SelectedColor="{Binding Source={x:Static properties:Settings.Default}, Path=CpuColor, Converter={StaticResource DrawingColorToWindowsMediaColor}}"/>
@@ -92,10 +95,13 @@
         <xctk:ColorPicker x:Name="ButtonColorDisk" Grid.Column="2" Margin="4" Grid.Row="2" 
                           SelectedColor="{Binding Source={x:Static properties:Settings.Default}, Path=DiskColor, Converter={StaticResource DrawingColorToWindowsMediaColor}}"/>
         
-        <Label Content="Receive:" Grid.Column="1" Grid.Row="3" VerticalContentAlignment="Bottom" Margin="0,0,0,-6"/>
-        <Label Content="Send:" Grid.Column="2" Grid.Row="3" VerticalContentAlignment="Bottom" Margin="0,0,0,-6"/>
+        <Label Grid.Column="1" Grid.Row="3" VerticalContentAlignment="Bottom" Margin="0,0,0,-6"
+               Content="{x:Static properties:Resources.Receive}"/>
+        <Label Grid.Column="2" Grid.Row="3" VerticalContentAlignment="Bottom" Margin="0,0,0,-6"
+               Content="{x:Static properties:Resources.Send}"/>
 
-        <CheckBox Content="Network" VerticalAlignment="Center" Grid.Row="4" 
+        <CheckBox VerticalAlignment="Center" Grid.Row="4"
+                  Content="{x:Static properties:Resources.Network}"
                   IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=ShowNetworkUsage}"/>
         <xctk:ColorPicker x:Name="ButtonColorSend" Grid.Column="2" Margin="4" Grid.Row="4" 
                           SelectedColor="{Binding Source={x:Static properties:Settings.Default}, Path=NetworkSendColor, Converter={StaticResource DrawingColorToWindowsMediaColor}}"/>
@@ -103,20 +109,25 @@
                           SelectedColor="{Binding Source={x:Static properties:Settings.Default}, Path=NetworkReceiveColor, Converter={StaticResource DrawingColorToWindowsMediaColor}}"/>
 
         <Line Grid.Row="5" Style="{StaticResource horizontalLineStyle}" VerticalAlignment="Center"/>
-        <CheckBox Content="Logical Processors" VerticalAlignment="Center" Grid.Row="6" Grid.ColumnSpan="2" 
+        <CheckBox VerticalAlignment="Center" Grid.Row="6" Grid.ColumnSpan="2"
+                  Content="{x:Static properties:Resources.LogicalProcessors}"
                   IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=ShowLogicalProcessorsUsage}"/>
         <xctk:ColorPicker x:Name="ButtonColorLogicalProcessor" Grid.Column="2" Margin="4" Grid.Row="6" 
                           SelectedColor="{Binding Source={x:Static properties:Settings.Default}, Path=LogicalProcessorColor, Converter={StaticResource DrawingColorToWindowsMediaColor}}"/>
         
         <Line Grid.Row="7" Style="{StaticResource horizontalLineStyle}" VerticalAlignment="Center"/>
-        <CheckBox Content="Use Vertical Bar" VerticalAlignment="Center" Grid.Row="8" Grid.ColumnSpan="2" 
+        <CheckBox VerticalAlignment="Center" Grid.Row="8" Grid.ColumnSpan="2"
+                  Content="{x:Static properties:Resources.UseVerticalBar}"
                   IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=UseVerticalBars}"/>
-        <CheckBox Content="Run at Startup" VerticalAlignment="Center" Grid.Row="9" Grid.ColumnSpan="2" 
+        <CheckBox VerticalAlignment="Center" Grid.Row="9" Grid.ColumnSpan="2"
+                  Content="{x:Static properties:Resources.RunAtStartup}"
                   IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=RunAtStartup}"/>
         
         <Line Grid.Row="10" Style="{StaticResource horizontalLineStyle}" VerticalAlignment="Center"/>
-        <Button x:Name="ButtonOK" Content="OK" Grid.Column="1" Margin="4" Grid.Row="11" Click="ButtonOK_Click"/>
-        <Button x:Name="ButtonCancel" Content="Cancel" Grid.Column="2" Margin="4" Grid.Row="11" Click="ButtonCancel_Click"/>
+        <Button x:Name="ButtonOK" Grid.Column="1" Margin="4" Grid.Row="11" Click="ButtonOK_Click"
+                Content="{x:Static properties:Resources.OK}"/>
+        <Button x:Name="ButtonCancel" Grid.Column="2" Margin="4" Grid.Row="11" Click="ButtonCancel_Click"
+                Content="{x:Static properties:Resources.Cancel}"/>
         <tb:TaskbarIcon x:Name="MainTaskbarIcon" 
                         ToolTipText="{Binding Meter.MainTooltip}" 
                         DoubleClickCommand="{Binding StartTaskManager, Mode=OneWay}"  

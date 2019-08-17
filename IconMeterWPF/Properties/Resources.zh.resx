@@ -118,57 +118,57 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="About" xml:space="preserve">
-    <value>About Icon Meter</value>
+    <value>關於 Icon Meter</value>
   </data>
   <data name="Cancel" xml:space="preserve">
-    <value>Cancel</value>
+    <value>取消</value>
   </data>
   <data name="Close" xml:space="preserve">
-    <value>Close Icon Meter</value>
+    <value>關閉 Icon Meter</value>
   </data>
   <data name="Copyright" xml:space="preserve">
-    <value>Copyright</value>
+    <value>版權</value>
   </data>
   <data name="CPU" xml:space="preserve">
-    <value>CPU</value>
+    <value>處理器</value>
   </data>
   <data name="Disk" xml:space="preserve">
-    <value>Disk</value>
+    <value>磁碟</value>
   </data>
   <data name="Group" xml:space="preserve">
-    <value>Group</value>
+    <value>團隊</value>
   </data>
   <data name="LogicalProcessors" xml:space="preserve">
-    <value>Logical Processor</value>
+    <value>邏輯處理器</value>
   </data>
   <data name="Memory" xml:space="preserve">
-    <value>Memory</value>
+    <value>記憶體</value>
   </data>
   <data name="Network" xml:space="preserve">
-    <value>Network</value>
+    <value>網路</value>
   </data>
   <data name="OK" xml:space="preserve">
-    <value>OK</value>
+    <value>確定</value>
   </data>
   <data name="Product" xml:space="preserve">
-    <value>Product</value>
+    <value>產品</value>
   </data>
   <data name="Receive" xml:space="preserve">
-    <value>Receive</value>
+    <value>接收</value>
   </data>
   <data name="RunAtStartup" xml:space="preserve">
-    <value>Run at Startup</value>
+    <value>在系統啟動時運行</value>
   </data>
   <data name="Send" xml:space="preserve">
-    <value>Send</value>
+    <value>傳送</value>
   </data>
   <data name="Settings" xml:space="preserve">
-    <value>Settings</value>
+    <value>設定</value>
   </data>
   <data name="UseVerticalBar" xml:space="preserve">
-    <value>Use Vertical Bar</value>
+    <value>使用垂直條</value>
   </data>
   <data name="Version" xml:space="preserve">
-    <value>Version</value>
+    <value>版本</value>
   </data>
 </root>

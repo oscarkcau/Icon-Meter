@@ -25,12 +25,11 @@ namespace IconMeterWPF
 		public AboutBox()
 		{
 			InitializeComponent();
-			this.Title = String.Format("About {0}", AssemblyTitle);
-			this.LabelProductName.Content = AssemblyProduct;
-			this.LabelVersion.Content = String.Format("Version {0}", AssemblyVersion);
-			this.LabelCopyright.Content = AssemblyCopyright;
-			this.LabelCompanyName.Content = AssemblyCompany;
-
+			this.Title = Properties.Resources.About;
+			this.LabelProductName.Content = String.Format("{0} {1}", Properties.Resources.Product, AssemblyProduct);
+			this.LabelVersion.Content = String.Format("{0} {1}", Properties.Resources.Version, AssemblyVersion);
+			this.LabelCopyright.Content = String.Format("{0} {1}", Properties.Resources.Copyright, AssemblyCopyright);
+			this.LabelCompanyName.Content = String.Format("{0} {1}", Properties.Resources.Group, AssemblyCompany); ;
 		}
 
 		#region Assembly Attribute Accessors

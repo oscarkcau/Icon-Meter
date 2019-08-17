@@ -26,6 +26,9 @@ namespace IconMeterWPF
 			}
 			else
 			{
+				System.Threading.Thread.CurrentThread.CurrentUICulture = Thread.CurrentThread.CurrentCulture;
+				//new System.Globalization.CultureInfo("ja");
+
 				MainWindow window = new MainWindow();
 			}
 		}

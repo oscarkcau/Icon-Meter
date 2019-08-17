@@ -12,7 +12,7 @@ using System.Windows;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Maybe Useless Software")]
 [assembly: AssemblyProduct("Icon Meter")]
-[assembly: AssemblyCopyright("Copyright ©  2018 Oscar Au")]
+[assembly: AssemblyCopyright("Copyright ©  2019 Oscar Au")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -53,3 +53,5 @@ using System.Windows;
 // [assembly: AssemblyVersion("1.0.*")]
 [assembly: AssemblyVersion("2.0.0.0")]
 [assembly: AssemblyFileVersion("2.0.0.0")]
+[assembly: NeutralResourcesLanguage("")]
+

@@ -390,12 +390,13 @@ namespace IconMeterWPF
 
 			// build the text
 			StringBuilder sb = new StringBuilder();
-			if (settings.ShowCpuUsage) sb.AppendLine("CPU " + Math.Round(lastCpuUsage) + "%");
-			if (settings.ShowMemoryUsage) sb.AppendLine("Memory " + Math.Round(lastMemoryUsage) + "%");
-			if (settings.ShowDiskUsage) sb.AppendLine("Disk " + Math.Round(lastDiskUsage) + "%");
+			
+			if (settings.ShowCpuUsage) sb.AppendLine($"{Properties.Resources.CPU} {Math.Round(lastCpuUsage)}%");
+			if (settings.ShowMemoryUsage) sb.AppendLine($"{Properties.Resources.Memory} {Math.Round(lastMemoryUsage)}%");
+			if (settings.ShowDiskUsage) sb.AppendLine($"{Properties.Resources.Disk} {Math.Round(lastDiskUsage)}%");
 			if (settings.ShowNetworkUsage)
 			{
-				sb.Append($"Network {downArrow}:" + nr.ToString("0.0"));
+				sb.Append($"{Properties.Resources.Network} {downArrow}:" + nr.ToString("0.0"));
 				sb.Append($" {upArrow}:" + ns.ToString("0.0") + " " + unit);
 			}
 
@@ -413,7 +414,7 @@ namespace IconMeterWPF
 			StringBuilder sb = new StringBuilder();
 			for (int i = 0; i < logicalProcessorUsage.Count(); i++)
 			{
-				sb.AppendLine($"CPU {i + 1}: {Math.Round(logicalProcessorUsage[i])}%");
+				sb.AppendLine($"{Properties.Resources.CPU} {i + 1}: {Math.Round(logicalProcessorUsage[i])}%");
 			}
 
 			// make sure the tooltip text has at most 128 characters

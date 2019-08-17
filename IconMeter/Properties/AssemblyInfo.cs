@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Maybe Useless Software")]
 [assembly: AssemblyProduct("Icon Meter")]
-[assembly: AssemblyCopyright("Copyright © Oscar Au 2018")]
+[assembly: AssemblyCopyright("Oscar Au 2019")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

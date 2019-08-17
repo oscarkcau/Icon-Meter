@@ -118,57 +118,57 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="About" xml:space="preserve">
-    <value>About Icon Meter</value>
+    <value>バージョン情報</value>
   </data>
   <data name="Cancel" xml:space="preserve">
-    <value>Cancel</value>
+    <value>キャンセル</value>
   </data>
   <data name="Close" xml:space="preserve">
-    <value>Close Icon Meter</value>
+    <value>閉じる</value>
   </data>
   <data name="Copyright" xml:space="preserve">
-    <value>Copyright</value>
+    <value>著作権</value>
   </data>
   <data name="CPU" xml:space="preserve">
     <value>CPU</value>
   </data>
   <data name="Disk" xml:space="preserve">
-    <value>Disk</value>
+    <value>ディスク</value>
   </data>
   <data name="Group" xml:space="preserve">
-    <value>Group</value>
+    <value>グループ</value>
   </data>
   <data name="LogicalProcessors" xml:space="preserve">
-    <value>Logical Processor</value>
+    <value>論理プロセッサ</value>
   </data>
   <data name="Memory" xml:space="preserve">
-    <value>Memory</value>
+    <value>メモリ</value>
   </data>
   <data name="Network" xml:space="preserve">
-    <value>Network</value>
+    <value>ネットワーク</value>
   </data>
   <data name="OK" xml:space="preserve">
     <value>OK</value>
   </data>
   <data name="Product" xml:space="preserve">
-    <value>Product</value>
+    <value>製品</value>
   </data>
   <data name="Receive" xml:space="preserve">
-    <value>Receive</value>
+    <value>受信</value>
   </data>
   <data name="RunAtStartup" xml:space="preserve">
-    <value>Run at Startup</value>
+    <value>起動時に実行</value>
   </data>
   <data name="Send" xml:space="preserve">
-    <value>Send</value>
+    <value>送信</value>
   </data>
   <data name="Settings" xml:space="preserve">
-    <value>Settings</value>
+    <value>設定</value>
   </data>
   <data name="UseVerticalBar" xml:space="preserve">
-    <value>Use Vertical Bar</value>
+    <value>垂直バーを使用</value>
   </data>
   <data name="Version" xml:space="preserve">
-    <value>Version</value>
+    <value>バージョン</value>
   </data>
 </root>
