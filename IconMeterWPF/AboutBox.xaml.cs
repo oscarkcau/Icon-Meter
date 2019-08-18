@@ -26,10 +26,10 @@ namespace IconMeterWPF
 		{
 			InitializeComponent();
 			this.Title = Properties.Resources.About;
-			this.LabelProductName.Content = String.Format("{0} {1}", Properties.Resources.Product, AssemblyProduct);
+			this.LabelProductName.Content = AssemblyProduct;
 			this.LabelVersion.Content = String.Format("{0} {1}", Properties.Resources.Version, AssemblyVersion);
-			this.LabelCopyright.Content = String.Format("{0} {1}", Properties.Resources.Copyright, AssemblyCopyright);
-			this.LabelCompanyName.Content = String.Format("{0} {1}", Properties.Resources.Group, AssemblyCompany); ;
+			this.LabelCopyright.Content = AssemblyCopyright;
+			this.LabelCompanyName.Content = AssemblyCompany;
 		}
 
 		#region Assembly Attribute Accessors

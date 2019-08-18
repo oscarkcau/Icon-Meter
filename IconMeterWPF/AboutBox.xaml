@@ -6,11 +6,10 @@
         xmlns:local="clr-namespace:IconMeterWPF"
         x:Class="IconMeterWPF.AboutBox"
         mc:Ignorable="d"
-        Title="Icon Meter" Height="211.485" Width="389.479" Icon="icon.ico" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
+        Title="Icon Meter" Height="180" Width="400" Icon="icon.ico" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" Background="#FF3D3D3D" WindowStyle="None">
 
     <Grid Margin="10">
         <Grid.RowDefinitions>
-            <RowDefinition/>
             <RowDefinition/>
             <RowDefinition/>
             <RowDefinition/>
@@ -22,17 +21,17 @@
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
         <Image VerticalAlignment="Top" Source="images/maybe_useless.png" Grid.RowSpan="7" Margin="0"/>
-        <Label x:Name="LabelProductName" Content="Product" Grid.Column="1" Padding="10,5,5,0" FontWeight="Bold"/>
-        <Label x:Name="LabelVersion" Content="Version" Grid.Column="1" Grid.Row="1" Padding="10,5,5,0"/>
-        <Label x:Name="LabelCopyright" Content="Copyright" Grid.Column="1" Grid.Row="2" Padding="10,5,5,0"/>
-        <Label x:Name="LabelCompanyName" Content="Group" Grid.Column="1" Grid.Row="3" Padding="10,5,5,0"/>
-        <TextBlock Grid.Row="5" TextWrapping="Wrap" Grid.ColumnSpan="2" VerticalAlignment="Center">
-            <Hyperlink NavigateUri="https://github.com/oscarkcau/Icon-Meter" RequestNavigate="Hyperlink_RequestNavigate">
+        <Label x:Name="LabelProductName" Content="Product" Grid.Column="1" Padding="10,5,5,0" FontWeight="Bold" Foreground="#FFCDCDCD"/>
+        <Label x:Name="LabelVersion" Content="Version" Grid.Column="1" Grid.Row="1" Padding="10,5,5,0" Foreground="#FFCDCDCD"/>
+        <Label x:Name="LabelCopyright" Content="Copyright" Grid.Column="1" Grid.Row="2" Padding="10,5,5,0" Foreground="#FFCDCDCD"/>
+        <Label x:Name="LabelCompanyName" Content="Group" Grid.Column="1" Grid.Row="3" Padding="10,5,5,0" Foreground="#FFCDCDCD"/>
+        <TextBlock Grid.Row="4" TextWrapping="Wrap" Grid.ColumnSpan="2" VerticalAlignment="Center">
+            <Hyperlink NavigateUri="https://github.com/oscarkcau/Icon-Meter" RequestNavigate="Hyperlink_RequestNavigate" Foreground="#FF77BBFF">
             https://github.com/oscarkcau/Icon-Meter
             </Hyperlink>
 
         </TextBlock>
-        <Button x:Name="ButtonClose" Content="Close" Grid.Column="1" HorizontalAlignment="Right" Grid.Row="5" VerticalAlignment="Bottom" Width="75" VerticalContentAlignment="Stretch" Click="ButtonClose_Click"/>
+        <Button x:Name="ButtonClose" Content="Close" Grid.Column="1" HorizontalAlignment="Right" Grid.Row="4" VerticalAlignment="Bottom" Width="75" VerticalContentAlignment="Stretch" Click="ButtonClose_Click" Margin="0,0,4,4"/>
 
     </Grid>
 </Window>
