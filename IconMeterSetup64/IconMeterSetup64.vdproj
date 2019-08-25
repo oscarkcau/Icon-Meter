@@ -118,24 +118,6 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_2D3C942BAFF14AAC9716ED50EE794AD2"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_BF6EF4250D39437CA1DF41B31AB4476E"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_1418640476DF47AB85D63FA166271FFA"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_3403A6EFCC7EB9756181872AD19178AD"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -283,11 +265,6 @@
             "AssemblyAsmDisplayName" = "8:Icon Meter.resources, Version=2.1.0.0, Culture=zh-CN, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_1418640476DF47AB85D63FA166271FFA"
-                    {
-                    "Name" = "8:Icon Meter.resources.dll"
-                    "Attributes" = "3:512"
-                    }
                 }
             "SourcePath" = "8:..\\IconMeterWPF\\bin\\Release\\zh-CN\\Icon Meter.resources.dll"
             "TargetName" = "8:"
@@ -345,11 +322,6 @@
             "AssemblyAsmDisplayName" = "8:Icon Meter.resources, Version=2.1.0.0, Culture=zh, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_2D3C942BAFF14AAC9716ED50EE794AD2"
-                    {
-                    "Name" = "8:Icon Meter.resources.dll"
-                    "Attributes" = "3:512"
-                    }
                 }
             "SourcePath" = "8:..\\IconMeterWPF\\bin\\Release\\zh\\Icon Meter.resources.dll"
             "TargetName" = "8:"
@@ -500,11 +472,6 @@
             "AssemblyAsmDisplayName" = "8:Icon Meter.resources, Version=2.1.0.0, Culture=ja-JP, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_BF6EF4250D39437CA1DF41B31AB4476E"
-                    {
-                    "Name" = "8:Icon Meter.resources.dll"
-                    "Attributes" = "3:512"
-                    }
                 }
             "SourcePath" = "8:..\\IconMeterWPF\\bin\\Release\\ja-JP\\Icon Meter.resources.dll"
             "TargetName" = "8:"
@@ -717,15 +684,15 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Icon Meter"
-        "ProductCode" = "8:{032726B6-CD19-4D87-95D8-0C4B4038027E}"
-        "PackageCode" = "8:{E2C0B63F-91C7-408D-A478-BD99376D73BD}"
+        "ProductCode" = "8:{1F6574AB-F438-4A7C-8AE8-4E603F77AE5C}"
+        "PackageCode" = "8:{BA581336-B45D-45C9-8968-A695F9620E2B}"
         "UpgradeCode" = "8:{EEB9EF42-19B7-4DBB-ADAD-A543BAD596CB}"
         "AspNetVersion" = "8:2.0.50727.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:FALSE"
-        "ProductVersion" = "8:2.1.0"
+        "ProductVersion" = "8:2.1.1"
         "Manufacturer" = "8:Maybe Useless Software"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"
@@ -1267,7 +1234,7 @@
         {
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_5F4727369C2343BEA1CF81864177F3DE"
             {
-            "SourcePath" = "8:..\\IconMeterWPF\\obj\\Release\\Icon Meter.exe"
+            "SourcePath" = "8:..\\IconMeterWPF\\obj\\Debug\\Icon Meter.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_2A7CFD738BBA417BBBEE4BA0D804814A"
