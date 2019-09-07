@@ -63,9 +63,9 @@ namespace IconMeterWPF.Properties {
         /// <summary>
         ///   Looks up a localized string similar to About Icon Meter.
         /// </summary>
-        public static string About {
+        public static string AboutApplication {
             get {
-                return ResourceManager.GetString("About", resourceCulture);
+                return ResourceManager.GetString("AboutApplication", resourceCulture);
             }
         }
         
@@ -79,11 +79,20 @@ namespace IconMeterWPF.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Close Icon Meter.
+        ///   Looks up a localized string similar to Close.
         /// </summary>
         public static string Close {
             get {
                 return ResourceManager.GetString("Close", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Close Icon Meter.
+        /// </summary>
+        public static string CloseApplication {
+            get {
+                return ResourceManager.GetString("CloseApplication", resourceCulture);
             }
         }
         
@@ -120,6 +129,15 @@ namespace IconMeterWPF.Properties {
         public static string Group {
             get {
                 return ResourceManager.GetString("Group", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Language:.
+        /// </summary>
+        public static string Language {
+            get {
+                return ResourceManager.GetString("Language", resourceCulture);
             }
         }
         
@@ -169,7 +187,7 @@ namespace IconMeterWPF.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Receive.
+        ///   Looks up a localized string similar to Receive:.
         /// </summary>
         public static string Receive {
             get {
@@ -187,7 +205,7 @@ namespace IconMeterWPF.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Send.
+        ///   Looks up a localized string similar to Send:.
         /// </summary>
         public static string Send {
             get {

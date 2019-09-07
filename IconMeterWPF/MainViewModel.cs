@@ -8,6 +8,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -83,9 +84,26 @@ namespace IconMeterWPF
         }
 		public void SaveSettings()
         {
-            Properties.Settings.Default.Save();
-			Meter.ResetPerformanceMeter();
-			this.UpdateAutoStartSetting();
+			// restart application if languate setting is updated
+			if (Properties.Settings.Default.Language != System.Threading.Thread.CurrentThread.CurrentUICulture.Name)
+			{
+				// set the is restarting flag
+				Properties.Settings.Default.IsRestarting = true;
+				Properties.Settings.Default.Save();
+
+				// start a new instance of application
+				System.Diagnostics.Process.Start(Application.ResourceAssembly.Location);
+
+				// close the current instance of application
+				Application.Current.Shutdown();
+			}
+			// otherwise save setting and reset meter
+			else
+			{
+				Properties.Settings.Default.Save();
+				Meter.ResetPerformanceMeter();
+				this.UpdateAutoStartSetting();
+			}
 		}
         public void PauseUpdate()
         {

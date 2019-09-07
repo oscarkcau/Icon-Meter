@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Resources;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -41,6 +44,13 @@ namespace IconMeterWPF
 			var uri = new Uri(@"pack://application:,,,/icon.ico", UriKind.RelativeOrAbsolute);
 			Stream iconStream = Application.GetResourceStream(uri).Stream;
 			vm.Meter.DefaultTrayIcon = new System.Drawing.Icon(iconStream);
+
+			// initial ComboBox for language selection
+			ResourceSet resourceSet = 
+				Properties.LanguageResource.ResourceManager.GetResourceSet(
+					CultureInfo.CurrentUICulture, true, true
+					);
+			cmbLanguage.ItemsSource = resourceSet;
 		}
 
 		// event handlers
@@ -53,22 +63,31 @@ namespace IconMeterWPF
 		}
         private void ButtonOK_Click(object sender, RoutedEventArgs e)
         {
+			// hide setting window
 			this.Hide();
+
+			// save settings and resume update readings
 			var vm = this.DataContext as MainViewModel;
 			vm.SaveSettings();
 			vm.ResumeUpdate();
-        }
+		}
         private void ButtonCancel_Click(object sender, RoutedEventArgs e)
 		{
+			// hide setting window
 			this.Hide();
+
+			// discard new settings and resume update readings
 			var vm = this.DataContext as MainViewModel;
 			vm.ReloadSettings();
 			vm.ResumeUpdate();
 		}
 		private void MenuItemSettings_Click(object sender, RoutedEventArgs e)
 		{
+			// pause update readings
 			var vm = this.DataContext as MainViewModel;
 			vm.PauseUpdate();
+
+			// show setting window
 			this.Show();
 		}
 		private void MenuItemAbout_Click(object sender, RoutedEventArgs e)
@@ -82,8 +101,13 @@ namespace IconMeterWPF
 		}
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
+			// cancel closing settings window
             e.Cancel = true;
+
+			// hide settings window
             this.Hide();
+
+			// discard new settings and resume update readings
 			var vm = this.DataContext as MainViewModel;
 			vm.ReloadSettings();
 			vm.ResumeUpdate();

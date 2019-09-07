@@ -117,14 +117,14 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="About" xml:space="preserve">
+  <data name="AboutApplication" xml:space="preserve">
     <value>バージョン情報</value>
   </data>
   <data name="Cancel" xml:space="preserve">
     <value>キャンセル</value>
   </data>
-  <data name="Close" xml:space="preserve">
-    <value>閉じる</value>
+  <data name="CloseApplication" xml:space="preserve">
+    <value>Icon Meter の終了</value>
   </data>
   <data name="Copyright" xml:space="preserve">
     <value>著作権</value>
@@ -154,13 +154,13 @@
     <value>製品</value>
   </data>
   <data name="Receive" xml:space="preserve">
-    <value>受信</value>
+    <value>受信:</value>
   </data>
   <data name="RunAtStartup" xml:space="preserve">
     <value>起動時に実行</value>
   </data>
   <data name="Send" xml:space="preserve">
-    <value>送信</value>
+    <value>送信:</value>
   </data>
   <data name="Settings" xml:space="preserve">
     <value>設定</value>
@@ -170,5 +170,11 @@
   </data>
   <data name="Version" xml:space="preserve">
     <value>バージョン</value>
+  </data>
+  <data name="Language" xml:space="preserve">
+    <value>言語:</value>
+  </data>
+  <data name="Close" xml:space="preserve">
+    <value>閉じる</value>
   </data>
 </root>

@@ -6,6 +6,7 @@
         xmlns:local="clr-namespace:IconMeterWPF"
         x:Class="IconMeterWPF.AboutBox"
         mc:Ignorable="d"
+        xmlns:properties="clr-namespace:IconMeterWPF.Properties"
         Title="Icon Meter" Height="180" Width="400" Icon="icon.ico" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" Background="#FF3D3D3D" WindowStyle="None">
 
     <Grid Margin="10">
@@ -31,7 +32,7 @@
             </Hyperlink>
 
         </TextBlock>
-        <Button x:Name="ButtonClose" Content="Close" Grid.Column="1" HorizontalAlignment="Right" Grid.Row="4" VerticalAlignment="Bottom" Width="75" VerticalContentAlignment="Stretch" Click="ButtonClose_Click" Margin="0,0,4,4"/>
+        <Button x:Name="ButtonClose" Content="{x:Static properties:Resources.Close}" Grid.Column="1" HorizontalAlignment="Right" Grid.Row="4" VerticalAlignment="Bottom" MinWidth="75" VerticalContentAlignment="Stretch" Click="ButtonClose_Click" Margin="0,0,4,4"/>
 
     </Grid>
 </Window>

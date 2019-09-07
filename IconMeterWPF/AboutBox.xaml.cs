@@ -25,7 +25,7 @@ namespace IconMeterWPF
 		public AboutBox()
 		{
 			InitializeComponent();
-			this.Title = Properties.Resources.About;
+			this.Title = Properties.Resources.AboutApplication;
 			this.LabelProductName.Content = AssemblyProduct;
 			this.LabelVersion.Content = String.Format("{0} {1}", Properties.Resources.Version, AssemblyVersion);
 			this.LabelCopyright.Content = AssemblyCopyright;
