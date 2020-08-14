@@ -26,6 +26,8 @@ namespace IconMeterWPF
 	/// </summary>
 	public partial class MainWindow : Window
 	{
+		private int tipOPenedCount = 0;
+
 		// constructor
 		public MainWindow()
 		{
@@ -111,14 +113,6 @@ namespace IconMeterWPF
 			var vm = this.DataContext as MainViewModel;
 			vm.ReloadSettings();
 			vm.ResumeUpdate();
-		}
-		private void MainTaskbarIcon_MouseLeave(object sender, MouseEventArgs e)
-		{
-			this.MainTaskbarIcon.ToolTipText = "";
-		}
-		private void LogicalProcessorsTaskbarIcon_MouseLeave(object sender, MouseEventArgs e)
-		{
-			this.LogicalProcessorsTaskbarIcon.ToolTipText = "";
 		}
 	}
 

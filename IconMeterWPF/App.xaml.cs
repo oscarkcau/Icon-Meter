@@ -36,7 +36,7 @@ namespace IconMeterWPF
 			}
 
 			var settings = IconMeterWPF.Properties.Settings.Default;
-			settings.Language = "";
+//			settings.Language = "";
 
 			// if no language is selected (i.e. default setting of first run)
 			if (settings.Language == "")

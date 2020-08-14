@@ -138,62 +138,51 @@ namespace IconMeterWPF
 		{
 			// initialize necessary performance counters depending on current setting
 
-			//if (settings.ShowCpuUsage)
+			// Processor PC
+			// in virtual machine the "Processor Information" category may not found,
+			// therefore use "Processor" category if exception occurs
+			try
 			{
-				// in virtual machine the "Processor Information" category may not found,
-				// therefore use "Processor" category if exception occurs
+				cpuCounter = new PerformanceCounter("Processor Information", "% Processor Utility", "_Total");
+			}
+			catch (Exception)
+			{
+				cpuCounter = new PerformanceCounter("Processor", "% Processor Time", "_Total");
+			}
+
+			// memory PC
+			memoryCounter = new PerformanceCounter("Memory", "Available MBytes");
+				//"Memory", "% Committed Bytes In Use");
+
+			diskCounter = new PerformanceCounter("PhysicalDisk", "% Idle Time", "_Total");
+
+			// network PC
+			PerformanceCounterCategory networkCounterCategory
+				= new PerformanceCounterCategory("Network Interface");
+			foreach (string name in networkCounterCategory.GetInstanceNames())
+			{
+				networkReceiveCounters.Add(new PerformanceCounter("Network Interface", "Bytes Received/sec", name));
+				networkSendCounters.Add(new PerformanceCounter("Network Interface", "Bytes Sent/sec", name));
+			}
+
+			// logical processor PCs
+			var processorCategory = new PerformanceCounterCategory("Processor Information");
+			var logicalProcessorNames = processorCategory.GetInstanceNames()
+				.Where(s => !s.Contains("Total"))
+				.OrderBy(s => s);
+			int nLogicalProcessors = logicalProcessorNames.Count();
+			foreach (string name in logicalProcessorNames)
+			{
 				try
 				{
-					cpuCounter = new PerformanceCounter("Processor Information", "% Processor Utility", "_Total");
+					logicalProcessorsCounter.Add(new PerformanceCounter("Processor Information", "% Processor Utility", name));
 				}
-				catch (Exception)
+				catch
 				{
-					cpuCounter = new PerformanceCounter("Processor", "% Processor Time", "_Total");
+					logicalProcessorsCounter.Add(new PerformanceCounter("Processor Information", "% Processor Time", name));
 				}
 			}
-
-			//if (settings.ShowMemoryUsage)
-			{
-				memoryCounter = new PerformanceCounter("Memory", "Available MBytes");
-					//"Memory", "% Committed Bytes In Use");
-			}
-
-			//if (settings.ShowDiskUsage)
-			{
-				diskCounter = new PerformanceCounter("PhysicalDisk", "% Idle Time", "_Total");
-			}
-
-			//if (settings.ShowNetworkUsage)
-			{
-				PerformanceCounterCategory networkCounterCategory
-					= new PerformanceCounterCategory("Network Interface");
-				foreach (string name in networkCounterCategory.GetInstanceNames())
-				{
-					networkReceiveCounters.Add(new PerformanceCounter("Network Interface", "Bytes Received/sec", name));
-					networkSendCounters.Add(new PerformanceCounter("Network Interface", "Bytes Sent/sec", name));
-				}
-			}
-
-			//if (settings.ShowLogicalProcessorsUsage)
-			{
-				var processorCategory = new PerformanceCounterCategory("Processor Information");
-				var logicalProcessorNames = processorCategory.GetInstanceNames()
-					.Where(s => !s.Contains("Total"))
-					.OrderBy(s => s);
-				int nLogicalProcessors = logicalProcessorNames.Count();
-				foreach (string name in logicalProcessorNames)
-				{
-					try
-					{
-						logicalProcessorsCounter.Add(new PerformanceCounter("Processor Information", "% Processor Utility", name));
-					}
-					catch
-					{
-						logicalProcessorsCounter.Add(new PerformanceCounter("Processor Information", "% Processor Time", name));
-					}
-				}
-				this.logicalProcessorUsage = new float[logicalProcessorsCounter.Count];
-			}
+			this.logicalProcessorUsage = new float[logicalProcessorsCounter.Count];
 
 			timer.Start();
 		}
