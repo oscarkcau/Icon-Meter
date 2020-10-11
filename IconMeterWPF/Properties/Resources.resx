@@ -177,4 +177,64 @@
   <data name="Close" xml:space="preserve">
     <value>Close</value>
   </data>
+  <data name="Processes" xml:space="preserve">
+    <value>Processes</value>
+  </data>
+  <data name="LoadAverage" xml:space="preserve">
+    <value>Load Average</value>
+  </data>
+  <data name="VirtualMemory" xml:space="preserve">
+    <value>Virtual Memory</value>
+  </data>
+  <data name="Uptime" xml:space="preserve">
+    <value>Uptime</value>
+  </data>
+  <data name="User" xml:space="preserve">
+    <value>User</value>
+  </data>
+  <data name="System" xml:space="preserve">
+    <value>System</value>
+  </data>
+  <data name="Idle" xml:space="preserve">
+    <value>Idle</value>
+  </data>
+  <data name="Days" xml:space="preserve">
+    <value>Days</value>
+  </data>
+  <data name="Minutes" xml:space="preserve">
+    <value>minutes</value>
+  </data>
+  <data name="Hours" xml:space="preserve">
+    <value>hours</value>
+  </data>
+  <data name="InUse" xml:space="preserve">
+    <value>In use</value>
+  </data>
+  <data name="Available" xml:space="preserve">
+    <value>Available</value>
+  </data>
+  <data name="PublicIP" xml:space="preserve">
+    <value>Public IP</value>
+  </data>
+  <data name="LocalIP" xml:space="preserve">
+    <value>Local IP</value>
+  </data>
+  <data name="Download" xml:space="preserve">
+    <value>Download</value>
+  </data>
+  <data name="Upload" xml:space="preserve">
+    <value>Upload</value>
+  </data>
+  <data name="Of" xml:space="preserve">
+    <value>of</value>
+  </data>
+  <data name="ReadSpeed" xml:space="preserve">
+    <value>Read speed</value>
+  </data>
+  <data name="WriteSpeed" xml:space="preserve">
+    <value>Write speed</value>
+  </data>
+  <data name="Min" xml:space="preserve">
+    <value>min</value>
+  </data>
 </root>

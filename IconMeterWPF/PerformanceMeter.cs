@@ -33,11 +33,12 @@ namespace IconMeterWPF
 		float lastCpuUsage = 0;
 		float lastMemoryUsage = 0;
 		float lastDiskUsage = 0;
-		float lastNetworkReceive = 0;
-		float lastNetworkSend = 0;
+		float _lastNetworkReceive = 0;
+		float _lastNetworkSend = 0;
 		float[] logicalProcessorUsage = null;
-		string _mainTooltip, _logicalProcessorsTooltip;
+		string _logicalProcessorsTooltip;
 		Icon _defaultTrayIcon, _mainTrayIcon, _logicalProcessorsTrayIcon;
+		IEnumerable<float> _lastNetworkSpeed;
 
 		// private readonly fields
 		readonly List<PerformanceCounter> networkReceiveCounters = new List<PerformanceCounter>();
@@ -46,8 +47,6 @@ namespace IconMeterWPF
 		readonly Queue<float> previousNetwordReceive = new Queue<float>();
 		readonly Queue<float> previousNetwordSend = new Queue<float>();
 		readonly int systemTrayIconSize;
-		const string upArrow = "\u25b2";
-		const string downArrow = "\u25bc";
 
 		// public propertie
 		public Icon DefaultTrayIcon {
@@ -62,13 +61,21 @@ namespace IconMeterWPF
 			get => _logicalProcessorsTrayIcon;
 			set => SetField(ref _logicalProcessorsTrayIcon, value);
 		}
-		public string MainTooltip {
-			get => _mainTooltip;
-			set => SetField(ref _mainTooltip, value);
-		}
 		public string LogicalProcessorsTooltip {
 			get => _logicalProcessorsTooltip;
 			set => SetField(ref _logicalProcessorsTooltip, value);
+		}
+		public float LastNetworkReceive {
+			get => _lastNetworkReceive;
+			set => SetField(ref _lastNetworkReceive, value);
+		}
+		public float LastNetworkSend {
+			get => _lastNetworkSend;
+			set => SetField(ref _lastNetworkSend, value);
+		}
+		public IEnumerable<float> LastNetworkSpeed {
+			get => _lastNetworkSpeed;
+			set => SetField(ref _lastNetworkSpeed, value);
 		}
 
 		// constructor
@@ -121,7 +128,6 @@ namespace IconMeterWPF
 			if (MainTrayIcon != null && MainTrayIcon != DefaultTrayIcon)
 				DestroyIcon(MainTrayIcon.Handle);
 			MainTrayIcon = BuildMainNotifyIcon();
-			MainTooltip = BuildMainTooltip();
 
 			// update icon image and tooltip of logical processor tray icon if it is in used
 			if (settings.ShowLogicalProcessorsUsage)
@@ -218,9 +224,9 @@ namespace IconMeterWPF
 			if (settings.ShowDiskUsage) lastDiskUsage = 100 - diskCounter.NextValue();
 
 			// network 
-			if (settings.ShowNetworkUsage)
+			//if (settings.ShowNetworkUsage)
 			{
-				lastNetworkReceive = 0;
+				float lastNetworkReceive = 0;
 				foreach (var c in networkReceiveCounters)
 					lastNetworkReceive += c.NextValue();
 
@@ -228,13 +234,17 @@ namespace IconMeterWPF
 				if (previousNetwordReceive.Count > 60)
 					previousNetwordReceive.Dequeue();
 
-				lastNetworkSend = 0;
+				float  lastNetworkSend = 0;
 				foreach (var c in networkSendCounters)
 					lastNetworkSend += c.NextValue();
 
 				previousNetwordSend.Enqueue(lastNetworkSend);
 				if (previousNetwordSend.Count > 60)
 					previousNetwordSend.Dequeue();
+
+				LastNetworkReceive = lastNetworkReceive;
+				LastNetworkSend = lastNetworkSend;
+				LastNetworkSpeed = new float[] { lastNetworkReceive, lastNetworkSend };
 			}
 
 			// logical processors
@@ -266,8 +276,8 @@ namespace IconMeterWPF
 				float maxNetword = Math.Max(maxNetworkReceive, maxNetworkSend);
 
 				// compute relative flow
-				float send = (lastNetworkSend / maxNetword) * 100;
-				float receive = (lastNetworkReceive / maxNetword) * 100;
+				float send = (_lastNetworkSend / maxNetword) * 100;
+				float receive = (_lastNetworkReceive / maxNetword) * 100;
 
 				list.Add((send, new SolidBrush(settings.NetworkReceiveColor)));
 				list.Add((receive, new SolidBrush(settings.NetworkSendColor)));
@@ -361,39 +371,6 @@ namespace IconMeterWPF
 			shadowPen.Dispose();
 
 			return System.Drawing.Icon.FromHandle(bmp.GetHicon());
-		}
-		string BuildMainTooltip()
-		{
-			// build notify icon's tooltip text
-
-			// detemine unit for network flow readings
-			float nr = lastNetworkReceive / 1024;
-			float ns = lastNetworkSend / 1024;
-			string unit = "KBps";
-			if (nr > 1024 || ns > 1024)
-			{
-				nr = nr / 1024;
-				ns = ns / 1024;
-				unit = "MBps";
-			}
-
-			// build the text
-			StringBuilder sb = new StringBuilder();
-			
-			if (settings.ShowCpuUsage) sb.AppendLine($"{Properties.Resources.CPU} {Math.Round(lastCpuUsage)}%");
-			if (settings.ShowMemoryUsage) sb.AppendLine($"{Properties.Resources.Memory} {Math.Round(lastMemoryUsage)}%");
-			if (settings.ShowDiskUsage) sb.AppendLine($"{Properties.Resources.Disk} {Math.Round(lastDiskUsage)}%");
-			if (settings.ShowNetworkUsage)
-			{
-				sb.Append($"{Properties.Resources.Network} {downArrow}:" + nr.ToString("0.0"));
-				sb.Append($" {upArrow}:" + ns.ToString("0.0") + " " + unit);
-			}
-
-			// make sure the tooltip text has at most 128 characters
-			if (sb.Length >= 128) sb.Remove(127, sb.Length - 127);
-
-			// return the text value
-			return sb.ToString().TrimEnd();
 		}
 		string BuildLogicalProcessorTooltip()
 		{

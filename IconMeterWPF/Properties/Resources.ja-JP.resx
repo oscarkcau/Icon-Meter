@@ -177,4 +177,64 @@
   <data name="Close" xml:space="preserve">
     <value>閉じる</value>
   </data>
+  <data name="Processes" xml:space="preserve">
+    <value>プロセス</value>
+  </data>
+  <data name="LoadAverage" xml:space="preserve">
+    <value>ロードアベレージ</value>
+  </data>
+  <data name="VirtualMemory" xml:space="preserve">
+    <value>仮想メモリ</value>
+  </data>
+  <data name="Uptime" xml:space="preserve">
+    <value>稼働時間</value>
+  </data>
+  <data name="User" xml:space="preserve">
+    <value>ユーザー</value>
+  </data>
+  <data name="System" xml:space="preserve">
+    <value>システム</value>
+  </data>
+  <data name="Idle" xml:space="preserve">
+    <value>アイドル</value>
+  </data>
+  <data name="Days" xml:space="preserve">
+    <value>日</value>
+  </data>
+  <data name="Minutes" xml:space="preserve">
+    <value>分</value>
+  </data>
+  <data name="Hours" xml:space="preserve">
+    <value>時間</value>
+  </data>
+  <data name="InUse" xml:space="preserve">
+    <value>使用中</value>
+  </data>
+  <data name="Available" xml:space="preserve">
+    <value>利用可能</value>
+  </data>
+  <data name="PublicIP" xml:space="preserve">
+    <value>パブリック IP</value>
+  </data>
+  <data name="LocalIP" xml:space="preserve">
+    <value>ローカル IP</value>
+  </data>
+  <data name="Download" xml:space="preserve">
+    <value>ダウンロード</value>
+  </data>
+  <data name="Upload" xml:space="preserve">
+    <value>アップロード</value>
+  </data>
+  <data name="Of" xml:space="preserve">
+    <value>/</value>
+  </data>
+  <data name="ReadSpeed" xml:space="preserve">
+    <value>読み取り速度</value>
+  </data>
+  <data name="WriteSpeed" xml:space="preserve">
+    <value>書き込み速度</value>
+  </data>
+  <data name="Min" xml:space="preserve">
+    <value>分</value>
+  </data>
 </root>

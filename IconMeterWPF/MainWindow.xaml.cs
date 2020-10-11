@@ -26,8 +26,6 @@ namespace IconMeterWPF
 	/// </summary>
 	public partial class MainWindow : Window
 	{
-		private int tipOPenedCount = 0;
-
 		// constructor
 		public MainWindow()
 		{
@@ -53,6 +51,9 @@ namespace IconMeterWPF
 					CultureInfo.CurrentUICulture, true, true
 					);
 			cmbLanguage.ItemsSource = resourceSet;
+
+			MainTaskbarIcon.TrayPopupResolved.IsOpen = true;
+			MainTaskbarIcon.TrayPopupResolved.IsOpen = false;
 		}
 
 		// event handlers
@@ -116,7 +117,7 @@ namespace IconMeterWPF
 		}
 	}
 
-	public class BoolToVisibility : IValueConverter
+    public class BoolToVisibility : IValueConverter
 	{
 		public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
 		{
@@ -154,4 +155,31 @@ namespace IconMeterWPF
         }
     }
 
+	public class ToUpperValueConverter : IValueConverter
+	{
+		public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+		{
+			var str = value as string;
+			return string.IsNullOrEmpty(str) ? string.Empty : str.ToUpper();
+		}
+
+		public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+		{
+			return null;
+		}
+	}
+
+	public class ToLowerValueConverter : IValueConverter
+	{
+		public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+		{
+			var str = value as string;
+			return string.IsNullOrEmpty(str) ? string.Empty : str.ToLower();
+		}
+
+		public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+		{
+			return null;
+		}
+	}
 }

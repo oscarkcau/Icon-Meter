@@ -9,7 +9,7 @@
         xmlns:xcad="http://schemas.xceed.com/wpf/xaml/avalondock" x:Class="IconMeterWPF.MainWindow" 
         xmlns:properties="clr-namespace:IconMeterWPF.Properties"
         mc:Ignorable="d"
-        Title="Icon Meter" Height="399" Width="280" MinWidth="240" MinHeight="360" WindowStartupLocation="CenterScreen" Icon="icon.ico" Closing="Window_Closing" SizeToContent="WidthAndHeight">
+        Title="Icon Meter" Width="280" MinWidth="240" MinHeight="360" WindowStartupLocation="CenterScreen" Icon="icon.ico" Closing="Window_Closing" SizeToContent="WidthAndHeight">
     <Window.DataContext>
         <local:MainViewModel />
     </Window.DataContext>
@@ -76,6 +76,7 @@
             <RowDefinition Height="10"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>
@@ -140,15 +141,13 @@
         <Button x:Name="ButtonCancel" Grid.Column="2" MinHeight="24" Margin="4,4" Grid.Row="13" Click="ButtonCancel_Click"
                 Content="{x:Static properties:Resources.Cancel}"/>
 
-        <Label Grid.Column="0" Grid.Row="14" VerticalContentAlignment="Center" Margin="0,0,0,4"
-               Content="{x:Static properties:Resources.Language}"/>
-        <Label Grid.Column="1" Grid.Row="14" VerticalContentAlignment="Center" Margin="0,0,0,4"
-               Content="{x:Static properties:Resources.Language}"/>
-
-        <tb:TaskbarIcon x:Name="MainTaskbarIcon" 
-                        ToolTipText="{Binding Meter.MainTooltip}" 
+ 
+        <tb:TaskbarIcon x:Name="MainTaskbarIcon"  
                         DoubleClickCommand="{Binding StartTaskManager, Mode=OneWay}"  
                         ContextMenu="{DynamicResource SharedContextMenu}" Grid.ColumnSpan="2" Margin="0" Grid.RowSpan="2">
+            <tb:TaskbarIcon.TrayPopup>
+                <local:PopupWindow/>
+            </tb:TaskbarIcon.TrayPopup>
         </tb:TaskbarIcon>
 
         <tb:TaskbarIcon x:Name="LogicalProcessorsTaskbarIcon" 

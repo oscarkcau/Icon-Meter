@@ -177,4 +177,64 @@
   <data name="Close" xml:space="preserve">
     <value>关闭</value>
   </data>
+  <data name="Processes" xml:space="preserve">
+    <value>进程</value>
+  </data>
+  <data name="LoadAverage" xml:space="preserve">
+    <value>平均负载</value>
+  </data>
+  <data name="VirtualMemory" xml:space="preserve">
+    <value>虚拟内存</value>
+  </data>
+  <data name="Uptime" xml:space="preserve">
+    <value>运行时间</value>
+  </data>
+  <data name="User" xml:space="preserve">
+    <value>用戶</value>
+  </data>
+  <data name="System" xml:space="preserve">
+    <value>系统</value>
+  </data>
+  <data name="Idle" xml:space="preserve">
+    <value>闲置</value>
+  </data>
+  <data name="Days" xml:space="preserve">
+    <value>天</value>
+  </data>
+  <data name="Minutes" xml:space="preserve">
+    <value>分</value>
+  </data>
+  <data name="Hours" xml:space="preserve">
+    <value>小时</value>
+  </data>
+  <data name="InUse" xml:space="preserve">
+    <value>正在使用</value>
+  </data>
+  <data name="Available" xml:space="preserve">
+    <value>可使用</value>
+  </data>
+  <data name="PublicIP" xml:space="preserve">
+    <value>公开 IP</value>
+  </data>
+  <data name="LocalIP" xml:space="preserve">
+    <value>本地 IP</value>
+  </data>
+  <data name="Download" xml:space="preserve">
+    <value>下载</value>
+  </data>
+  <data name="Upload" xml:space="preserve">
+    <value>上载</value>
+  </data>
+  <data name="Of" xml:space="preserve">
+    <value>/</value>
+  </data>
+  <data name="ReadSpeed" xml:space="preserve">
+    <value>读取速度</value>
+  </data>
+  <data name="WriteSpeed" xml:space="preserve">
+    <value>写入速度</value>
+  </data>
+  <data name="Min" xml:space="preserve">
+    <value>分</value>
+  </data>
 </root>

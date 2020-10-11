@@ -1,0 +1,16 @@
+﻿<UserControl x:Class="IconMeterWPF.LineChart"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:IconMeterWPF"
+             mc:Ignorable="d" 
+             d:DesignHeight="50" d:DesignWidth="120"
+             >
+    <Canvas Name="MainCanvas" Background="Black">
+        <Grid Width="{Binding ActualWidth, ElementName=MainCanvas}" Height="{Binding ActualHeight, ElementName=MainCanvas}" Canvas.ZIndex="10">
+            <TextBlock Name="LabelTopValue" Text="0" Foreground="White" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="2,-2,0,0" Canvas.ZIndex="10"/>
+            <TextBlock Name="LabelBottomValue" Text="0" Foreground="White" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="2,2,0,0" Canvas.ZIndex="10"/>
+        </Grid>
+    </Canvas>
+</UserControl>

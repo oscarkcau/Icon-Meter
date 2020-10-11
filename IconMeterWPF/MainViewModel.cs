@@ -20,9 +20,11 @@ namespace IconMeterWPF
 		// private fields
 		string settingsFilename = "";
 		PerformanceMeter _meter;
+		PopupPerformanceMeter _popupMeter;
 
 		// properties
 		public PerformanceMeter Meter { get => _meter; private set => SetField(ref _meter, value); }
+		public PopupPerformanceMeter PopupMeter { get => _popupMeter; private set => SetField(ref _popupMeter, value); }
 		public ICommand StartTaskManager { get; private set; }
 
 		// constructors
@@ -41,6 +43,7 @@ namespace IconMeterWPF
 
 			// load settings from file and reset meter
 			Meter = new PerformanceMeter();
+			PopupMeter = new PopupPerformanceMeter(Meter);
 		}
 
 		// private methods

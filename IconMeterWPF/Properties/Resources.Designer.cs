@@ -70,6 +70,15 @@ namespace IconMeterWPF.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Available.
+        /// </summary>
+        public static string Available {
+            get {
+                return ResourceManager.GetString("Available", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cancel.
         /// </summary>
         public static string Cancel {
@@ -115,11 +124,29 @@ namespace IconMeterWPF.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Days.
+        /// </summary>
+        public static string Days {
+            get {
+                return ResourceManager.GetString("Days", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Disk.
         /// </summary>
         public static string Disk {
             get {
                 return ResourceManager.GetString("Disk", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Download.
+        /// </summary>
+        public static string Download {
+            get {
+                return ResourceManager.GetString("Download", resourceCulture);
             }
         }
         
@@ -133,11 +160,56 @@ namespace IconMeterWPF.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to hours.
+        /// </summary>
+        public static string Hours {
+            get {
+                return ResourceManager.GetString("Hours", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Idle.
+        /// </summary>
+        public static string Idle {
+            get {
+                return ResourceManager.GetString("Idle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to In use.
+        /// </summary>
+        public static string InUse {
+            get {
+                return ResourceManager.GetString("InUse", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Language:.
         /// </summary>
         public static string Language {
             get {
                 return ResourceManager.GetString("Language", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Load Average.
+        /// </summary>
+        public static string LoadAverage {
+            get {
+                return ResourceManager.GetString("LoadAverage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Local IP.
+        /// </summary>
+        public static string LocalIP {
+            get {
+                return ResourceManager.GetString("LocalIP", resourceCulture);
             }
         }
         
@@ -160,11 +232,38 @@ namespace IconMeterWPF.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to min.
+        /// </summary>
+        public static string Min {
+            get {
+                return ResourceManager.GetString("Min", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to minutes.
+        /// </summary>
+        public static string Minutes {
+            get {
+                return ResourceManager.GetString("Minutes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Network.
         /// </summary>
         public static string Network {
             get {
                 return ResourceManager.GetString("Network", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to of.
+        /// </summary>
+        public static string Of {
+            get {
+                return ResourceManager.GetString("Of", resourceCulture);
             }
         }
         
@@ -178,11 +277,38 @@ namespace IconMeterWPF.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Processes.
+        /// </summary>
+        public static string Processes {
+            get {
+                return ResourceManager.GetString("Processes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Product.
         /// </summary>
         public static string Product {
             get {
                 return ResourceManager.GetString("Product", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Public IP.
+        /// </summary>
+        public static string PublicIP {
+            get {
+                return ResourceManager.GetString("PublicIP", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Read speed.
+        /// </summary>
+        public static string ReadSpeed {
+            get {
+                return ResourceManager.GetString("ReadSpeed", resourceCulture);
             }
         }
         
@@ -223,6 +349,42 @@ namespace IconMeterWPF.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to System.
+        /// </summary>
+        public static string System {
+            get {
+                return ResourceManager.GetString("System", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Upload.
+        /// </summary>
+        public static string Upload {
+            get {
+                return ResourceManager.GetString("Upload", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Uptime.
+        /// </summary>
+        public static string Uptime {
+            get {
+                return ResourceManager.GetString("Uptime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to User.
+        /// </summary>
+        public static string User {
+            get {
+                return ResourceManager.GetString("User", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Use Vertical Bar.
         /// </summary>
         public static string UseVerticalBar {
@@ -237,6 +399,24 @@ namespace IconMeterWPF.Properties {
         public static string Version {
             get {
                 return ResourceManager.GetString("Version", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Virtual Memory.
+        /// </summary>
+        public static string VirtualMemory {
+            get {
+                return ResourceManager.GetString("VirtualMemory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Write speed.
+        /// </summary>
+        public static string WriteSpeed {
+            get {
+                return ResourceManager.GetString("WriteSpeed", resourceCulture);
             }
         }
     }
