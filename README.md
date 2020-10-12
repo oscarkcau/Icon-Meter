@@ -1,8 +1,11 @@
-# Icon-Meter
-Small notifyicon system performance meter for MS Windows.
 
-![](/IconMeter/images/capture.png)
-![](/capture2.png)
+[Home](readme.md) &emsp; [Downloads](downloads.md)  &emsp; [Screenshots](screenshots.md) &emsp; [Lincense](licensepage.md)
+
+Icon-Meter is a Small notifyicon system performance meter for MS Windows,
+running on Microsoft Windows 7 or above using the Microsoft .NET Framework.
+
+<img src="capture.png" width="300"/>
+<img src="capture2.png" width="433"/>
 
 I need a small and lightweight system performance meter for my windows tablet thus make a simple application with c#. It displays small notifyicons which visualize the current CPU, memory, disk and network loading in small bars.
 Icon Meter has the following features:

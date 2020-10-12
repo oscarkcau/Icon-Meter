@@ -1,5 +1,19 @@
+[Home](readme.md) &emsp; [Screenshots](screenshots.md) &emsp; [Lincense](licensepage.md)
+
 # LICENSE
 Icon-Meter is licensed under the MIT License.
+
+#### Permissions
+* Commercial use
+* Modification
+* Distribution
+* Private use
+#### Limitations
+* Liability
+* Warranty
+#### Conditions
+* License and copyright notice
+
 
 ## MIT License
 

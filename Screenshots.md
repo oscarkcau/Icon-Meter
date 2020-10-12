@@ -1,13 +1,15 @@
+[Home](readme.md) &emsp; [Screenshots](screenshots.md) &emsp; [Lincense](licensepage.md)
+
 # Screenshots
 Icon-Meter is a Small notifyicon system performance meter for MS Windows,
-running on Microsoft Windows 7 x64 or above using the Microsoft .NET Framework.
+running on Microsoft Windows 7 or above using the Microsoft .NET Framework.
 <br>
-<img src="capture.png"/>
+<img src="capture.png" width="300"/>
 
 Version 2.3 suppoerts popup window which displays more useful performance information including load average, IPs and disk read/write speed.
 <br> <br>
-<img src="capture2.png" width="433"/>
+<img src="capture2.png" width="433"/><img src="capture4.png" width="435"/>
 
-Setup window.
+Icon bar colors can be customized in setup winodw.
 <br>
 <img src="capture3.png" width="340"/>
