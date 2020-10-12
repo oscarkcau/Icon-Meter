@@ -1,4 +1,4 @@
-[Home](readme.md) &emsp; [Screenshots](screenshots.md) &emsp; [Lincense](licensepage.md)
+[Home](Readme.md) &emsp; [Downloads](downloads.md)  &emsp; [Screenshots](Screenshots.md) &emsp; [Lincense](licensepage.md)
 
 # Screenshots
 Icon-Meter is a Small notifyicon system performance meter for MS Windows,

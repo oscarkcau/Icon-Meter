@@ -1,5 +1,5 @@
 
-[Home](readme.md) &emsp; [Downloads](downloads.md)  &emsp; [Screenshots](screenshots.md) &emsp; [Lincense](licensepage.md)
+[Home](Readme.md) &emsp; [Downloads](downloads.md)  &emsp; [Screenshots](Screenshots.md) &emsp; [Lincense](licensepage.md)
 
 Icon-Meter is a Small notifyicon system performance meter for MS Windows,
 running on Microsoft Windows 7 or above using the Microsoft .NET Framework.

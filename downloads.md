@@ -1,4 +1,6 @@
-## Downloads & Installation
+[Home](Readme.md) &emsp; [Downloads](downloads.md)  &emsp; [Screenshots](Screenshots.md) &emsp; [Lincense](licensepage.md)
+
+# Downloads & Installation
 
 Icon-Meter runs on Microsoft Windows with the .NET Framework version.
 
