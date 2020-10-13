@@ -1,4 +1,4 @@
-[Home](Readme.md) &emsp; [Downloads](downloads.md)  &emsp; [Screenshots](Screenshots.md) &emsp; [Lincense](licensepage.md)
+[Home](https://oscarkcau.github.io/Icon-Meter/) &emsp; [Downloads](downloads.md)  &emsp; [Screenshots](Screenshots.md) &emsp; [Lincense](licensepage.md)
 
 # Downloads & Installation
 
