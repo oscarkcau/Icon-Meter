@@ -82,12 +82,14 @@ namespace IconMeterWPF
 		public class MovingAverage
 		{
 			private readonly int MaxCount;
-			private readonly Queue<uint> queue = new Queue<uint>();
+			private readonly Queue<uint> queue;
 			private long sum;
 
 			public MovingAverage(int maxCount)
 			{
+				if (maxCount <= 0) throw new ArgumentException();
 				this.MaxCount = maxCount;
+				this.queue = new Queue<uint>(maxCount);
 			}
 			public void AddValue(uint value)
 			{
@@ -107,7 +109,6 @@ namespace IconMeterWPF
 		}
 
 		// readonly private fields
-		//readonly DispatcherTimer timer = new DispatcherTimer();
 		readonly Timer timer = null;
 		readonly ManagementObjectSearcher processPerformanceData =
 			new ManagementObjectSearcher("root\\CIMV2",
@@ -142,6 +143,7 @@ namespace IconMeterWPF
 		PerformanceCounter privilegedTimeCounter, userTimeCounter;
 		List<PerformanceCounter[]> diskCounters = new List<PerformanceCounter[]>();
 		Boolean paused = true;
+		Boolean wmiSearchStarted = false;
 		int tick = 0;
 
 		// public properties
@@ -331,9 +333,11 @@ namespace IconMeterWPF
 			watcher.Query = query;
 			watcher.Start();
 
+			// initialize observer event handlers for collecting process informance asynchronously
 			processPerformanceObserver.Completed += new CompletedEventHandler(this.ProcessPerformanceSearcher_Completed);
 			processPerformanceObserver.ObjectReady += new ObjectReadyEventHandler(this.ProcessPerformanceSearcher_ObjectReady);
 
+			// start timer in a new thread
 			timer = new Timer(new TimerCallback(Timer_Tick), null, 5000, 1000);
 		}
 
@@ -372,7 +376,7 @@ namespace IconMeterWPF
 		}
 		private void ProcessPerformanceSearcher_ObjectReady(object sender, ObjectReadyEventArgs obj)
 		{
-			//try
+			try
 			{
 				// get process name
 				string name = obj.NewObject["Name"].ToString();
@@ -395,21 +399,29 @@ namespace IconMeterWPF
 				}
 				processPerformanceDIct[name] = (workingSet, percentProcessorTime);
 			}
-			//catch (Exception)
+			catch (Exception)
 			{
 			}
 		}
 		private void ProcessPerformanceSearcher_Completed(object sender, CompletedEventArgs obj)
 		{
-			// generate array of performance data of the first few processes with most processor usage
-			PerformanceSortedByProcessorTime = processPerformanceDIct.OrderBy(p => p.Value.Item2).Reverse().Take(5)
-				.Select(p => new ProcessPerformance(p.Key, p.Value.Item1, p.Value.Item2 / logicalProcessorCount)).ToArray();
+			try
+			{
+				// generate array of performance data of the first few processes with most processor usage
+				PerformanceSortedByProcessorTime = processPerformanceDIct.OrderBy(p => p.Value.Item2).Reverse().Take(5)
+					.Select(p => new ProcessPerformance(p.Key, p.Value.Item1, p.Value.Item2 / logicalProcessorCount)).ToArray();
 
-			// generate array of performance data of the first few processes with most memory usage
-			PerformanceSortedByWorkingSet = processPerformanceDIct.OrderBy(p => p.Value.Item1).Reverse().Take(5)
-				.Select(p => new ProcessPerformance(p.Key, p.Value.Item1, p.Value.Item2 / logicalProcessorCount)).ToArray();
+				// generate array of performance data of the first few processes with most memory usage
+				PerformanceSortedByWorkingSet = processPerformanceDIct.OrderBy(p => p.Value.Item1).Reverse().Take(5)
+					.Select(p => new ProcessPerformance(p.Key, p.Value.Item1, p.Value.Item2 / logicalProcessorCount)).ToArray();
 
-			processPerformanceDIct.Clear();
+				processPerformanceDIct.Clear();
+			}
+			finally
+			{
+				// remember to reset flag after the search is completed
+				wmiSearchStarted = false;
+			}
 		}
 
 		// private methods
@@ -561,7 +573,7 @@ namespace IconMeterWPF
 		void UpdateReadings_System()
 		{
 			// get the next processor queue length and system up timne readings from performance counters
-			try
+			//try
 			{
 				foreach (ManagementObject obj in systemPerformanceData.GetInstances())
 				{
@@ -582,7 +594,7 @@ namespace IconMeterWPF
 				LoadAverage15Min = processorQueueLength15Min.Average();
 				LastLoadAverage = new float[] { LoadAverage1Min, LoadAverage5Min, LoadAverage15Min };
 			}
-			catch (Exception) { }
+			// (Exception) { }
 		}
 		void UpdateReadings_IPs()
 		{
@@ -616,15 +628,21 @@ namespace IconMeterWPF
 		}
 		void UpdateReadings_Processes()
 		{
-			// clear process performance cache dictionary
-			processPerformanceDIct.Clear();
-
-			// retrieve and iterate process performance data asynchronously 
-			try
+			// avoid multiple threads working on wmi search
+			if (wmiSearchStarted == false)
 			{
-				processPerformanceData.Get(processPerformanceObserver);
+				try
+				{
+					wmiSearchStarted = true;
+					
+					// clear process performance cache dictionary
+					processPerformanceDIct.Clear();
+
+					// retrieve and iterate process performance data asynchronously 
+					processPerformanceData.Get(processPerformanceObserver);
+				}
+				catch (Exception) { }
 			}
-			catch (Exception) { }
 		}
 		void UpdateReadings_Disks()
 		{

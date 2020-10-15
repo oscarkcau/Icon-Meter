@@ -26,12 +26,6 @@ namespace IconMeterWPF
 			InitializeComponent();
 		}
 
-		private void Border_Unloaded(object sender, RoutedEventArgs e)
-		{
-			//var vm = this.DataContext as MainViewModel;
-			//vm.PopupMeter.Pause();
-		}
-
 		private void UserControl_Loaded(object sender, RoutedEventArgs e)
 		{
 			var vm = this.DataContext as MainViewModel;
