@@ -227,5 +227,14 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="images\wrench_orange.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="images\monitor.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="images\arrow_rotate_clockwise.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

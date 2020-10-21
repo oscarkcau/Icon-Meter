@@ -23,6 +23,7 @@ namespace IconMeterWPF
 		PopupPerformanceMeter _popupMeter;
 
 		// properties
+		public Window MainWindow { get; set; }
 		public PerformanceMeter Meter { get => _meter; private set => SetField(ref _meter, value); }
 		public PopupPerformanceMeter PopupMeter { get => _popupMeter; private set => SetField(ref _popupMeter, value); }
 		public ICommand StartTaskManager { get; private set; }

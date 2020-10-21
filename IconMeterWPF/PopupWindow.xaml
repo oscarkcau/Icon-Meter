@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:IconMeterWPF"
              xmlns:properties="clr-namespace:IconMeterWPF.Properties"
              mc:Ignorable="d" 
-             d:DesignHeight="420" d:DesignWidth="420" Loaded="UserControl_Loaded" Unloaded="UserControl_Unloaded">
+             d:DesignHeight="460" d:DesignWidth="420" Loaded="UserControl_Loaded" Unloaded="UserControl_Unloaded">
     <Border BorderThickness="1" CornerRadius="8" BorderBrush="DarkGray" Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}">
         <Grid>
             <Grid.Resources>
@@ -31,14 +31,14 @@
             </Grid.Resources>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
-            </Grid.RowDefinitions>
+             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
 
-            <StackPanel Grid.Column="0" Orientation="Vertical" Width="180" Margin="8,0,8,8">
+            <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Vertical" Width="180" Margin="8,0,8,8">
 
                 <Label HorizontalAlignment="Center" Margin="0,0,0,0" FontWeight="Bold" Foreground="RoyalBlue" 
                        Content="{Binding Source={x:Static properties:Resources.CPU},  Converter ={StaticResource ToUpperValue}}"/>
@@ -172,9 +172,9 @@
                 
             </StackPanel>
 
-            <Line Grid.Column="1" Style="{StaticResource verticalLineStyle}" HorizontalAlignment="Center" Width="4"/>
+            <Line Grid.Row="0" Grid.Column="1" Style="{StaticResource verticalLineStyle}" HorizontalAlignment="Center" Width="4"/>
 
-            <StackPanel Grid.Column="2" Orientation="Vertical" Width="180" Margin="8,0,8,8">
+            <StackPanel Grid.Row="0" Grid.Column="2" Orientation="Vertical" Width="180" Margin="8,0,8,8">
 
                 <Grid>
                     <Grid.ColumnDefinitions>
@@ -183,8 +183,9 @@
                     </Grid.ColumnDefinitions>
                     <Label Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Center" Margin="0,0,0,0" FontWeight="Bold" Foreground="RoyalBlue" 
                        Content="{Binding Source={x:Static properties:Resources.Memory},  Converter ={StaticResource ToUpperValue}}"/>
-                    <Image x:Name="ImageClose" Grid.Column="1" Source="images\cross.png" MouseUp="ImageClose_MouseUp" TouchUp="ImageClose_TouchUp"/>
+                    <Image x:Name="ImageClose" Grid.Column="1" Source="images\cross.png" Cursor="Hand" MouseUp="Image_MouseUp" TouchUp="Image_TouchUp"/>
                 </Grid>
+                
                 <local:LineChart x:Name="MemoryChart" Height="50" Margin="0,0,0,4" 
                                  NextData="{Binding PopupMeter.LastMemoryLoad}" 
                                  LineColors="{Binding PopupMeter.LoadAverageColors}"
@@ -225,8 +226,17 @@
                 </TextBlock>
 
                 <Line Style="{StaticResource horizontalLineStyle}" VerticalAlignment="Center" Height="2" Margin="-8,4,-8,0"/>
-                <Label HorizontalAlignment="Center" Margin="0,0,0,0" FontWeight="Bold" Foreground="RoyalBlue" 
+
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Center" Margin="0,0,0,0" FontWeight="Bold" Foreground="RoyalBlue" 
                        Content="{Binding Source={x:Static properties:Resources.Network},  Converter ={StaticResource ToUpperValue}}"/>
+                    <Image x:Name="ImageRefresh" Grid.Column="1" Source="images\arrow_rotate_clockwise.png" Cursor="Hand" MouseUp="Image_MouseUp" TouchUp="Image_TouchUp"/>
+                </Grid>
+
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
@@ -318,7 +328,17 @@
                     </StackPanel>
                 </WrapPanel>
 
+                <Line Style="{StaticResource horizontalLineStyle}" VerticalAlignment="Center" Height="2" Margin="-8,4,-8,0"/>
+
+
+                <StackPanel Orientation="Horizontal" FlowDirection="RightToLeft" Margin="0,4,0,0" >
+                    <Image x:Name="ImageConfig" Source="images\cog.png" Cursor="Hand" MouseUp="Image_MouseUp" TouchUp="Image_TouchUp"/>
+                    <Image x:Name="ImageTask" Source="images\monitor.png" Margin="4,0,0,0" Cursor="Hand" MouseUp="Image_MouseUp" TouchUp="Image_TouchUp"/>
+                    <Image x:Name="ImageControl" Source="images\wrench_orange.png" Margin="4,0,0,0" Cursor="Hand" MouseUp="Image_MouseUp" TouchUp="Image_TouchUp"/>
+                </StackPanel>
+
             </StackPanel>
+
         </Grid>
     </Border>
 </UserControl>

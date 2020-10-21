@@ -143,6 +143,7 @@
 
  
         <tb:TaskbarIcon x:Name="MainTaskbarIcon"  
+                        ToolTipText="{Binding Meter.MainTooltip}" 
                         DoubleClickCommand="{Binding StartTaskManager, Mode=OneWay}"  
                         ContextMenu="{DynamicResource SharedContextMenu}" Grid.ColumnSpan="2" Margin="0" Grid.RowSpan="2">
             <tb:TaskbarIcon.TrayPopup>

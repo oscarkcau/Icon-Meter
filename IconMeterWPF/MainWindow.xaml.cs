@@ -36,6 +36,8 @@ namespace IconMeterWPF
 
 			
 			var vm = this.DataContext as MainViewModel;
+
+			vm.MainWindow = this;
 	
 			// setup property changed listener for tray icon update
 			vm.Meter.PropertyChanged += Meter_PropertyChanged;
@@ -52,8 +54,10 @@ namespace IconMeterWPF
 					);
 			cmbLanguage.ItemsSource = resourceSet;
 
+			// ensure popup window will be loaded
 			MainTaskbarIcon.TrayPopupResolved.IsOpen = true;
 			MainTaskbarIcon.TrayPopupResolved.IsOpen = false;
+
 		}
 
 		// event handlers

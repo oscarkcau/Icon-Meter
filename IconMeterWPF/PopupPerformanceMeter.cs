@@ -144,6 +144,7 @@ namespace IconMeterWPF
 		List<PerformanceCounter[]> diskCounters = new List<PerformanceCounter[]>();
 		Boolean paused = true;
 		Boolean wmiSearchStarted = false;
+		Boolean ipUpdateStarted = false;
 		int tick = 0;
 
 		// public properties
@@ -509,7 +510,7 @@ namespace IconMeterWPF
 			UpdateReadings_System();
 
 			// update IPs per every 10 seconds
-			if (tick % 10 == 1)
+			if (tick % 60 == 1)
 			{
 				UpdateReadings_IPs();
 			}
@@ -661,6 +662,10 @@ namespace IconMeterWPF
 		}
 
 		// public static method
+		public void UpdateIPs()
+		{
+			UpdateReadings_IPs();
+		}
 		public static string GetFormattedSize(ulong size, bool KB=false)
 		{
 			// convret size value to string with unit

@@ -36,7 +36,7 @@ namespace IconMeterWPF
 		float _lastNetworkReceive = 0;
 		float _lastNetworkSend = 0;
 		float[] logicalProcessorUsage = null;
-		string _logicalProcessorsTooltip;
+		string _mainTooltip, _logicalProcessorsTooltip;
 		Icon _defaultTrayIcon, _mainTrayIcon, _logicalProcessorsTrayIcon;
 		IEnumerable<float> _lastNetworkSpeed;
 
@@ -47,6 +47,8 @@ namespace IconMeterWPF
 		readonly Queue<float> previousNetwordReceive = new Queue<float>();
 		readonly Queue<float> previousNetwordSend = new Queue<float>();
 		readonly int systemTrayIconSize;
+		const string upArrow = "\u25b2";
+		const string downArrow = "\u25bc";
 
 		// public propertie
 		public Icon DefaultTrayIcon {
@@ -56,6 +58,10 @@ namespace IconMeterWPF
 		public Icon MainTrayIcon {
 			get => _mainTrayIcon;
 			set => SetField(ref _mainTrayIcon, value);
+		}
+		public string MainTooltip {
+			get => _mainTooltip;
+			set => SetField(ref _mainTooltip, value);
 		}
 		public Icon LogicalProcessorsTrayIcon {
 			get => _logicalProcessorsTrayIcon;
@@ -128,6 +134,7 @@ namespace IconMeterWPF
 			if (MainTrayIcon != null && MainTrayIcon != DefaultTrayIcon)
 				DestroyIcon(MainTrayIcon.Handle);
 			MainTrayIcon = BuildMainNotifyIcon();
+			MainTooltip = BuildMainTooltip();
 
 			// update icon image and tooltip of logical processor tray icon if it is in used
 			if (settings.ShowLogicalProcessorsUsage)
@@ -371,6 +378,39 @@ namespace IconMeterWPF
 			shadowPen.Dispose();
 
 			return System.Drawing.Icon.FromHandle(bmp.GetHicon());
+		}
+		string BuildMainTooltip()
+		{
+			// build notify icon's tooltip text
+
+			// detemine unit for network flow readings
+			float nr = _lastNetworkReceive / 1024;
+			float ns = _lastNetworkSend / 1024;
+			string unit = "KBps";
+			if (nr > 1024 || ns > 1024)
+			{
+				nr = nr / 1024;
+				ns = ns / 1024;
+				unit = "MBps";
+			}
+
+			// build the text
+			StringBuilder sb = new StringBuilder();
+
+			if (settings.ShowCpuUsage) sb.AppendLine($"{Properties.Resources.CPU} {Math.Round(lastCpuUsage)}%");
+			if (settings.ShowMemoryUsage) sb.AppendLine($"{Properties.Resources.Memory} {Math.Round(lastMemoryUsage)}%");
+			if (settings.ShowDiskUsage) sb.AppendLine($"{Properties.Resources.Disk} {Math.Round(lastDiskUsage)}%");
+			if (settings.ShowNetworkUsage)
+			{
+				sb.Append($"{Properties.Resources.Network} {downArrow}:" + nr.ToString("0.0"));
+				sb.Append($" {upArrow}:" + ns.ToString("0.0") + " " + unit);
+			}
+
+			// make sure the tooltip text has at most 128 characters
+			if (sb.Length >= 128) sb.Remove(127, sb.Length - 127);
+
+			// return the text value
+			return sb.ToString().TrimEnd();
 		}
 		string BuildLogicalProcessorTooltip()
 		{

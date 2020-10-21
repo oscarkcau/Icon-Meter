@@ -38,16 +38,58 @@ namespace IconMeterWPF
 			vm.PopupMeter.Pause();
 		}
 
-		private void ImageClose_MouseUp(object sender, MouseButtonEventArgs e)
+		private void Image_MouseUp(object sender, MouseButtonEventArgs e)
 		{
-			var p = this.Parent as Popup;
-			p.IsOpen = false;
+			var img = sender as Image;
+			ImagePressed(img);
 		}
 
-		private void ImageClose_TouchUp(object sender, TouchEventArgs e)
+		private void Image_TouchUp(object sender, TouchEventArgs e)
 		{
-			var p = this.Parent as Popup;
-			p.IsOpen = false;
+			var img = sender as Image;
+			ImagePressed(img);
+		}
+
+		private void ImagePressed(Image sender)
+		{
+			if (sender == this.ImageClose)
+			{
+				// hide popup window
+				var p = this.Parent as Popup;
+				p.IsOpen = false;
+			}
+
+			if (sender == this.ImageConfig)
+			{
+				// pause update readings
+				var vm = this.DataContext as MainViewModel;
+				vm.PauseUpdate();
+
+				// hide popup window
+				var p = this.Parent as Popup;
+				p.IsOpen = false;
+
+				// show setting window
+				vm.MainWindow.Show();
+			}
+
+			if (sender == this.ImageTask)
+			{
+				// start task manager
+				System.Diagnostics.Process.Start("taskmgr");
+			}
+
+			if (sender == this.ImageControl)
+			{
+				// start control panel
+				System.Diagnostics.Process.Start("control");
+			}
+
+			if (sender == this.ImageRefresh)
+			{
+				var vm = this.DataContext as MainViewModel;
+				vm.PopupMeter.UpdateIPs();
+			}
 		}
 	}
 }
