@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+	<Product Id="DA801643-99E7-4050-A222-25AB37D119B7" Name="Icon Meter" Language="1033" 
+           Version="2.3.1.0" Manufacturer="Maybe Useless Software" 
+           UpgradeCode="6b084ccf-40d1-45cc-a9d3-15a2f34459f0">
+		<Package Id='*' InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
+
+		<MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
+    <Media Id="1" Cabinet="product.cab" EmbedCab="yes"/>
+
+    <Feature Id="ProductFeature" Title="IconMeterWixSetup64" Level="1">
+			<ComponentGroupRef Id="ProductComponents" />
+		</Feature>
+	</Product>
+
+	<Fragment>
+		<Directory Id="TARGETDIR" Name="SourceDir">
+			<Directory Id="ProgramFilesFolder">
+        <Directory Id="SoftwareHouseFolder" Name="Maybe Useless Software">
+          <Directory Id="INSTALLFOLDER" Name="Icon Meter" />
+				</Directory>
+			</Directory>
+    </Directory>
+  </Fragment>
+
+	<Fragment>
+		<ComponentGroup Id="ProductComponents" Directory="INSTALLFOLDER">
+			<Component Id="ProductComponent" Guid="11B0CB34-A801-439A-B475-5CFA36ACC19C">
+        <File Source="$(var.IconMeterWPF.TargetDir)\Icon Meter.exe" />
+			</Component>
+		</ComponentGroup>
+	</Fragment>
+</Wix>

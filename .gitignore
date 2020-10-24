@@ -12,3 +12,5 @@
 /IconMeterWPF/bin
 /IconMeterWPF/obj
 /packages
+/IconMeterWixSetup64/bin/Release
+/IconMeterWixSetup64/obj/Release

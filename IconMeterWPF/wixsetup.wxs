@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+    <Fragment>
+        <DirectoryRef Id="IconMeterWPF.Binaries">
+            <Component Id="cmp8ABE38E57EF4E3645A4AEC1A58354AD6" Guid="*">
+                <File Id="filBC9D2FEF7F865EFD382EAE8169F13334" Source="$(var.IconMeterWPF.TargetDir)\Icon Meter.exe" />
+            </Component>
+            <Component Id="cmp642CEF86A78E8BBCB5011C27863121EF" Guid="*">
+                <File Id="fil8B30C1CCF036BAC46CB8B20111309E4E" Source="$(var.IconMeterWPF.TargetDir)\Icon Meter.exe.config" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <ComponentGroup Id="IconMeterWPF.Binaries">
+            <ComponentRef Id="cmp8ABE38E57EF4E3645A4AEC1A58354AD6" />
+            <ComponentRef Id="cmp642CEF86A78E8BBCB5011C27863121EF" />
+        </ComponentGroup>
+    </Fragment>
+</Wix>
