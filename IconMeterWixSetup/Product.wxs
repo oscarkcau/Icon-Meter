@@ -1,19 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
-  <Product Id="DA801643-99E7-4050-A222-25AB37D119B7" Name="Icon Meter 2.3.1" Language="1033"
-           Version="2.3.1.0" Manufacturer="Maybe Useless Software"
-           UpgradeCode="6b084ccf-40d1-45cc-a9d3-15a2f34459f0">
-    <Package Id='*' InstallerVersion="200" Compressed="yes" InstallScope="perMachine" Platform="x64" />
 
-    <MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
+<?define ProductName = "Icon Meter" ?>
+<?define Version = "2.3.1" ?>
+<?define FullVersion = "2.3.1.0" ?>
+
+<?if $(var.Platform) = x86 ?>
+  <?define TargetPlatform = "x86" ?>
+  <?define Win64 = "no" ?>
+  <?define PlatformProgramFilesFolder = "ProgramFilesFolder" ?>
+<?else ?>
+  <?define TargetPlatform = "x64" ?>
+  <?define Win64 = "yes" ?>
+  <?define PlatformProgramFilesFolder = "ProgramFiles64Folder" ?>
+<?endif ?>
+
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+
+  
+  <Product Id="DA801643-99E7-4050-A222-25AB37D119B7" Name="$(var.ProductName) $(var.Version) $(var.Platform)" Language="1033"
+           Version="$(var.FullVersion)" Manufacturer="Maybe Useless Software"
+           UpgradeCode="6b084ccf-40d1-45cc-a9d3-15a2f34459f0">
+    <Package Id='*' InstallerVersion="200" Compressed="yes" InstallScope="perMachine" Platform="$(var.TargetPlatform)" />
+
+    <MajorUpgrade DowngradeErrorMessage="A newer version of $(var.ProductName) is already installed." />
     <Media Id="1" Cabinet="product.cab" EmbedCab="yes"/>
     
     <Property Id="DISABLEADVTSHORTCUTS" Value="1" />
-    
     <Property Id="ARPPRODUCTICON" Value="icon.exe" />
 
     <UIRef Id="WixUI_Minimal" />
-
     <WixVariable Id="WixUILicenseRtf" Value="licence.rtf" />
     <WixVariable Id="WixUIBannerBmp" Value="banner.bmp" />
     <WixVariable Id="WixUIDialogBmp" Value="dialog.bmp" />
@@ -25,9 +40,9 @@
 
   <Fragment>
     <Directory Id="TARGETDIR" Name="SourceDir">
-      <Directory Id="ProgramFiles64Folder">
+      <Directory Id="$(var.PlatformProgramFilesFolder)">
         <Directory Id="SoftwareHouseFolder" Name="Maybe Useless Software">
-          <Directory Id="INSTALLFOLDER" Name="Icon Meter" />
+          <Directory Id="INSTALLFOLDER" Name="$(var.ProductName)" />
         </Directory>
       </Directory>
 
@@ -47,48 +62,48 @@
   
   <Fragment>
     <DirectoryRef Id="INSTALLFOLDER">
-      <Component Id="cmpBE3C1D05C7C90455322C9F819A57A07A" Guid="*" Win64="yes">
+      <Component Id="cmpBE3C1D05C7C90455322C9F819A57A07A" Guid="*" Win64="$(var.Win64)">
         <File Id="filE7C602A91344AD969255F20A2CA7411A" KeyPath="yes" Source="$(var.HarvestPath)\Hardcodet.Wpf.TaskbarNotification.dll" />
       </Component>
-      <Component Id="cmp80C63117D9AED639E1384839F4EA0F03" Guid="*" Win64="yes">
+      <Component Id="cmp80C63117D9AED639E1384839F4EA0F03" Guid="*" Win64="$(var.Win64)">
         <File Id="filA0129B89855923C7C9325A5442E752DA" KeyPath="yes" Source="$(var.HarvestPath)\Icon Meter.exe">
-          <Shortcut Id="StartmenuShortcut" Directory="ApplicationProgramsFolder" Name="Icon Meter"
+          <Shortcut Id="StartmenuShortcut" Directory="ApplicationProgramsFolder" Name="$(var.ProductName)"
                       WorkingDirectory='INSTALLDIR' Icon='icon.exe' IconIndex="0" Advertise="yes" />
-          <Shortcut Id="DesktopShortcut" Directory="DesktopFolder" Name="Icon Meter"
+          <Shortcut Id="DesktopShortcut" Directory="DesktopFolder" Name="$(var.ProductName)"
               WorkingDirectory='INSTALLDIR' Icon='icon.exe' IconIndex="0" Advertise="yes" />
         </File>
         <RemoveFolder Id="RemovingProgramMenuFolder" On="uninstall" Directory="ApplicationProgramsFolder"/>
       </Component>
-      <Component Id="cmp169C44EC1BF5C7DE5D16CC178FC4ABA2" Guid="*" Win64="yes">
+      <Component Id="cmp169C44EC1BF5C7DE5D16CC178FC4ABA2" Guid="*" Win64="$(var.Win64)">
         <File Id="fil975877AB13C26124468348E4855C04FE" KeyPath="yes" Source="$(var.HarvestPath)\Icon Meter.exe.config" />
       </Component>
-      <Component Id="cmpB5AC76F2952CC9DFFEAE55F2225097DA" Guid="*" Win64="yes">
+      <Component Id="cmpB5AC76F2952CC9DFFEAE55F2225097DA" Guid="*" Win64="$(var.Win64)">
         <File Id="fil6AA069CB067F41A6BD8EE397FDA8959D" KeyPath="yes" Source="$(var.HarvestPath)\Xceed.Wpf.AvalonDock.dll" />
       </Component>
-      <Component Id="cmp2A23BAA07F6AEF1BAC39F167324A8F3A" Guid="*" Win64="yes">
+      <Component Id="cmp2A23BAA07F6AEF1BAC39F167324A8F3A" Guid="*" Win64="$(var.Win64)">
         <File Id="filBC3F4C1166E0142D06933250742EA7C2" KeyPath="yes" Source="$(var.HarvestPath)\Xceed.Wpf.AvalonDock.Themes.Aero.dll" />
       </Component>
-      <Component Id="cmpD2BBFD2B0371F68A1185CC644A1BEA64" Guid="*" Win64="yes">
+      <Component Id="cmpD2BBFD2B0371F68A1185CC644A1BEA64" Guid="*" Win64="$(var.Win64)">
         <File Id="fil4DFF05E2DF20649A72E2FB5FBC3CBA2E" KeyPath="yes" Source="$(var.HarvestPath)\Xceed.Wpf.AvalonDock.Themes.Metro.dll" />
       </Component>
-      <Component Id="cmpFFB651FFCBD1B293A7B0FE113C056F8F" Guid="*" Win64="yes">
+      <Component Id="cmpFFB651FFCBD1B293A7B0FE113C056F8F" Guid="*" Win64="$(var.Win64)">
         <File Id="filEFDE58C5ABCFCB31E073211560F487D2" KeyPath="yes" Source="$(var.HarvestPath)\Xceed.Wpf.AvalonDock.Themes.VS2010.dll" />
       </Component>
-      <Component Id="cmpC85BD7478E073743A39F17DF06865203" Guid="*" Win64="yes">
+      <Component Id="cmpC85BD7478E073743A39F17DF06865203" Guid="*" Win64="$(var.Win64)">
         <File Id="fil3DAD59899DDA1B0FCEDF95F84CB3C475" KeyPath="yes" Source="$(var.HarvestPath)\Xceed.Wpf.Toolkit.dll" />
       </Component>
       <Directory Id="dir491F4D4E37AD7E1BE6B3D0E7F3A72AD8" Name="ja-JP">
-        <Component Id="cmpDF1E81AEB47B4C82F152D486F36FAFFF" Guid="*" Win64="yes">
+        <Component Id="cmpDF1E81AEB47B4C82F152D486F36FAFFF" Guid="*" Win64="$(var.Win64)">
           <File Id="fil75B22287C34CC31F43C50C0C3CCFF699" KeyPath="yes" Source="$(var.HarvestPath)\ja-JP\Icon Meter.resources.dll" />
         </Component>
       </Directory>
       <Directory Id="dirAFDFAB8989A0B2FA3B5E468F44862509" Name="zh">
-        <Component Id="cmp3466A0A48F797E77D91459AD81D03DDD" Guid="*" Win64="yes">
+        <Component Id="cmp3466A0A48F797E77D91459AD81D03DDD" Guid="*" Win64="$(var.Win64)">
           <File Id="filF164E6871886E8CE8DDF5C90907B3767" KeyPath="yes" Source="$(var.HarvestPath)\zh\Icon Meter.resources.dll" />
         </Component>
       </Directory>
       <Directory Id="dir8C5E37FA87D1897FFB78337F53EB198C" Name="zh-CN">
-        <Component Id="cmp1D393B4354284F5E2B8AE4B4EE79A6BE" Guid="*" Win64="yes">
+        <Component Id="cmp1D393B4354284F5E2B8AE4B4EE79A6BE" Guid="*" Win64="$(var.Win64)">
           <File Id="filF919575B5A80A48599D07E3A96FC686C" KeyPath="yes" Source="$(var.HarvestPath)\zh-CN\Icon Meter.resources.dll" />
         </Component>
       </Directory>
