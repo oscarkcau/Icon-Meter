@@ -14,3 +14,5 @@
 /packages
 /IconMeterWixSetup64/bin/Release
 /IconMeterWixSetup64/obj/Release
+/IconMeterWixSetup64/bin/Debug
+/IconMeterWixSetup64/obj/Debug
