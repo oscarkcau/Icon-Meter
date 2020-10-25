@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
-  <Product Id="DA801643-99E7-4050-A222-25AB37D119B7" Name="Icon Meter" Language="1033"
+  <Product Id="DA801643-99E7-4050-A222-25AB37D119B7" Name="Icon Meter 2.3.1" Language="1033"
            Version="2.3.1.0" Manufacturer="Maybe Useless Software"
            UpgradeCode="6b084ccf-40d1-45cc-a9d3-15a2f34459f0">
     <Package Id='*' InstallerVersion="200" Compressed="yes" InstallScope="perMachine" Platform="x64" />
@@ -15,7 +15,9 @@
     <UIRef Id="WixUI_Minimal" />
 
     <WixVariable Id="WixUILicenseRtf" Value="licence.rtf" />
-
+    <WixVariable Id="WixUIBannerBmp" Value="banner.bmp" />
+    <WixVariable Id="WixUIDialogBmp" Value="dialog.bmp" />
+    
     <Feature Id="ProductFeature" Title="IconMeterWixSetup64" Level="1">
       <ComponentGroupRef Id="ProductComponents" />
     </Feature>
