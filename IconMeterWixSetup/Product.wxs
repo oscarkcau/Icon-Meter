@@ -1,15 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?define ProductName = "Icon Meter" ?>
-<?define Version = "2.3.1" ?>
-<?define FullVersion = "2.3.1.0" ?>
 
 <?if $(var.Platform) = x86 ?>
-  <?define TargetPlatform = "x86" ?>
   <?define Win64 = "no" ?>
   <?define PlatformProgramFilesFolder = "ProgramFilesFolder" ?>
 <?else ?>
-  <?define TargetPlatform = "x64" ?>
   <?define Win64 = "yes" ?>
   <?define PlatformProgramFilesFolder = "ProgramFiles64Folder" ?>
 <?endif ?>
@@ -17,10 +13,10 @@
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
 
   
-  <Product Id="DA801643-99E7-4050-A222-25AB37D119B7" Name="$(var.ProductName) $(var.Version) $(var.Platform)" Language="1033"
-           Version="$(var.FullVersion)" Manufacturer="Maybe Useless Software"
+  <Product Id="DA801643-99E7-4050-A222-25AB37D119B7" Name="$(var.ProductName) $(var.ShortVersionNumber) $(var.Platform)" Language="1033"
+           Version="$(var.VersionNumber)" Manufacturer="Maybe Useless Software"
            UpgradeCode="6b084ccf-40d1-45cc-a9d3-15a2f34459f0">
-    <Package Id='*' InstallerVersion="200" Compressed="yes" InstallScope="perMachine" Platform="$(var.TargetPlatform)" />
+    <Package Id='*' InstallerVersion="200" Compressed="yes" InstallScope="perMachine" Platform="$(var.Platform)" />
 
     <MajorUpgrade DowngradeErrorMessage="A newer version of $(var.ProductName) is already installed." />
     <Media Id="1" Cabinet="product.cab" EmbedCab="yes"/>

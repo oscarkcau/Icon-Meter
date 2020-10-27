@@ -6,13 +6,13 @@
     <ProductVersion>3.10</ProductVersion>
     <ProjectGuid>fbdd1caf-bb19-45fe-9852-2276bfaea44b</ProjectGuid>
     <SchemaVersion>2.0</SchemaVersion>
-    <OutputName>IconMeterSetup_$(Platform)</OutputName>
+    <OutputName>IconMeterSetup</OutputName>
     <OutputType>Package</OutputType>
     <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
     <Name>IconMeterWixSetup</Name>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
-    <OutputPath>bin\$(Platform)\$(Configuration)\</OutputPath>
+    <OutputPath>bin\$(Configuration)\</OutputPath>
     <IntermediateOutputPath>obj\$(Configuration)\</IntermediateOutputPath>
     <DefineConstants>Debug</DefineConstants>
   </PropertyGroup>
@@ -68,6 +68,40 @@
 	</Target>
 	-->
   <Target Name="BeforeBuild">
+    <!-- Get assembly infomation -->
+    <GetAssemblyIdentity AssemblyFiles="..\IconMeterWPF\bin\$(Configuration)\Icon Meter.exe">
+      <Output TaskParameter="Assemblies" ItemName="AsmInfo" />
+    </GetAssemblyIdentity>
+
+    <!-- Create the MSBuild property $(VersionNumber) -->
+    <CreateProperty Value="%(AsmInfo.Version)">
+      <Output TaskParameter="Value" PropertyName="VersionNumber" />
+    </CreateProperty>
+
+    <!-- Create the MSBuild property $(ShortVersionNumber) -->
+    <CreateProperty Value="$([System.Version]::Parse(%(AsmInfo.Version)).ToString(3))">
+      <Output TaskParameter="Value" PropertyName="ShortVersionNumber" />
+    </CreateProperty>
+
+    <!-- Create the WiX preprocessor variable $(var.VersionNumber) -->
+    <CreateProperty Value="$(DefineConstants);VersionNumber=$(VersionNumber)">
+      <Output TaskParameter="Value" PropertyName="DefineConstants" />
+    </CreateProperty>
+
+    <!-- Create the WiX preprocessor variable $(var.ShortVersionNumber) -->
+    <CreateProperty Value="$(DefineConstants);ShortVersionNumber=$(ShortVersionNumber)">
+      <Output TaskParameter="Value" PropertyName="DefineConstants" />
+    </CreateProperty>
+
+    <!-- Harvest output folder -->
     <HeatDirectory Directory="..\IconMeterWPF\bin\$(Configuration)" PreprocessorVariable="var.HarvestPath" OutputFile="HeatGeneratedFileList.wxs" ComponentGroupName="HeatGenerated" DirectoryRefId="INSTALLFOLDER" AutogenerateGuids="true" ToolPath="$(WixToolPath)" SuppressFragments="true" SuppressRegistry="true" SuppressRootDirectory="true" />
   </Target>
+
+  
+  <Target Name="AfterBuild">
+
+    <Copy SourceFiles=".\bin\$(Configuration)\$(OutputName).msi" DestinationFiles=".\bin\$(Configuration)\$(OutputName)_$(ShortVersionNumber)_$(Platform).msi" />
+    <Delete Files=".\bin\$(Configuration)\$(OutputName).msi" />
+  </Target>
+
 </Project>
