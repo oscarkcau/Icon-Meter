@@ -3,9 +3,11 @@
 <?define ProductName = "Icon Meter" ?>
 
 <?if $(var.Platform) = x86 ?>
+  <?define UpgradCodeGUID = "1FB730BE-6EDE-41F7-BC5D-C2961B546BB2" ?>  
   <?define Win64 = "no" ?>
   <?define PlatformProgramFilesFolder = "ProgramFilesFolder" ?>
 <?else ?>
+  <?define UpgradCodeGUID = "EEB9EF42-19B7-4DBB-ADAD-A543BAD596CB" ?>  
   <?define Win64 = "yes" ?>
   <?define PlatformProgramFilesFolder = "ProgramFiles64Folder" ?>
 <?endif ?>
@@ -13,9 +15,9 @@
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
 
   
-  <Product Id="DA801643-99E7-4050-A222-25AB37D119B7" Name="$(var.ProductName) $(var.ShortVersionNumber) $(var.Platform)" Language="1033"
-           Version="$(var.VersionNumber)" Manufacturer="Maybe Useless Software"
-           UpgradeCode="6b084ccf-40d1-45cc-a9d3-15a2f34459f0">
+  <Product Id="*" Name="$(var.ProductName) $(var.ShortVersionNumber) $(var.Platform)" Language="1033"
+           Version="$(var.ShortVersionNumber)" Manufacturer="Maybe Useless Software"
+           UpgradeCode="$(var.UpgradCodeGUID)">
     <Package Id='*' InstallerVersion="200" Compressed="yes" InstallScope="perMachine" Platform="$(var.Platform)" />
 
     <MajorUpgrade DowngradeErrorMessage="A newer version of $(var.ProductName) is already installed." />
