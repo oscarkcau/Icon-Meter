@@ -55,79 +55,49 @@ namespace IconMeterWPF
                 new PropertyMetadata("", new PropertyChangedCallback(OnDependencyPropertyChanged)));
         public IEnumerable<float> NextData
         {
-            set
-            {
-                SetValue(NextDataDependencyProperty, value);
-            }
-            get
-            {
-                return (IEnumerable<float>)GetValue(NextDataDependencyProperty);
-            }
+            set => SetValue(NextDataDependencyProperty, value);
+            get => (IEnumerable<float>)GetValue(NextDataDependencyProperty);
         }
         public IEnumerable<Color> LineColors
         {
-            set
-            {
-                SetValue(LineColorsDependencyProperty, value);
-            }
-            get
-            {
-                return (IEnumerable<Color>)GetValue(LineColorsDependencyProperty);
-            }
+            set => SetValue(LineColorsDependencyProperty, value);
+            get => (IEnumerable<Color>)GetValue(LineColorsDependencyProperty);
         }
         public float MaxValue
         {
-            set
-            {
-                SetValue(MaxValueDependencyProperty, value);
-            }
-            get
-            {
-                return (float)GetValue(MaxValueDependencyProperty);
-            }
+            set => SetValue(MaxValueDependencyProperty, value);
+            get => (float)GetValue(MaxValueDependencyProperty);
         }
         public bool IsAutoAdjust
         {
-            set
-            {
-                SetValue(IsAutoAdjustDependencyProperty, value);
-            }
-            get
-            {
-                return (bool)GetValue(IsAutoAdjustDependencyProperty);
-            }
+            set => SetValue(IsAutoAdjustDependencyProperty, value);
+            get => (bool)GetValue(IsAutoAdjustDependencyProperty);
         }
         public DisplayStyleEnum DisplayStyle
        {
-            set
-            {
-                SetValue(DisplayStyleDependencyProperty, value);
-            }
-            get
-            {
-                return (DisplayStyleEnum) GetValue(DisplayStyleDependencyProperty);
-            }
+            set => SetValue(DisplayStyleDependencyProperty, value);
+            get => (DisplayStyleEnum) GetValue(DisplayStyleDependencyProperty);
         }
         public string DisplayUnit {
-            set
-            {
-                SetValue(DisplayUnitDependencyProperty, value);
-            }
-            get
-            {
-                return (string)GetValue(DisplayUnitDependencyProperty);
-            }
+            set => SetValue(DisplayUnitDependencyProperty, value);
+            get => (string)GetValue(DisplayUnitDependencyProperty);
         }
 
         // public properties
-        public float AdjustedMaxValue
+        private float AdjustedMaxValue
 		{
             get => _adjustedMaxValue;
-            set => SetField(ref _adjustedMaxValue, value);
+            set { 
+                SetField(ref _adjustedMaxValue, value);
+                LabelTopValue.Text = GetFormattedSize(_adjustedMaxValue); 
+            }
         }
         public float AdjustedMaxValue2 {
             get => _adjustedMaxValue2;
-            set => SetField(ref _adjustedMaxValue2, value);
+            set {
+                SetField(ref _adjustedMaxValue2, value);
+                LabelBottomValue.Text = GetFormattedSize(_adjustedMaxValue2);
+            }
         }
 
         // constructor
@@ -136,8 +106,6 @@ namespace IconMeterWPF
             InitializeComponent();
 
             AdjustedMaxValue = AdjustedMaxValue2 = MaxValue;
-
-            LabelTopValue.Text = GetFormattedSize(AdjustedMaxValue);
             LabelTopValue.Visibility = (IsAutoAdjust) ? Visibility.Visible : Visibility.Hidden;
             LabelBottomValue.Visibility = (IsAutoAdjust) ? Visibility.Visible : Visibility.Hidden;
 
@@ -157,14 +125,13 @@ namespace IconMeterWPF
             else if (e.Property == LineColorsDependencyProperty) OnLineColorsChanged(e);
             else if (e.Property == MaxValueDependencyProperty)
             {
-                AdjustedMaxValue = MaxValue;
-                LabelTopValue.Text = GetFormattedSize(AdjustedMaxValue);
+                AdjustedMaxValue = AdjustedMaxValue2 = MaxValue;
             }
             else if (e.Property == IsAutoAdjustDependencyProperty)
             {
                 LabelTopValue.Visibility = ((bool)e.NewValue) ? Visibility.Visible : Visibility.Hidden;
                 LabelBottomValue.Visibility = ((bool)e.NewValue) ? Visibility.Visible : Visibility.Hidden;
-            }
+            }                
         }
         private void OnNextDataChanged(DependencyPropertyChangedEventArgs e)
         {
@@ -191,9 +158,6 @@ namespace IconMeterWPF
                 {
                     this.brushes.Add(new SolidColorBrush(c));
 
-                    //byte r = c.R > 100 ? (byte)(c.R - 100) : (byte)0;
-                    //byte g = c.G > 100 ? (byte)(c.G - 100) : (byte)0;
-                    //byte b = c.B > 100 ? (byte)(c.B - 100) : (byte)0;
                     byte r = (byte)(c.R / 2);
                     byte g = (byte)(c.G / 2);
                     byte b = (byte)(c.B / 2);
@@ -247,6 +211,8 @@ namespace IconMeterWPF
         }
         private void AdjustMaxValue()
 		{
+            AdjustedMaxValue2 = 0;
+
             float existingMaxValue = float.MinValue;
             foreach (var child in MainCanvas.Children)
             {
@@ -267,7 +233,6 @@ namespace IconMeterWPF
             if (m != AdjustedMaxValue)
 			{
                 AdjustedMaxValue = m;
-                LabelTopValue.Text = GetFormattedSize(AdjustedMaxValue);
 
                 foreach (var child in MainCanvas.Children)
                 {
@@ -441,24 +406,20 @@ namespace IconMeterWPF
                 }
             }
 
-            float m1 = MaxValue;
-            float m2 = MaxValue;
             if (existingMaxValue1 > this.MaxValue)
             {
-                m1 = (float)Math.Ceiling(existingMaxValue1 / MaxValue) * MaxValue;
-                if (m1 != AdjustedMaxValue)
+                float m = (float)Math.Ceiling(existingMaxValue1 / MaxValue) * MaxValue;
+                if (m != AdjustedMaxValue)
 				{
-                    LabelTopValue.Text = GetFormattedSize(m1);
-                    AdjustedMaxValue = m1;
+                    AdjustedMaxValue = m;
                 }
             }
             if (existingMaxValue2 > this.MaxValue)
             {
-                m2 = (float)Math.Ceiling(existingMaxValue2 / MaxValue) * MaxValue;
-                if (m2 != AdjustedMaxValue2)
+                float m = (float)Math.Ceiling(existingMaxValue2 / MaxValue) * MaxValue;
+                if (m != AdjustedMaxValue2)
 				{
-                    LabelBottomValue.Text = GetFormattedSize(m2);
-                    AdjustedMaxValue2 = m2;
+                    AdjustedMaxValue2 = m;
                 }
             }
 

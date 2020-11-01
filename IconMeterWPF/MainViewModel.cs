@@ -18,7 +18,6 @@ namespace IconMeterWPF
 	class MainViewModel : INotifyPropertyChanged
 	{
 		// private fields
-		string settingsFilename = "";
 		PerformanceMeter _meter;
 		PopupPerformanceMeter _popupMeter;
 
@@ -31,14 +30,6 @@ namespace IconMeterWPF
 		// constructors
 		public MainViewModel()
 		{
-			string loadlDataPath = 
-				Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) +
-				Path.DirectorySeparatorChar + "Icon_Meter";
-			settingsFilename =
-				loadlDataPath + 
-				Path.DirectorySeparatorChar + "settings.xml";
-			System.IO.Directory.CreateDirectory(loadlDataPath);
-
 			// initial all public ICommand objects
 			InitCommands();
 

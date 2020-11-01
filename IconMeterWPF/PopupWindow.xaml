@@ -41,7 +41,7 @@
             <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Vertical" Width="180" Margin="8,0,8,8">
 
                 <Label HorizontalAlignment="Center" Margin="0,0,0,0" FontWeight="Bold" Foreground="RoyalBlue" 
-                       Content="{Binding Source={x:Static properties:Resources.CPU},  Converter ={StaticResource ToUpperValue}}"/>
+                       Content="{Binding Source={x:Static properties:Resources.CPU},  Converter={StaticResource ToUpperValue}, Mode=OneWay}"/>
 
                 <Grid>
                     <Grid.RowDefinitions>
@@ -57,8 +57,8 @@
                     </Grid.ColumnDefinitions>
                     
                     <local:LineChart x:Name="CpuChart" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Height="50" Margin="0,0,0,4" 
-                                     NextData="{Binding PopupMeter.LastCpuPerformance}" 
-                                     LineColors="{Binding PopupMeter.CpuPerformanceColors}"
+                                     NextData="{Binding PopupMeter.LastCpuPerformance, Mode=OneWay}" 
+                                     LineColors="{Binding PopupMeter.CpuPerformanceColors, Mode=OneWay}"
                                      DisplayStyle="Accumulative"/>
 
                     <Rectangle Grid.Row="1" Grid.Column="0" Width="12" Height="12" Fill="RoyalBlue" Margin="0,0,0,0"/>
@@ -82,7 +82,7 @@
 
                 <Label HorizontalAlignment="Center" Margin="0,0,0,0" FontWeight="Bold" Foreground="RoyalBlue" 
                        Content="{Binding Source={x:Static properties:Resources.Processes},  Converter ={StaticResource ToUpperValue}}"/>
-                <ItemsControl ItemsSource="{Binding PopupMeter.PerformanceSortedByProcessorTime}">
+                <ItemsControl ItemsSource="{Binding PopupMeter.PerformanceSortedByProcessorTime, Mode=OneWay }">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
                             <Grid>
@@ -90,13 +90,13 @@
                                     <ColumnDefinition Width="*" />
                                     <ColumnDefinition Width="Auto" />
                                 </Grid.ColumnDefinitions>
-                                <TextBlock Grid.Column="0" Text="{Binding Path=Name}" HorizontalAlignment="Left"/>
-                                <TextBlock Grid.Column="1" Text="{Binding Path=FormattedProcessorTime}" Margin="4,0,0,0" FontWeight="Bold" HorizontalAlignment="Right"/>
+                                <TextBlock Grid.Column="0" Text="{Binding Path=Name, Mode=OneWay}" HorizontalAlignment="Left"/>
+                                <TextBlock Grid.Column="1" Text="{Binding Path=FormattedProcessorTime, Mode=OneWay}" Margin="4,0,0,0" FontWeight="Bold" HorizontalAlignment="Right"/>
                             </Grid>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>
-                <ItemsControl ItemsSource="{Binding PopupMeter.PerformanceSortedByWorkingSet}" Margin="0,4,0,0">
+                <ItemsControl ItemsSource="{Binding PopupMeter.PerformanceSortedByWorkingSet, Mode=OneWay}" Margin="0,4,0,0">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
                             <Grid>
@@ -104,8 +104,8 @@
                                     <ColumnDefinition Width="*" />
                                     <ColumnDefinition Width="Auto" />
                                 </Grid.ColumnDefinitions>
-                                <TextBlock Grid.Column="0" Text="{Binding Path=Name}" HorizontalAlignment="Left"/>
-                                <TextBlock Grid.Column="1" Text="{Binding Path=FormattedWorkingSet}" Margin="4,0,0,0" FontWeight="Bold" HorizontalAlignment="Right"/>
+                                <TextBlock Grid.Column="0" Text="{Binding Path=Name, Mode=OneWay}" HorizontalAlignment="Left"/>
+                                <TextBlock Grid.Column="1" Text="{Binding Path=FormattedWorkingSet, Mode=OneWay}" Margin="4,0,0,0" FontWeight="Bold" HorizontalAlignment="Right"/>
                             </Grid>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
@@ -116,8 +116,8 @@
                 <Label HorizontalAlignment="Center" Margin="0,0,0,0" FontWeight="Bold" Foreground="RoyalBlue" 
                        Content="{Binding Source={x:Static properties:Resources.LoadAverage},  Converter ={StaticResource ToUpperValue}}"/>
                 <local:LineChart x:Name="LoadChart" Height="50" Margin="0,0,0,0" 
-                                 NextData="{Binding PopupMeter.LastLoadAverage}" 
-                                 LineColors="{Binding PopupMeter.LoadAverageColors}"
+                                 NextData="{Binding PopupMeter.LastLoadAverage, Mode=OneWay}" 
+                                 LineColors="{Binding PopupMeter.LoadAverageColors, Mode=OneWay}"
                                  DisplayStyle="Normal"
                                  MaxValue="2" IsAutoAdjust="True"/>
                 <Grid>
@@ -160,13 +160,13 @@
                 <Label HorizontalAlignment="Center" Margin="0,0,0,0" FontWeight="Bold" Foreground="RoyalBlue" 
                        Content="{Binding Source={x:Static properties:Resources.Uptime},  Converter ={StaticResource ToUpperValue}}"/>
                 <TextBlock HorizontalAlignment="Center" >
-                            <Run Text="{Binding PopupMeter.UpTimeDay}"/>
+                            <Run Text="{Binding PopupMeter.UpTimeDay, Mode=OneWay}"/>
                             <Run Text="{x:Static properties:Resources.Days}"/>
                             <Run Text=","/>
-                            <Run Text="{Binding PopupMeter.UpTimeHour}"/>
+                            <Run Text="{Binding PopupMeter.UpTimeHour, Mode=OneWay}"/>
                             <Run Text="{x:Static properties:Resources.Hours}"/>
                             <Run Text=","/>
-                            <Run Text="{Binding PopupMeter.UpTimeMin}"/>
+                            <Run Text="{Binding PopupMeter.UpTimeMin, Mode=OneWay}"/>
                             <Run Text="{x:Static properties:Resources.Minutes}"/>
                 </TextBlock>                
                 
@@ -187,8 +187,8 @@
                 </Grid>
                 
                 <local:LineChart x:Name="MemoryChart" Height="50" Margin="0,0,0,4" 
-                                 NextData="{Binding PopupMeter.LastMemoryLoad}" 
-                                 LineColors="{Binding PopupMeter.LoadAverageColors}"
+                                 NextData="{Binding PopupMeter.LastMemoryLoad, Mode=OneWay}" 
+                                 LineColors="{Binding PopupMeter.LoadAverageColors, Mode=OneWay}"
                                  DisplayStyle="Accumulative"
                                  MaxValue="1" IsAutoAdjust="False"/>
                 <Grid>
@@ -219,9 +219,9 @@
                        Content="{Binding Source={x:Static properties:Resources.VirtualMemory},  Converter ={StaticResource ToUpperValue}}"/>
                 <ProgressBar Height="16" Background="DarkGray" Foreground="RoyalBlue" Minimum="0" Maximum="1" Value="{Binding PopupMeter.LastCommittedMemoryLoad, Mode=OneWay}" />
                 <TextBlock  HorizontalAlignment="Center" Margin="0,4,0,0">
-                            <Run FontWeight="Bold" Text="{Binding PopupMeter.CommittedMemoryInUse}"/>
+                            <Run FontWeight="Bold" Text="{Binding PopupMeter.CommittedMemoryInUse, Mode=OneWay}"/>
                             <Run Text="{x:Static properties:Resources.Of}"/>
-                            <Run FontWeight="Bold" Text="{Binding PopupMeter.TotalCommittedMemory}"/>
+                            <Run FontWeight="Bold" Text="{Binding PopupMeter.TotalCommittedMemory, Mode=OneWay}"/>
                             <Run Text="{Binding Source={x:Static properties:Resources.InUse}, Converter ={StaticResource ToLowerValue}, Mode=OneWay}"/>
                 </TextBlock>
 
@@ -280,8 +280,8 @@
                                Text="{Binding PopupMeter.UploadSpeed, Mode=OneWay}"/>
                 </Grid>
                 <local:LineChart x:Name="NetworkChart" Height="60" Margin="0,4,0,0" 
-                                 NextData="{Binding Meter.LastNetworkSpeed}" 
-                                 LineColors="{Binding PopupMeter.LoadAverageColors}"
+                                 NextData="{Binding Meter.LastNetworkSpeed, Mode=OneWay}" 
+                                 LineColors="{Binding PopupMeter.LoadAverageColors, Mode=OneWay}"
                                  DisplayStyle="Separated"
                                  DisplayUnit="B"
                                  MaxValue="1024" IsAutoAdjust="True"/>
@@ -290,7 +290,7 @@
                 <Label HorizontalAlignment="Center" Margin="0,0,0,0" FontWeight="Bold" Foreground="RoyalBlue" 
                        Content="{Binding Source={x:Static properties:Resources.Disk},  Converter ={StaticResource ToUpperValue}}"/>
 
-                <ItemsControl ItemsSource="{Binding PopupMeter.AllDiskPerformance}">
+                <ItemsControl ItemsSource="{Binding PopupMeter.AllDiskPerformance, Mode=OneWay}">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
                             <Grid Margin="0,0,0,4">
@@ -305,11 +305,11 @@
                                     <ColumnDefinition Width="Auto" />
                                 </Grid.ColumnDefinitions>
                                 <TextBlock Grid.Row="0" Grid.Column="0" TextAlignment="Left" Text="{x:Static properties:Resources.Disk}"/>
-                                <TextBlock Grid.Row="0" Grid.Column="1" TextAlignment="Left" Margin="4,0,0,0" Text="{Binding Path=Name}"/>
-                                <TextBlock Grid.Row="0" Grid.Column="2" TextAlignment="Right" Text="{Binding Path=FormattedActiveTime}" FontWeight="Bold" />
+                                <TextBlock Grid.Row="0" Grid.Column="1" TextAlignment="Left" Margin="4,0,0,0" Text="{Binding Path=Name, Mode=OneWay}"/>
+                                <TextBlock Grid.Row="0" Grid.Column="2" TextAlignment="Right" Text="{Binding Path=FormattedActiveTime, Mode=OneWay}" FontWeight="Bold" />
                                 <ProgressBar Grid.Row="0" Grid.Column="3" Width="72" Height="16" Margin="4,0,0,0" Background="DimGray" Foreground="RoyalBlue" Minimum="0" Maximum="100" Value="{Binding Path=ActiveTime, Mode=OneWay}"/>
-                                <TextBlock Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" TextAlignment="Right" Text="{Binding Path=FormattedReadSpeed}" Foreground="RoyalBlue"/>
-                                <TextBlock Grid.Row="1" Grid.Column="3" TextAlignment="Right" Text="{Binding Path=FormattedWriteSpeed}" Foreground="DarkRed"/>
+                                <TextBlock Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" TextAlignment="Right" Text="{Binding Path=FormattedReadSpeed, Mode=OneWay}" Foreground="RoyalBlue"/>
+                                <TextBlock Grid.Row="1" Grid.Column="3" TextAlignment="Right" Text="{Binding Path=FormattedWriteSpeed, Mode=OneWay}" Foreground="DarkRed"/>
                             </Grid>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>

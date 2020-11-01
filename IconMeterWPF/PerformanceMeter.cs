@@ -28,8 +28,6 @@ namespace IconMeterWPF
         // private fields
         Properties.Settings settings;
 		PerformanceCounter cpuCounter, memoryCounter, diskCounter;
-		DispatcherTimer timer = new DispatcherTimer();
-		float totalMemorySize;
 		float lastCpuUsage = 0;
 		float lastMemoryUsage = 0;
 		float lastDiskUsage = 0;
@@ -41,6 +39,8 @@ namespace IconMeterWPF
 		IEnumerable<float> _lastNetworkSpeed;
 
 		// private readonly fields
+		readonly DispatcherTimer timer = new DispatcherTimer();
+		readonly float totalMemorySize;
 		readonly List<PerformanceCounter> networkReceiveCounters = new List<PerformanceCounter>();
 		readonly List<PerformanceCounter> networkSendCounters = new List<PerformanceCounter>();
 		readonly List<PerformanceCounter> logicalProcessorsCounter = new List<PerformanceCounter>();

@@ -2,18 +2,14 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.Drawing;
 using System.Linq;
 using System.Management;
 using System.Net;
 using System.Net.Sockets;
 using System.Runtime.CompilerServices;
-using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Media;
-using System.Windows.Threading;
 
 namespace IconMeterWPF
 {
@@ -36,13 +32,7 @@ namespace IconMeterWPF
 			}
 
 			public string FormattedProcessorTime { get => $"{ProcessorTime}%"; }
-			public string FormattedWorkingSet
-			{
-				get
-				{
-					return GetFormattedSize(WorkingSet);
-				}
-			}
+			public string FormattedWorkingSet { get => GetFormattedSize(WorkingSet); }
 		}
 
 		// inner class for storing disk performance information
@@ -64,18 +54,8 @@ namespace IconMeterWPF
 			}
 
 			public string FormattedActiveTime { get => $"{ActiveTime}%"; }
-			public string FormattedReadSpeed {
-				get
-				{
-					return $"{GetFormattedSize_NoDecimalDigits(ReadSpeed)}/s";
-				}
-			}
-			public string FormattedWriteSpeed {
-				get
-				{
-					return $"{GetFormattedSize_NoDecimalDigits(WriteSpeed)}/s";
-				}
-			}
+			public string FormattedReadSpeed { get => $"{GetFormattedSize_NoDecimalDigits(ReadSpeed)}/s"; }
+			public string FormattedWriteSpeed { get => $"{GetFormattedSize_NoDecimalDigits(WriteSpeed)}/s"; }
 		}
 
 		// inner class for computing moving
@@ -91,15 +71,14 @@ namespace IconMeterWPF
 				this.MaxCount = maxCount;
 				this.queue = new Queue<uint>(maxCount);
 			}
+
 			public void AddValue(uint value)
 			{
 				queue.Enqueue(value);
 				sum += value;
 
-				if (queue.Count > MaxCount)
-				{
+				if (queue.Count > MaxCount) 
 					sum -= queue.Dequeue();
-				}
 			}
 			public float Average()
 			{
@@ -113,7 +92,7 @@ namespace IconMeterWPF
 		readonly ManagementObjectSearcher processPerformanceData =
 			new ManagementObjectSearcher("root\\CIMV2",
 			"SELECT Name, WorkingSetPrivate, PercentProcessorTime FROM Win32_PerfFormattedData_PerfProc_Process");
-		ManagementOperationObserver processPerformanceObserver = new ManagementOperationObserver();
+		readonly ManagementOperationObserver processPerformanceObserver = new ManagementOperationObserver();
 
 		readonly ManagementClass systemPerformanceData = new ManagementClass("Win32_PerfFormattedData_PerfOS_System");
 		readonly ManagementObjectSearcher memoryPerformanceData = 
@@ -144,182 +123,169 @@ namespace IconMeterWPF
 		List<PerformanceCounter[]> diskCounters = new List<PerformanceCounter[]>();
 		Boolean paused = true;
 		Boolean wmiSearchStarted = false;
-		Boolean ipUpdateStarted = false;
 		int tick = 0;
 
 		// public properties
 		public string LastPrivilegedTime
 		{
 			get => _lastPrivilegedTime;
-			set => SetField(ref _lastPrivilegedTime, value);
+			private set => SetField(ref _lastPrivilegedTime, value);
 		}
 		public string LaseUserTime
 		{
 			get => _lastUserTime;
-			set => SetField(ref _lastUserTime, value);
+			private set => SetField(ref _lastUserTime, value);
 		}
 		public string IdleTime
 		{
 			get => _idleTime;
-			set => SetField(ref _idleTime, value);
+			private set => SetField(ref _idleTime, value);
 		}
 		public IEnumerable<float> LastCpuPerformance
 		{
 			get => _lastCpuPerformance;
-			set => SetField(ref _lastCpuPerformance, value);
+			private set => SetField(ref _lastCpuPerformance, value);
 		}
 		public IEnumerable<ProcessPerformance> PerformanceSortedByProcessorTime
 		{
 			get => _performanceSortedByProcessorTime;
-			set => SetField(ref _performanceSortedByProcessorTime, value);
+			private set => SetField(ref _performanceSortedByProcessorTime, value);
 		}
 		public IEnumerable<ProcessPerformance> PerformanceSortedByWorkingSet
 		{
 			get => _performanceSortedByWorkingSet;
-			set => SetField(ref _performanceSortedByWorkingSet, value);
+			private set => SetField(ref _performanceSortedByWorkingSet, value);
 		}
 		public IEnumerable<System.Windows.Media.Color> CpuPerformanceColors
 		{
 			get => _cpuPerformanceColors;
-			set => SetField(ref _cpuPerformanceColors, value);
+			private set => SetField(ref _cpuPerformanceColors, value);
 		}
 		public float LoadAverage1Min
 		{
 			get => _loadAverage1Min;
-			set => SetField(ref _loadAverage1Min, value);
+			private set => SetField(ref _loadAverage1Min, value);
 		}
 		public float LoadAverage5Min
 		{
 			get => _loadAverage5Min;
-			set => SetField(ref _loadAverage5Min, value);
+			private set => SetField(ref _loadAverage5Min, value);
 		}
 		public float LoadAverage15Min
 		{
 			get => _loadAverage15Min;
-			set => SetField(ref _loadAverage15Min, value);
+			private set => SetField(ref _loadAverage15Min, value);
 		}
 		public uint ProcessorQueueLength
 		{
 			get => _processorQueueLength;
-			set => SetField(ref _processorQueueLength, value);
+			private set => SetField(ref _processorQueueLength, value);
 		}
 		public IEnumerable<float> LastLoadAverage
 		{
 			get => _lastLoadAverage;
-			set => SetField(ref _lastLoadAverage, value);
+			private set => SetField(ref _lastLoadAverage, value);
 		}
 		public IEnumerable<System.Windows.Media.Color> LoadAverageColors
 		{
 			get => _loadAverageColors;
-			set => SetField(ref _loadAverageColors, value);
+			private set => SetField(ref _loadAverageColors, value);
 		}
 		public int UpTimeMin
 		{
 			get => _upTimeMin;
-			set => SetField(ref _upTimeMin, value);
+			private set => SetField(ref _upTimeMin, value);
 		}
 		public int UpTimeHour
 		{
 			get => _upTimeHour;
-			set => SetField(ref _upTimeHour, value);
+			private set => SetField(ref _upTimeHour, value);
 		}
 		public int UpTimeDay
 		{
 			get => _upTimeDay;
-			set => SetField(ref _upTimeDay, value);
+			private set => SetField(ref _upTimeDay, value);
 		}
 		public string AvailableMemory
 		{
 			get => _availableMemory;
-			set => SetField(ref _availableMemory, value);
+			private set => SetField(ref _availableMemory, value);
 		}
 		public string MemoryInUse
 		{
 			get => _memoryInUse;
-			set => SetField(ref _memoryInUse, value);
+			private set => SetField(ref _memoryInUse, value);
 		}
 		public string TotalCommittedMemory
 		{
 			get => _availableCommittedMemory;
-			set => SetField(ref _availableCommittedMemory, value);
+			private set => SetField(ref _availableCommittedMemory, value);
 		}
 		public string CommittedMemoryInUse
 		{
 			get => _committedMemoryInUse;
-			set => SetField(ref _committedMemoryInUse, value);
+			private set => SetField(ref _committedMemoryInUse, value);
 		}
 		public string TotalVirtualMemory
 		{
 			get => _availableVirtualMemory;
-			set => SetField(ref _availableVirtualMemory, value);
+			private set => SetField(ref _availableVirtualMemory, value);
 		}
 		public string VirtualMemoryInUse
 		{
 			get => _virtualMemoryInUse;
-			set => SetField(ref _virtualMemoryInUse, value);
+			private set => SetField(ref _virtualMemoryInUse, value);
 		}
 		public IEnumerable<float> LastMemoryLoad
 		{
 			get => _lastMemoryLoad;
-			set => SetField(ref _lastMemoryLoad, value);
+			private set => SetField(ref _lastMemoryLoad, value);
 		}
 		public IEnumerable<System.Windows.Media.Color> MemoryLoadColors
 		{
 			get => _memoryLoadColors;
-			set => SetField(ref _memoryLoadColors, value);
+			private set => SetField(ref _memoryLoadColors, value);
 		}
 		public float LastVirtualMemoryLoad
 		{
 			get => _lastVirtualMemoryLoad;
-			set => SetField(ref _lastVirtualMemoryLoad, value);
+			private set => SetField(ref _lastVirtualMemoryLoad, value);
 		}
 		public float LastCommittedMemoryLoad
 		{
 			get => _lastCommittedMemoryLoad;
-			set => SetField(ref _lastCommittedMemoryLoad, value);
+			private set => SetField(ref _lastCommittedMemoryLoad, value);
 		}
 		public string PublicIP
 		{
 			get => _publicIP;
-			set => SetField(ref _publicIP, value);
+			private set => SetField(ref _publicIP, value);
 		}
 		public string LocalIP
 		{
 			get => _localIP;
-			set => SetField(ref _localIP, value);
+			private set => SetField(ref _localIP, value);
 		}
 		public string DownloadSpeed {
 			get => _downloadSpeed;
-			set => SetField(ref _downloadSpeed, value);
+			private set => SetField(ref _downloadSpeed, value);
 		}
 		public string UploadSpeed {
 			get => _uploadSpeed;
-			set => SetField(ref _uploadSpeed, value);
+			private set => SetField(ref _uploadSpeed, value);
 		}
 		public IEnumerable<DiskPerformance> AllDiskPerformance {
 			get => _diskPerformance;
-			set => SetField(ref _diskPerformance, value);
+			private set => SetField(ref _diskPerformance, value);
 		}
 
 		// constructor
 		public PopupPerformanceMeter(PerformanceMeter mainMeter)
 		{
 			// initialize color values for chart controls
-			CpuPerformanceColors = new System.Windows.Media.Color[] 
-			{
-				System.Windows.Media.Colors.DodgerBlue,
-				System.Windows.Media.Colors.Red
-			};
-			LoadAverageColors = new System.Windows.Media.Color[]
-			{
-				System.Windows.Media.Colors.DodgerBlue,
-				System.Windows.Media.Colors.Red,
-				System.Windows.Media.Colors.DarkGray
-			};
-			MemoryLoadColors = new System.Windows.Media.Color[]
-			{
-				System.Windows.Media.Colors.DodgerBlue
-			};
+			CpuPerformanceColors = new Color[] { Colors.DodgerBlue, Colors.Red };
+			LoadAverageColors = new Color[] { Colors.DodgerBlue, Colors.Red, Colors.DarkGray };
+			MemoryLoadColors = new Color[] { Colors.DodgerBlue };
 
 			// initialize all performance counters
 			InitializePerformanceCounters();
@@ -475,6 +441,7 @@ namespace IconMeterWPF
 			// sort performance counters by name 
 			pcList.Sort((pc1, pc2) => pc1[0].InstanceName.CompareTo(pc2[0].InstanceName));
 
+			// dispose old disk performance counters
 			try
 			{
 				foreach (var pcs in diskCounters)
@@ -484,6 +451,7 @@ namespace IconMeterWPF
 			}
 			catch (Exception) { }
 
+			// assign new performance counter list
 			diskCounters = pcList;
 		}
 		void DisposePerformanceCounters()
@@ -521,7 +489,7 @@ namespace IconMeterWPF
 				UpdateReadings_Processes();
 			}
 
-			// update disk performance per every 2 or 10 seconds (which depends on popup window is shown or hidden)
+			// update disk performance per every 1 or 10 seconds (which depends on popup window is shown or hidden)
 			if ((paused && tick % 10 == 5) || (!paused))
 			{
 				UpdateReadings_Disks();
@@ -574,7 +542,7 @@ namespace IconMeterWPF
 		void UpdateReadings_System()
 		{
 			// get the next processor queue length and system up timne readings from performance counters
-			//try
+			try
 			{
 				foreach (ManagementObject obj in systemPerformanceData.GetInstances())
 				{
@@ -595,7 +563,7 @@ namespace IconMeterWPF
 				LoadAverage15Min = processorQueueLength15Min.Average();
 				LastLoadAverage = new float[] { LoadAverage1Min, LoadAverage5Min, LoadAverage15Min };
 			}
-			// (Exception) { }
+			catch (Exception) { }
 		}
 		void UpdateReadings_IPs()
 		{
@@ -660,13 +628,7 @@ namespace IconMeterWPF
 			}
 			catch (Exception) { }
 		}
-
-		// public static method
-		public void UpdateIPs()
-		{
-			UpdateReadings_IPs();
-		}
-		public static string GetFormattedSize(ulong size, bool KB=false)
+		static string GetFormattedSize(ulong size, bool KB = false)
 		{
 			// convret size value to string with unit
 			float s = size;
@@ -677,7 +639,7 @@ namespace IconMeterWPF
 			s /= 1024;
 			return string.Format("{0:N2} GB", s);
 		}
-		public static string GetFormattedSize_NoDecimalDigits(ulong size, bool KB = false)
+		static string GetFormattedSize_NoDecimalDigits(ulong size, bool KB = false)
 		{
 			// convret size value to string with unit
 			float s = size;
@@ -689,10 +651,18 @@ namespace IconMeterWPF
 			return string.Format("{0:N1} GB", s);
 		}
 
+		// public method
+		public void UpdateIPs()
+		{
+			UpdateReadings_IPs();
+		}
+
 		// IDisposable implementation
 		public void Dispose()
 		{
 			DisposePerformanceCounters();
+
+			timer.Dispose();
 		}
 
 		// INotifyPropertyChanged implementation
