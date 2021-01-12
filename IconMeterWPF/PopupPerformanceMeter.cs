@@ -88,7 +88,7 @@ namespace IconMeterWPF
 		}
 
 		// readonly private fields
-		readonly Timer timer = null;
+		readonly System.Timers.Timer timer;
 		readonly ManagementObjectSearcher processPerformanceData =
 			new ManagementObjectSearcher("root\\CIMV2",
 			"SELECT Name, WorkingSetPrivate, PercentProcessorTime FROM Win32_PerfFormattedData_PerfProc_Process");
@@ -121,8 +121,9 @@ namespace IconMeterWPF
 		// private fields
 		PerformanceCounter privilegedTimeCounter, userTimeCounter;
 		List<PerformanceCounter[]> diskCounters = new List<PerformanceCounter[]>();
-		Boolean paused = true;
-		Boolean wmiSearchStarted = false;
+		bool paused = true;
+		volatile bool wmiSearchStarted = false;
+		volatile bool timerCallbackStarted = false;
 		int tick = 0;
 
 		// public properties
@@ -305,7 +306,10 @@ namespace IconMeterWPF
 			processPerformanceObserver.ObjectReady += new ObjectReadyEventHandler(this.ProcessPerformanceSearcher_ObjectReady);
 
 			// start timer in a new thread
-			timer = new Timer(new TimerCallback(Timer_Tick), null, 5000, 1000);
+			timer = new System.Timers.Timer(1000);
+			timer.AutoReset = true;
+			timer.Elapsed += Timer_Tick;
+			timer.Start();
 		}
 
 		// public methods
@@ -319,9 +323,15 @@ namespace IconMeterWPF
 		}
 
 		// event handler
-		private void Timer_Tick(object state)
+		private void Timer_Tick(Object source, System.Timers.ElapsedEventArgs e)
 		{
+			if (timerCallbackStarted) return;
+
+			timerCallbackStarted = true;
+
 			UpdateReadings();
+
+			timerCallbackStarted = false;
 		}
 		private void MainMeter_PropertyChanged(object sender, PropertyChangedEventArgs e)
 		{
@@ -498,16 +508,20 @@ namespace IconMeterWPF
 		void UpdateReadings_CPU()
 		{
 			// get the next cpu performance readings from performance counters
-			int t1 = (int)(privilegedTimeCounter.NextValue() + 0.5f);
-			int t2 = (int)(userTimeCounter.NextValue() + 0.5f);
-			int t3 = 100 - t1 - t2;
-			if (t1 < 0) t1 = 0;
-			if (t2 < 0) t2 = 0;
-			if (t3 < 0) t3 = 0;
-			LastPrivilegedTime = $"{t1}%";
-			LaseUserTime = $"{t2}%";
-			IdleTime = $"{t3}%";
-			LastCpuPerformance = new float[] { t2, t1 };
+			try
+			{
+				int t1 = (int)(privilegedTimeCounter.NextValue() + 0.5f);
+				int t2 = (int)(userTimeCounter.NextValue() + 0.5f);
+				int t3 = 100 - t1 - t2;
+				if (t1 < 0) t1 = 0;
+				if (t2 < 0) t2 = 0;
+				if (t3 < 0) t3 = 0;
+				LastPrivilegedTime = $"{t1}%";
+				LaseUserTime = $"{t2}%";
+				IdleTime = $"{t3}%";
+				LastCpuPerformance = new float[] { t2, t1 };
+			}
+			catch (Exception) { }
 		}
 		void UpdateReadings_Memory()
 		{
@@ -579,21 +593,25 @@ namespace IconMeterWPF
 			}
 
 			// try to obtain local IP
-			bool found = false;
-			var host = Dns.GetHostEntry(Dns.GetHostName());
-			foreach (var ip in host.AddressList)
+			try
 			{
-				if (ip.AddressFamily == AddressFamily.InterNetwork)
+				bool found = false;
+				var host = Dns.GetHostEntry(Dns.GetHostName());
+				foreach (var ip in host.AddressList)
 				{
-					LocalIP = ip.ToString();
-					found = true;
-					break;
+					if (ip.AddressFamily == AddressFamily.InterNetwork)
+					{
+						LocalIP = ip.ToString();
+						found = true;
+						break;
+					}
+				}
+				if (!found)
+				{
+					LocalIP = "unknown";
 				}
 			}
-			if (!found)
-			{
-				LocalIP = "unknown";
-			}
+			catch (Exception) { LocalIP = "unknown"; }
 		}
 		void UpdateReadings_Processes()
 		{

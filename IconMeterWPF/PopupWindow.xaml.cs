@@ -29,13 +29,13 @@ namespace IconMeterWPF
 		private void UserControl_Loaded(object sender, RoutedEventArgs e)
 		{
 			var vm = this.DataContext as MainViewModel;
-			vm.PopupMeter.Resume();
+			vm?.PopupMeter?.Resume();
 		}
 
 		private void UserControl_Unloaded(object sender, RoutedEventArgs e)
 		{
 			var vm = this.DataContext as MainViewModel;
-			vm.PopupMeter.Pause();
+			vm?.PopupMeter?.Pause();
 		}
 
 		private void Image_MouseUp(object sender, MouseButtonEventArgs e)
@@ -63,14 +63,14 @@ namespace IconMeterWPF
 			{
 				// pause update readings
 				var vm = this.DataContext as MainViewModel;
-				vm.PauseUpdate();
+				vm?.PauseUpdate();
 
 				// hide popup window
 				var p = this.Parent as Popup;
 				p.IsOpen = false;
 
 				// show setting window
-				vm.MainWindow.Show();
+				vm?.MainWindow.Show();
 			}
 
 			if (sender == this.ImageTask)
@@ -88,7 +88,7 @@ namespace IconMeterWPF
 			if (sender == this.ImageRefresh)
 			{
 				var vm = this.DataContext as MainViewModel;
-				vm.PopupMeter.UpdateIPs();
+				vm?.PopupMeter.UpdateIPs();
 			}
 		}
 	}

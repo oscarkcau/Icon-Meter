@@ -104,6 +104,8 @@ namespace IconMeterWPF
 		}
 		private void MenuItemClose_Click(object sender, RoutedEventArgs e)
 		{
+			MainTaskbarIcon.Visibility = Visibility.Collapsed;
+			LogicalProcessorsTaskbarIcon.Visibility = Visibility.Collapsed;
 			System.Windows.Application.Current.Shutdown();
 		}
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)

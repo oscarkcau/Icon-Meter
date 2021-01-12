@@ -252,6 +252,8 @@ namespace IconMeterWPF
 
         private void AddNewLine_Normal(IEnumerable<float> values)
 		{
+            if (brushes.Count < values.Count()) return;
+
             int index = 0;
             float[] cacheY = new float[values.Count()];
 
@@ -285,6 +287,9 @@ namespace IconMeterWPF
         }
         private void AddNewLine_Accumulative(IEnumerable<float> values)
         {
+            if (brushes.Count < values.Count()) return;
+            if (darkBrushes.Count < values.Count()) return;
+
             int index = 0;
             float accumatedValue = 0;
             float[] cacheY = new float[values.Count()];
@@ -335,6 +340,9 @@ namespace IconMeterWPF
         }
         private void AddNewLine_Separated(IEnumerable<float> values)
         {
+            if (brushes.Count < values.Count()) return;
+            if (darkBrushes.Count < values.Count()) return;
+
             int index = 0;
             float[] cacheY = new float[values.Count()];
             double h = MainCanvas.ActualHeight * 0.45;
