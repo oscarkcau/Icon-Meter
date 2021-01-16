@@ -237,4 +237,13 @@
   <data name="Min" xml:space="preserve">
     <value>min</value>
   </data>
+  <data name="TaskManager" xml:space="preserve">
+    <value>Task Manager</value>
+  </data>
+  <data name="ControlPanel" xml:space="preserve">
+    <value>Control Panel</value>
+  </data>
+  <data name="RefreshIP" xml:space="preserve">
+    <value>Refresh IP</value>
+  </data>
 </root>

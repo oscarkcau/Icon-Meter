@@ -106,6 +106,15 @@ namespace IconMeterWPF.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Control Panel.
+        /// </summary>
+        public static string ControlPanel {
+            get {
+                return ResourceManager.GetString("ControlPanel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Copyright.
         /// </summary>
         public static string Copyright {
@@ -322,6 +331,15 @@ namespace IconMeterWPF.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Refresh IP.
+        /// </summary>
+        public static string RefreshIP {
+            get {
+                return ResourceManager.GetString("RefreshIP", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Run at Startup.
         /// </summary>
         public static string RunAtStartup {
@@ -354,6 +372,15 @@ namespace IconMeterWPF.Properties {
         public static string System {
             get {
                 return ResourceManager.GetString("System", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Task Manager.
+        /// </summary>
+        public static string TaskManager {
+            get {
+                return ResourceManager.GetString("TaskManager", resourceCulture);
             }
         }
         

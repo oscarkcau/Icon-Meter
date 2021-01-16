@@ -237,4 +237,13 @@
   <data name="Min" xml:space="preserve">
     <value>分</value>
   </data>
+  <data name="TaskManager" xml:space="preserve">
+    <value>タスク マネージャー</value>
+  </data>
+  <data name="ControlPanel" xml:space="preserve">
+    <value>コントロール パネル</value>
+  </data>
+  <data name="RefreshIP" xml:space="preserve">
+    <value>IPを更新</value>
+  </data>
 </root>

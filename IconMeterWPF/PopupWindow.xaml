@@ -26,12 +26,13 @@
                 <Style x:Key="verticalLineStyle" TargetType="{x:Type Line}" BasedOn="{StaticResource lineStyle}">
                     <Setter Property="Y2" Value="1" />
                     <Setter Property="HorizontalAlignment" Value="Right" />
-                    <Setter Property="Grid.RowSpan" Value="{Binding RowDefinitions.Count, RelativeSource={RelativeSource AncestorType={x:Type Grid}}}"/>
                 </Style>
             </Grid.Resources>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
-             </Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>
@@ -183,7 +184,7 @@
                     </Grid.ColumnDefinitions>
                     <Label Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Center" Margin="0,0,0,0" FontWeight="Bold" Foreground="RoyalBlue" 
                        Content="{Binding Source={x:Static properties:Resources.Memory},  Converter ={StaticResource ToUpperValue}}"/>
-                    <Image x:Name="ImageClose" Grid.Column="1" Source="images\cross.png" Cursor="Hand" MouseUp="Image_MouseUp" TouchUp="Image_TouchUp"/>
+                    <Image x:Name="ImageClose" Grid.Column="1" Source="images\cross.png"  ToolTip="{x:Static properties:Resources.Close}" Cursor="Hand" MouseUp="Image_MouseUp" TouchUp="Image_TouchUp"/>
                 </Grid>
                 
                 <local:LineChart x:Name="MemoryChart" Height="50" Margin="0,0,0,4" 
@@ -234,7 +235,7 @@
                     </Grid.ColumnDefinitions>
                     <Label Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Center" Margin="0,0,0,0" FontWeight="Bold" Foreground="RoyalBlue" 
                        Content="{Binding Source={x:Static properties:Resources.Network},  Converter ={StaticResource ToUpperValue}}"/>
-                    <Image x:Name="ImageRefresh" Grid.Column="1" Source="images\arrow_rotate_clockwise.png" Cursor="Hand" MouseUp="Image_MouseUp" TouchUp="Image_TouchUp"/>
+                    <Image x:Name="ImageRefresh" Grid.Column="1" Source="images\arrow_rotate_clockwise.png"  ToolTip="{x:Static properties:Resources.RefreshIP}" Cursor="Hand" MouseUp="Image_MouseUp" TouchUp="Image_TouchUp"/>
                 </Grid>
 
                 <Grid>
@@ -328,16 +329,25 @@
                     </StackPanel>
                 </WrapPanel>
 
-                <Line Style="{StaticResource horizontalLineStyle}" VerticalAlignment="Center" Height="2" Margin="-8,4,-8,0"/>
-
-
-                <StackPanel Orientation="Horizontal" FlowDirection="RightToLeft" Margin="0,4,0,0" >
-                    <Image x:Name="ImageConfig" Source="images\cog.png" Cursor="Hand" MouseUp="Image_MouseUp" TouchUp="Image_TouchUp"/>
-                    <Image x:Name="ImageTask" Source="images\monitor.png" Margin="4,0,0,0" Cursor="Hand" MouseUp="Image_MouseUp" TouchUp="Image_TouchUp"/>
-                    <Image x:Name="ImageControl" Source="images\wrench_orange.png" Margin="4,0,0,0" Cursor="Hand" MouseUp="Image_MouseUp" TouchUp="Image_TouchUp"/>
-                </StackPanel>
-
             </StackPanel>
+
+            <Line Grid.Row="1" Grid.ColumnSpan="3" Style="{StaticResource horizontalLineStyle}" VerticalAlignment="Center" Height="2" Margin="-8,4,-8,0"/>
+
+            <Grid Grid.Row="2" Grid.ColumnSpan="3" Margin="4,4,4,4">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                
+                <TextBlock Text="Icon Meter" Foreground="Gray"></TextBlock>
+                <Image Grid.Column="1" x:Name="ImageControl" Source="images\wrench_orange.png" ToolTip="{x:Static properties:Resources.ControlPanel}"  Margin="4,0,0,0" Cursor="Hand" MouseUp="Image_MouseUp" TouchUp="Image_TouchUp"/>
+                <Image Grid.Column="2" x:Name="ImageTask" Source="images\monitor.png" ToolTip="{x:Static properties:Resources.TaskManager}"  Margin="4,0,0,0" Cursor="Hand" MouseUp="Image_MouseUp" TouchUp="Image_TouchUp"/>
+                <Image Grid.Column="3" x:Name="ImageConfig" Source="images\cog.png"  ToolTip="{x:Static properties:Resources.Settings}" Margin="4,0,0,0" Cursor="Hand" MouseUp="Image_MouseUp" TouchUp="Image_TouchUp"/>
+                <Image Grid.Column="4" x:Name="ImageAbout" Source="images\information.png"   ToolTip="{x:Static properties:Resources.AboutApplication}" Margin="4,0,0,0" Cursor="Hand" MouseUp="Image_MouseUp" TouchUp="Image_TouchUp"/>
+            </Grid>
 
         </Grid>
     </Border>

@@ -237,4 +237,13 @@
   <data name="Min" xml:space="preserve">
     <value>分</value>
   </data>
+  <data name="TaskManager" xml:space="preserve">
+    <value>任务管理器</value>
+  </data>
+  <data name="ControlPanel" xml:space="preserve">
+    <value>控制面板</value>
+  </data>
+  <data name="RefreshIP" xml:space="preserve">
+    <value>刷新 IP</value>
+  </data>
 </root>

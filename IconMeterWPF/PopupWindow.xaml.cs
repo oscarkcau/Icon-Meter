@@ -84,6 +84,17 @@ namespace IconMeterWPF
 				// start control panel
 				System.Diagnostics.Process.Start("control");
 			}
+			
+			if (sender == this.ImageAbout)
+			{
+				// hide popup window
+				var p = this.Parent as Popup;
+				p.IsOpen = false;
+
+				// show about dialog
+				AboutBox aboutBox = new AboutBox();
+				aboutBox.ShowDialog();
+			}
 
 			if (sender == this.ImageRefresh)
 			{
