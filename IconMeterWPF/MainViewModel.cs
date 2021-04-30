@@ -58,7 +58,7 @@ namespace IconMeterWPF
 		void _ShowPopup(object obj = null)
 		{
 			// show popup window
-			var w = Application.Current.MainWindow as MainWindow;
+			var w = this.MainWindow as MainWindow;
 			w?.ShowPopup();
 		}
 

@@ -150,18 +150,18 @@
         
         <tb:TaskbarIcon x:Name="MainTaskbarIcon"  
                         ToolTipText="{Binding Meter.MainTooltip}" 
+                        LeftClickCommand="{ Binding ShowPopup, Mode=OneWay}"
                         DoubleClickCommand="{Binding StartTaskManager, Mode=OneWay}"  
-                        ContextMenu="{DynamicResource SharedContextMenu}" Grid.ColumnSpan="2" Margin="0" Grid.RowSpan="2">
+                        ContextMenu="{DynamicResource SharedContextMenu}" 
+                        TrayLeftMouseDown="MainTaskbarIcon_TrayLeftMouseDown">
         </tb:TaskbarIcon>
 
         <tb:TaskbarIcon x:Name="LogicalProcessorsTaskbarIcon" 
                         ToolTipText="{Binding Meter.LogicalProcessorsTooltip}" 
-                        LeftClickCommand="{
-                        Binding ShowPopup, Mode=OneWay
-                        }"
+                        LeftClickCommand="{ Binding ShowPopup, Mode=OneWay}"
                         DoubleClickCommand="{Binding StartTaskManager, Mode=OneWay}"  
                         ContextMenu="{DynamicResource SharedContextMenu}" 
                         Visibility="{Binding Source={x:Static properties:Settings.Default}, Path=ShowLogicalProcessorsUsage, Converter={StaticResource BoolToVisibility}, Mode=OneWay}" 
-                        Grid.ColumnSpan="2" Margin="0" Grid.RowSpan="2" TrayLeftMouseDown="LogicalProcessorsTaskbarIcon_TrayLeftMouseDown"/>
+                        TrayLeftMouseDown="LogicalProcessorsTaskbarIcon_TrayLeftMouseDown"/>
     </Grid>
 </Window>
