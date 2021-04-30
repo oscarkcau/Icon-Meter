@@ -60,7 +60,8 @@ namespace IconMeterWPF
 				new System.Globalization.CultureInfo(settings.Language);
 
 			// create main window
-			MainWindow window = new MainWindow();
+			var w = new MainWindow();
+			w.Show();
 		}
 	}
 }

@@ -9,7 +9,9 @@
         xmlns:xcad="http://schemas.xceed.com/wpf/xaml/avalondock" x:Class="IconMeterWPF.MainWindow" 
         xmlns:properties="clr-namespace:IconMeterWPF.Properties"
         mc:Ignorable="d"
-        Title="Icon Meter" Width="280" MinWidth="240" MinHeight="360" WindowStartupLocation="CenterScreen" Icon="icon.ico" Closing="Window_Closing" SizeToContent="WidthAndHeight">
+        Title="Icon Meter" MinWidth="240" MinHeight="360" 
+        WindowStartupLocation="CenterScreen" Icon="icon.ico"
+        Closing="Window_Closing" SizeToContent="WidthAndHeight" ResizeMode="NoResize" SourceInitialized="Window_SourceInitialized" ShowInTaskbar="False">
     <Window.DataContext>
         <local:MainViewModel />
     </Window.DataContext>
@@ -141,21 +143,25 @@
         <Button x:Name="ButtonCancel" Grid.Column="2" MinHeight="24" Margin="4,4" Grid.Row="13" Click="ButtonCancel_Click"
                 Content="{x:Static properties:Resources.Cancel}"/>
 
- 
+
+        <Popup x:Name="popup" AllowsTransparency="True" StaysOpen="False">
+            <local:PopupWindow/>
+        </Popup>
+        
         <tb:TaskbarIcon x:Name="MainTaskbarIcon"  
                         ToolTipText="{Binding Meter.MainTooltip}" 
+                        LeftClickCommand="{ Binding ShowPopup, Mode=OneWay}"
                         DoubleClickCommand="{Binding StartTaskManager, Mode=OneWay}"  
-                        ContextMenu="{DynamicResource SharedContextMenu}" Grid.ColumnSpan="2" Margin="0" Grid.RowSpan="2">
-            <tb:TaskbarIcon.TrayPopup>
-                <local:PopupWindow/>
-            </tb:TaskbarIcon.TrayPopup>
+                        ContextMenu="{DynamicResource SharedContextMenu}" 
+                        TrayLeftMouseDown="MainTaskbarIcon_TrayLeftMouseDown">
         </tb:TaskbarIcon>
 
         <tb:TaskbarIcon x:Name="LogicalProcessorsTaskbarIcon" 
                         ToolTipText="{Binding Meter.LogicalProcessorsTooltip}" 
+                        LeftClickCommand="{ Binding ShowPopup, Mode=OneWay}"
                         DoubleClickCommand="{Binding StartTaskManager, Mode=OneWay}"  
                         ContextMenu="{DynamicResource SharedContextMenu}" 
                         Visibility="{Binding Source={x:Static properties:Settings.Default}, Path=ShowLogicalProcessorsUsage, Converter={StaticResource BoolToVisibility}, Mode=OneWay}" 
-                        Grid.ColumnSpan="2" Margin="0" Grid.RowSpan="2"/>
+                        TrayLeftMouseDown="LogicalProcessorsTaskbarIcon_TrayLeftMouseDown"/>
     </Grid>
 </Window>

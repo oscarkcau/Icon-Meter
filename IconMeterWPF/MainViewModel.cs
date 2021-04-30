@@ -26,6 +26,7 @@ namespace IconMeterWPF
 		public PerformanceMeter Meter { get => _meter; private set => SetField(ref _meter, value); }
 		public PopupPerformanceMeter PopupMeter { get => _popupMeter; private set => SetField(ref _popupMeter, value); }
 		public ICommand StartTaskManager { get; private set; }
+		public ICommand ShowPopup { get; private set; }
 
 		// constructors
 		public MainViewModel()
@@ -45,6 +46,7 @@ namespace IconMeterWPF
 			// init ICommand objects for binding
 			//
 			StartTaskManager = new RelayCommand(_StartTaskManager);
+			ShowPopup = new RelayCommand(_ShowPopup);
 		}
 		void _StartTaskManager(object obj = null)
 		{
@@ -53,6 +55,13 @@ namespace IconMeterWPF
 			p.StartInfo.FileName = "taskmgr";
 			p.Start();
 		}
+		void _ShowPopup(object obj = null)
+		{
+			// show popup window
+			var w = this.MainWindow as MainWindow;
+			w?.ShowPopup();
+		}
+
 		void UpdateAutoStartSetting()
 		{
             
