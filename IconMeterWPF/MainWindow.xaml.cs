@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Resources;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -13,6 +14,7 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
+using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
@@ -26,14 +28,18 @@ namespace IconMeterWPF
 	/// </summary>
 	public partial class MainWindow : Window
 	{
+
+		[DllImport("user32.dll")]
+		public static extern bool SetForegroundWindow(IntPtr hWnd);
+
+
 		// constructor
 		public MainWindow()
 		{
 			InitializeComponent();
 
 			// hide window before loading
-			this.Visibility = Visibility.Hidden;
-
+			//this.Visibility = Visibility.Hidden;
 			
 			var vm = this.DataContext as MainViewModel;
 
@@ -53,11 +59,6 @@ namespace IconMeterWPF
 					CultureInfo.CurrentUICulture, true, true
 					);
 			cmbLanguage.ItemsSource = resourceSet;
-
-			// ensure popup window will be loaded
-			MainTaskbarIcon.TrayPopupResolved.IsOpen = true;
-			MainTaskbarIcon.TrayPopupResolved.IsOpen = false;
-
 		}
 
 		// event handlers
@@ -96,6 +97,9 @@ namespace IconMeterWPF
 
 			// show setting window
 			this.Show();
+			WindowState = System.Windows.WindowState.Normal;
+			Visibility = Visibility.Visible;
+			ShowInTaskbar = true;
 		}
 		private void MenuItemAbout_Click(object sender, RoutedEventArgs e)
 		{
@@ -121,9 +125,36 @@ namespace IconMeterWPF
 			vm.ReloadSettings();
 			vm.ResumeUpdate();
 		}
+
+		public void ShowPopup()
+		{
+			popup.Placement = System.Windows.Controls.Primitives.PlacementMode.MousePoint;
+			popup.IsOpen = true;
+			HwndSource source = (HwndSource)PresentationSource.FromVisual(this);
+			IntPtr handle = source.Handle;
+			SetForegroundWindow(handle);
+		}
+
+		private void LogicalProcessorsTaskbarIcon_TrayLeftMouseDown(object sender, RoutedEventArgs e)
+		{
+			/*
+			var p = MainTaskbarIcon.TrayPopupResolved;
+			p.Placement = System.Windows.Controls.Primitives.PlacementMode.MousePoint;
+			p.HorizontalOffset = -p.ActualWidth;
+			p.VerticalOffset = -p.ActualHeight;
+			p.StaysOpen = false;
+			p.IsOpen = true;
+			*/
+		}
+
+		private void Window_SourceInitialized(object sender, EventArgs e)
+		{
+			WindowState = System.Windows.WindowState.Minimized;
+			Visibility = Visibility.Hidden;
+		}
 	}
 
-    public class BoolToVisibility : IValueConverter
+	public class BoolToVisibility : IValueConverter
 	{
 		public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
 		{
