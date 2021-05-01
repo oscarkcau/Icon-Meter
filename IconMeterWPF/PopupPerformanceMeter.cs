@@ -10,6 +10,7 @@ using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows.Media;
+using Icon = System.Drawing.Icon;
 
 namespace IconMeterWPF
 {
@@ -117,8 +118,10 @@ namespace IconMeterWPF
 		float _lastVirtualMemoryLoad, _lastCommittedMemoryLoad;
 		string _publicIP, _localIP, _downloadSpeed, _uploadSpeed;
 		IEnumerable<DiskPerformance> _diskPerformance;
+		Icon _diskActiveTimeTrayIcon;
 
 		// private fields
+		Properties.Settings settings = Properties.Settings.Default;
 		PerformanceCounter privilegedTimeCounter, userTimeCounter;
 		List<PerformanceCounter[]> diskCounters = new List<PerformanceCounter[]>();
 		bool paused = true;
@@ -279,6 +282,11 @@ namespace IconMeterWPF
 			get => _diskPerformance;
 			private set => SetField(ref _diskPerformance, value);
 		}
+		public Icon DiskActiveTimeTrayIcon
+		{
+			get => _diskActiveTimeTrayIcon;
+			set => SetField(ref _diskActiveTimeTrayIcon, value);
+		}
 
 		// constructor
 		public PopupPerformanceMeter(PerformanceMeter mainMeter)
@@ -330,6 +338,8 @@ namespace IconMeterWPF
 			timerCallbackStarted = true;
 
 			UpdateReadings();
+
+			BuildDiskActiveTimeTrayIcon();
 
 			timerCallbackStarted = false;
 		}
@@ -500,7 +510,7 @@ namespace IconMeterWPF
 			}
 
 			// update disk performance per every 1 or 10 seconds (which depends on popup window is shown or hidden)
-			if ((paused && tick % 10 == 5) || (!paused))
+			//if ((paused && tick % 10 == 5) || (!paused))
 			{
 				UpdateReadings_Disks();
 			}
@@ -642,9 +652,30 @@ namespace IconMeterWPF
 					(ulong)pc[1].NextValue(),
 					(ulong)pc[2].NextValue()
 					)
-				);
+				).ToList();
 			}
 			catch (Exception) { }
+		}
+		void BuildDiskActiveTimeTrayIcon()
+		{
+			if (AllDiskPerformance == null) return;
+
+			// create brush for drawing
+			System.Drawing.Color color = System.Drawing.Color.Green;
+			System.Drawing.Brush brush = new System.Drawing.SolidBrush(color);
+
+			// build the new icon from logical processor readings
+			var list = AllDiskPerformance.Select(p => ((float)p.ActiveTime, brush));
+			Icon icon = IconBuilder.BuildIcon(
+				list,
+				useVerticalBar: settings.UseVerticalBars
+				);
+
+			// release resource used by brushes
+			brush.Dispose();
+
+			// return the icon
+			DiskActiveTimeTrayIcon = icon;
 		}
 		static string GetFormattedSize(ulong size, bool KB = false)
 		{

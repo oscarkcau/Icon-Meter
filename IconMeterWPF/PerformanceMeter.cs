@@ -21,10 +21,6 @@ namespace IconMeterWPF
 		[DllImport("user32.dll", CharSet = CharSet.Auto)]
 		extern static bool DestroyIcon(IntPtr handle);
 
-		[DllImport("user32.dll", CharSet = CharSet.Auto)]
-		static extern int GetSystemMetrics(int nIndex);
-		const int SM_CXSMICON = 49;
-
         // private fields
         Properties.Settings settings;
 		PerformanceCounter cpuCounter, memoryCounter, diskCounter;
@@ -46,7 +42,6 @@ namespace IconMeterWPF
 		readonly List<PerformanceCounter> logicalProcessorsCounter = new List<PerformanceCounter>();
 		readonly Queue<float> previousNetwordReceive = new Queue<float>();
 		readonly Queue<float> previousNetwordSend = new Queue<float>();
-		readonly int systemTrayIconSize;
 		const string upArrow = "\u25b2";
 		const string downArrow = "\u25bc";
 
@@ -88,9 +83,6 @@ namespace IconMeterWPF
 		public PerformanceMeter()
 		{
 			totalMemorySize = (float)GetTotalMemorySize();
-
-			// get the default tray icon size
-			systemTrayIconSize = GetSystemMetrics(SM_CXSMICON);
 
 			// initialize queues and timer
 			previousNetwordReceive.Enqueue(0);
@@ -291,7 +283,7 @@ namespace IconMeterWPF
 			}
 
 			// build the new icon
-			Icon icon = BuildIcon(list, false);
+			Icon icon = IconBuilder.BuildIcon(list, useVerticalBar: settings.UseVerticalBars);
 		
 			// release resource used by brushes
 			foreach (var (_, brush) in list) brush.Dispose();
@@ -306,9 +298,27 @@ namespace IconMeterWPF
 			Brush brush = new SolidBrush(color);
 
 			// build the new icon from logical processor readings
-			Icon icon = BuildIcon(
+			Icon icon = IconBuilder.BuildIcon(
 				logicalProcessorUsage.Select(x => (x, brush)),
-				true
+				useVerticalBar:settings.UseVerticalBars
+				); ;
+
+			// release resource used by brushes
+			brush.Dispose();
+
+			// return the icon
+			return icon;
+		}
+		Icon BuildDiskActiveTimeIcon()
+		{
+			// create brush for drawing
+			Color color = Color.Green; // settings.LogicalProcessorColor;
+			Brush brush = new SolidBrush(color);
+
+			// build the new icon from logical processor readings
+			Icon icon = IconBuilder.BuildIcon(
+				logicalProcessorUsage.Select(x => (x, brush)),
+				useVerticalBar: settings.UseVerticalBars
 				);
 
 			// release resource used by brushes
@@ -317,68 +327,7 @@ namespace IconMeterWPF
 			// return the icon
 			return icon;
 		}
-		Icon BuildIcon(IEnumerable<(float, Brush)> list, bool drawShadow = false)
-		{
-			// draw new icon according the input reading values and brushes
 
-			// return default icon if no reading to display
-			int nReadings = list.Count();
-			if (nReadings == 0) return _defaultTrayIcon;
-
-			// determine icon size
-			int iconSize = 
-				nReadings <= 4 ? 16 : 
-				32 < systemTrayIconSize ? 32 : 
-				systemTrayIconSize;
-
-			// create bitmap and corresponding graphics object
-			Bitmap bmp = new Bitmap(iconSize, iconSize);
-			Graphics g = System.Drawing.Graphics.FromImage(bmp);
-			Pen shadowPen = new Pen(Color.FromArgb(128, Color.Black));
-
-			// clear background and draw bounding box
-			g.Clear(Color.Transparent);
-			Pen pen = new Pen(Color.DarkGray);
-			int t = iconSize - 1;
-			g.DrawLine(pen, 0, 0, 0, t);
-			g.DrawLine(pen, 0, t, t, t);
-			g.DrawLine(pen, t, t, t, 0);
-			g.DrawLine(pen, t, 0, 0, 0);
-
-			// compute bar height
-			float barHeight = iconSize / nReadings;
-
-			// render all bars
-			if (settings.UseVerticalBars)
-			{
-				float left = 0;
-				foreach (var (value, brush) in list)
-				{
-					float height = value * iconSize / 100.0f;
-					g.FillRectangle(brush, left, iconSize - height, barHeight, height);
-					left += barHeight;
-					if (drawShadow)
-						g.DrawLine(shadowPen, left - 1, iconSize - height + 0.5f, left - 1, iconSize);
-				}
-			}
-			else // use horizontal bars
-			{
-				float top = 0;
-				foreach (var (value, brush) in list)
-				{
-					float height = value * iconSize / 100.0f;
-					g.FillRectangle(brush, 0, top, height, barHeight);
-					top += barHeight;
-					if (drawShadow)
-						g.DrawLine(shadowPen, 0, top - 1, height - 0.5f, top - 1);
-				}
-			}
-
-			// remember to dispose objects
-			shadowPen.Dispose();
-
-			return System.Drawing.Icon.FromHandle(bmp.GetHicon());
-		}
 		string BuildMainTooltip()
 		{
 			// build notify icon's tooltip text
