@@ -57,6 +57,7 @@ namespace IconMeterWPF
 	
 			// setup property changed listener for tray icon update
 			vm.Meter.PropertyChanged += Meter_PropertyChanged;
+			vm.PopupMeter.PropertyChanged += PopupMeter_PropertyChanged;
 
 			// setup defailt icon for PerformanceMeter object
 			var uri = new Uri(@"pack://application:,,,/icon.ico", UriKind.RelativeOrAbsolute);
@@ -79,7 +80,18 @@ namespace IconMeterWPF
 			if (e.PropertyName == "MainTrayIcon") MainTaskbarIcon.Icon = vm.Meter.MainTrayIcon;
 			if (e.PropertyName == "LogicalProcessorsTrayIcon") LogicalProcessorsTaskbarIcon.Icon = vm.Meter.LogicalProcessorsTrayIcon;
 		}
-        private void ButtonOK_Click(object sender, RoutedEventArgs e)
+		private void PopupMeter_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+		{
+			if (e.PropertyName == "DiskActiveTimeTrayIcon")
+			{
+				Dispatcher.Invoke(() =>
+			   {
+				   var vm = this.DataContext as MainViewModel;
+				   IndividualDiskTaskbarIcon.Icon = vm.PopupMeter.DiskActiveTimeTrayIcon;
+			   });
+			}
+		}
+		private void ButtonOK_Click(object sender, RoutedEventArgs e)
         {
 			// hide setting window
 			this.Hide();

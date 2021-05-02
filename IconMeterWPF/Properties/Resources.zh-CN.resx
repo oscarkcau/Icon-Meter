@@ -246,4 +246,7 @@
   <data name="RefreshIP" xml:space="preserve">
     <value>刷新 IP</value>
   </data>
+  <data name="IndividualDisk" xml:space="preserve">
+    <value>個別硬盘</value>
+  </data>
 </root>

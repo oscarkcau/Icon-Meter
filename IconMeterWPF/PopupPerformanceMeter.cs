@@ -7,6 +7,7 @@ using System.Management;
 using System.Net;
 using System.Net.Sockets;
 using System.Runtime.CompilerServices;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows.Media;
@@ -119,6 +120,7 @@ namespace IconMeterWPF
 		string _publicIP, _localIP, _downloadSpeed, _uploadSpeed;
 		IEnumerable<DiskPerformance> _diskPerformance;
 		Icon _diskActiveTimeTrayIcon;
+		string _diskActiveTimeTooltip;
 
 		// private fields
 		Properties.Settings settings = Properties.Settings.Default;
@@ -287,6 +289,11 @@ namespace IconMeterWPF
 			get => _diskActiveTimeTrayIcon;
 			set => SetField(ref _diskActiveTimeTrayIcon, value);
 		}
+		public string DiskActiveTimeTooltip
+		{
+			get => _diskActiveTimeTooltip;
+			set => SetField(ref _diskActiveTimeTooltip, value);
+		}
 
 		// constructor
 		public PopupPerformanceMeter(PerformanceMeter mainMeter)
@@ -339,7 +346,12 @@ namespace IconMeterWPF
 
 			UpdateReadings();
 
-			BuildDiskActiveTimeTrayIcon();
+			// update icon image and tooltip of individual disk tray icon if it is in used
+			if (settings.ShowIndividualDiskUsage)
+			{
+				BuildDiskActiveTimeTrayIcon();
+				BuildDiskActiveTimeTooltip();
+			}
 
 			timerCallbackStarted = false;
 		}
@@ -510,7 +522,7 @@ namespace IconMeterWPF
 			}
 
 			// update disk performance per every 1 or 10 seconds (which depends on popup window is shown or hidden)
-			//if ((paused && tick % 10 == 5) || (!paused))
+			if ((paused && tick % 10 == 5) || (!paused) || settings.ShowIndividualDiskUsage)
 			{
 				UpdateReadings_Disks();
 			}
@@ -661,7 +673,7 @@ namespace IconMeterWPF
 			if (AllDiskPerformance == null) return;
 
 			// create brush for drawing
-			System.Drawing.Color color = System.Drawing.Color.Green;
+			System.Drawing.Color color = settings.IndividualDiskColor;
 			System.Drawing.Brush brush = new System.Drawing.SolidBrush(color);
 
 			// build the new icon from logical processor readings
@@ -674,9 +686,27 @@ namespace IconMeterWPF
 			// release resource used by brushes
 			brush.Dispose();
 
-			// return the icon
-			DiskActiveTimeTrayIcon = icon;
+			// assign the icon
+			if (icon != null) DiskActiveTimeTrayIcon = icon;
 		}
+		void BuildDiskActiveTimeTooltip()
+		{
+			if (AllDiskPerformance == null) return;
+
+			// build the text
+			StringBuilder sb = new StringBuilder();
+			foreach (var p in AllDiskPerformance)
+			{
+				sb.AppendLine($"{Properties.Resources.Disk} {p.Name} {p.ActiveTime}%");
+			}
+
+			// make sure the tooltip text has at most 128 characters
+			if (sb.Length >= 128) sb.Remove(127, sb.Length - 127);
+
+			// assign the tooptip
+			DiskActiveTimeTooltip = sb.ToString().TrimEnd();
+		}
+
 		static string GetFormattedSize(ulong size, bool KB = false)
 		{
 			// convret size value to string with unit

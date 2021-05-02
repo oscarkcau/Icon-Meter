@@ -70,6 +70,7 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="10"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="10"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
@@ -121,26 +122,33 @@
         <xctk:ColorPicker x:Name="ButtonColorLogicalProcessor" Grid.Column="2" Margin="4" Grid.Row="6"  MaxWidth="80"
                           SelectedColor="{Binding Source={x:Static properties:Settings.Default}, Path=LogicalProcessorColor, Converter={StaticResource DrawingColorToWindowsMediaColor}}"/>
 
-        <Line Grid.Row="7" Style="{StaticResource horizontalLineStyle}" VerticalAlignment="Center" Height="1" Margin="0,4,0,4"/>
-        <CheckBox VerticalAlignment="Center" Grid.Row="8" Grid.ColumnSpan="3"
+        <CheckBox VerticalAlignment="Center" Grid.Row="7" Grid.ColumnSpan="2"
+                  Content="{x:Static properties:Resources.IndividualDisk}"
+                  IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=ShowIndividualDiskUsage}" Margin="0,4"/>
+        <xctk:ColorPicker x:Name="ButtonColorDiskActiveTime" Grid.Column="2" Margin="4" Grid.Row="7"  MaxWidth="80"
+                          SelectedColor="{Binding Source={x:Static properties:Settings.Default}, Path=IndividualDiskColor, Converter={StaticResource DrawingColorToWindowsMediaColor}}"/>
+
+
+        <Line Grid.Row="8" Style="{StaticResource horizontalLineStyle}" VerticalAlignment="Center" Height="1" Margin="0,4,0,4"/>
+        <CheckBox VerticalAlignment="Center" Grid.Row="9" Grid.ColumnSpan="3"
                   Content="{x:Static properties:Resources.UseVerticalBar}"
                   IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=UseVerticalBars}" Margin="0,4"/>
-        <CheckBox VerticalAlignment="Center" Grid.Row="9" Grid.ColumnSpan="3"
+        <CheckBox VerticalAlignment="Center" Grid.Row="10" Grid.ColumnSpan="3"
                   Content="{x:Static properties:Resources.RunAtStartup}"
                   IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=RunAtStartup}" Margin="0,4"/>
 
-        <Line Grid.Row="10" Style="{StaticResource horizontalLineStyle}" VerticalAlignment="Center" Height="1" Margin="0,4,0,4"/>
-        <Label Grid.Column="0" Grid.Row="11" VerticalContentAlignment="Center" Margin="0,0,0,4"
+        <Line Grid.Row="11" Style="{StaticResource horizontalLineStyle}" VerticalAlignment="Center" Height="1" Margin="0,4,0,4"/>
+        <Label Grid.Column="0" Grid.Row="12" VerticalContentAlignment="Center" Margin="0,0,0,4"
                Content="{x:Static properties:Resources.Language}"/>
-        <ComboBox Name="cmbLanguage"  Grid.Row="11" Grid.Column="1" Grid.ColumnSpan="2"
+        <ComboBox Name="cmbLanguage"  Grid.Row="12" Grid.Column="1" Grid.ColumnSpan="2"
                   SelectedValue="{Binding  Source={x:Static properties:Settings.Default}, Path=Language}"
                   SelectedValuePath="Key"
                   DisplayMemberPath="Value" Margin="4,2"
                   />
-        <Line Grid.Row="12" Style="{StaticResource horizontalLineStyle}" VerticalAlignment="Center" Height="2" Margin="0,4,0,4"/>
-        <Button x:Name="ButtonOK" Grid.Column="1" MinHeight="24" Margin="4,4" Grid.Row="13" Click="ButtonOK_Click"
+        <Line Grid.Row="13" Style="{StaticResource horizontalLineStyle}" VerticalAlignment="Center" Height="2" Margin="0,4,0,4"/>
+        <Button x:Name="ButtonOK" Grid.Column="1" MinHeight="24" Margin="4,4" Grid.Row="14" Click="ButtonOK_Click"
                 Content="{x:Static properties:Resources.OK}"/>
-        <Button x:Name="ButtonCancel" Grid.Column="2" MinHeight="24" Margin="4,4" Grid.Row="13" Click="ButtonCancel_Click"
+        <Button x:Name="ButtonCancel" Grid.Column="2" MinHeight="24" Margin="4,4" Grid.Row="14" Click="ButtonCancel_Click"
                 Content="{x:Static properties:Resources.Cancel}"/>
 
 
@@ -163,5 +171,14 @@
                         ContextMenu="{DynamicResource SharedContextMenu}" 
                         Visibility="{Binding Source={x:Static properties:Settings.Default}, Path=ShowLogicalProcessorsUsage, Converter={StaticResource BoolToVisibility}, Mode=OneWay}" 
                         TrayLeftMouseDown="LogicalProcessorsTaskbarIcon_TrayLeftMouseDown"/>
+
+        <tb:TaskbarIcon x:Name="IndividualDiskTaskbarIcon"
+                        ToolTipText="{Binding PopupMeter.DiskActiveTimeTooltip}" 
+                        LeftClickCommand="{ Binding ShowPopup, Mode=OneWay}"
+                        DoubleClickCommand="{Binding StartTaskManager, Mode=OneWay}"  
+                        ContextMenu="{DynamicResource SharedContextMenu}" 
+                        Visibility="{Binding Source={x:Static properties:Settings.Default}, Path=ShowIndividualDiskUsage, Converter={StaticResource BoolToVisibility}, Mode=OneWay}" 
+                        TrayLeftMouseDown="LogicalProcessorsTaskbarIcon_TrayLeftMouseDown"/>
+
     </Grid>
 </Window>

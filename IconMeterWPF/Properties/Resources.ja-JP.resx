@@ -246,4 +246,7 @@
   <data name="RefreshIP" xml:space="preserve">
     <value>IPを更新</value>
   </data>
+  <data name="IndividualDisk" xml:space="preserve">
+    <value>個別のディスク</value>
+  </data>
 </root>

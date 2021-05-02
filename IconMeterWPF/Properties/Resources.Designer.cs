@@ -187,6 +187,15 @@ namespace IconMeterWPF.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Individual Disk.
+        /// </summary>
+        public static string IndividualDisk {
+            get {
+                return ResourceManager.GetString("IndividualDisk", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to In use.
         /// </summary>
         public static string InUse {

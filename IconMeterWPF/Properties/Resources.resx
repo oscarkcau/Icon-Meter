@@ -246,4 +246,7 @@
   <data name="RefreshIP" xml:space="preserve">
     <value>Refresh IP</value>
   </data>
+  <data name="IndividualDisk" xml:space="preserve">
+    <value>Individual Disk</value>
+  </data>
 </root>

@@ -309,25 +309,6 @@ namespace IconMeterWPF
 			// return the icon
 			return icon;
 		}
-		Icon BuildDiskActiveTimeIcon()
-		{
-			// create brush for drawing
-			Color color = Color.Green; // settings.LogicalProcessorColor;
-			Brush brush = new SolidBrush(color);
-
-			// build the new icon from logical processor readings
-			Icon icon = IconBuilder.BuildIcon(
-				logicalProcessorUsage.Select(x => (x, brush)),
-				useVerticalBar: settings.UseVerticalBars
-				);
-
-			// release resource used by brushes
-			brush.Dispose();
-
-			// return the icon
-			return icon;
-		}
-
 		string BuildMainTooltip()
 		{
 			// build notify icon's tooltip text
