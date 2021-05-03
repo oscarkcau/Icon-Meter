@@ -18,7 +18,7 @@ namespace IconMeterWPF
 {
 	sealed class PerformanceMeter : IDisposable, INotifyPropertyChanged
 	{
-		[DllImport("user32.dll", CharSet = CharSet.Auto)]
+		[DllImport("user32.dll")]
 		extern static bool DestroyIcon(IntPtr handle);
 
         // private fields
@@ -122,17 +122,28 @@ namespace IconMeterWPF
 			// first get new readings from performance counters
 			UpdateReadings();
 
-			// update icon image and tooltip of main tray icon
+			// dispose the original icon to ensure resources are released
 			if (MainTrayIcon != null && MainTrayIcon != DefaultTrayIcon)
+			{
 				DestroyIcon(MainTrayIcon.Handle);
+				MainTrayIcon = null;
+			}
+
+			// update icon image and tooltip of main tray icon
 			MainTrayIcon = BuildMainNotifyIcon();
 			MainTooltip = BuildMainTooltip();
 
-			// update icon image and tooltip of logical processor tray icon if it is in used
+			// if logical processor usage is displaying 
 			if (settings.ShowLogicalProcessorsUsage)
 			{
+				// dispose the original icon to ensure resources are released
 				if (LogicalProcessorsTrayIcon != null && LogicalProcessorsTrayIcon != DefaultTrayIcon)
+				{
 					DestroyIcon(LogicalProcessorsTrayIcon.Handle);
+					LogicalProcessorsTrayIcon = null;
+				}
+
+				// update icon image and tooltip of logical processor tray icon
 				LogicalProcessorsTrayIcon = BuildLogicalProcessorIcon();
 				LogicalProcessorsTooltip = BuildLogicalProcessorTooltip();
 			}

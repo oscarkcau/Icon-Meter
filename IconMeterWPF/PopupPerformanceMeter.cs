@@ -7,6 +7,7 @@ using System.Management;
 using System.Net;
 using System.Net.Sockets;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
@@ -17,6 +18,9 @@ namespace IconMeterWPF
 {
 	class PopupPerformanceMeter : IDisposable, INotifyPropertyChanged
 	{
+		[DllImport("user32.dll")]
+		internal static extern bool DestroyIcon(IntPtr handle);
+
 		// inner class for storing process information
 		public class ProcessPerformance
 		{
@@ -678,16 +682,23 @@ namespace IconMeterWPF
 
 			// build the new icon from logical processor readings
 			var list = AllDiskPerformance.Select(p => ((float)p.ActiveTime, brush));
-			Icon icon = IconBuilder.BuildIcon(
-				list,
-				useVerticalBar: settings.UseVerticalBars
-				);
+			Icon icon = IconBuilder.BuildIcon(list, useVerticalBar: settings.UseVerticalBars);
 
 			// release resource used by brushes
 			brush.Dispose();
 
+			// dispose the original icon to ensure resources are released
+			if (DiskActiveTimeTrayIcon != null)
+			{
+				DestroyIcon(DiskActiveTimeTrayIcon.Handle);
+				DiskActiveTimeTrayIcon = null;
+			}
+
 			// assign the icon
-			if (icon != null) DiskActiveTimeTrayIcon = icon;
+			if (icon != null)
+			{
+				DiskActiveTimeTrayIcon = icon;
+			}
 		}
 		void BuildDiskActiveTimeTooltip()
 		{

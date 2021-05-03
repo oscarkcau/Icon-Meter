@@ -28,9 +28,8 @@ namespace IconMeterWPF
 	/// </summary>
 	public partial class MainWindow : Window
 	{
-
 		[DllImport("user32.dll")]
-		public static extern bool SetForegroundWindow(IntPtr hWnd);
+		internal static extern bool SetForegroundWindow(IntPtr hWnd);
 
 		[DllImport("user32.dll")]
 		[return: MarshalAs(UnmanagedType.Bool)]
@@ -73,12 +72,18 @@ namespace IconMeterWPF
 		}
 
 		// event handlers
-		private void Meter_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)  
+		private void Meter_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
 		{
 			// update tray icons if needed
 			var vm = this.DataContext as MainViewModel;
-			if (e.PropertyName == "MainTrayIcon") MainTaskbarIcon.Icon = vm.Meter.MainTrayIcon;
-			if (e.PropertyName == "LogicalProcessorsTrayIcon") LogicalProcessorsTaskbarIcon.Icon = vm.Meter.LogicalProcessorsTrayIcon;
+			if (e.PropertyName == "MainTrayIcon")
+			{
+				MainTaskbarIcon.Icon = vm.Meter.MainTrayIcon;
+			}
+			if (e.PropertyName == "LogicalProcessorsTrayIcon")
+			{
+				LogicalProcessorsTaskbarIcon.Icon = vm.Meter.LogicalProcessorsTrayIcon;
+			}
 		}
 		private void PopupMeter_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
 		{
