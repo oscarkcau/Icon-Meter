@@ -205,6 +205,15 @@ namespace IconMeterWPF.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Keep always on top.
+        /// </summary>
+        public static string KeepAlwaysOnTop {
+            get {
+                return ResourceManager.GetString("KeepAlwaysOnTop", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Language:.
         /// </summary>
         public static string Language {

@@ -21,6 +21,9 @@ namespace IconMeterWPF
 	/// </summary>
 	public partial class PopupWindow : UserControl
 	{
+		// private fields
+		bool pinned = false;
+
 		public PopupWindow()
 		{
 			InitializeComponent();
@@ -52,6 +55,28 @@ namespace IconMeterWPF
 
 		private void ImagePressed(Image sender)
 		{
+			if (sender == this.ImagePin)
+            {
+				if (pinned == false)
+                {
+					pinned = true;
+					ImagePin.RenderTransform = new TranslateTransform(-2, 4);
+					ImagePin.Clip = new RectangleGeometry(new Rect(0, 0, 16, 12));
+					var p = this.Parent as Popup;
+					p.StaysOpen = true;
+
+				}
+				else
+                {
+					pinned = false;
+					ImagePin.RenderTransform = Transform.Identity;
+					ImagePin.Clip = null;
+					var p = this.Parent as Popup;
+					p.StaysOpen = false;
+					p.IsOpen = false;
+				}
+			}				
+
 			if (sender == this.ImageClose)
 			{
 				// hide popup window
