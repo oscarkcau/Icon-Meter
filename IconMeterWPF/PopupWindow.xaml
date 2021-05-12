@@ -41,8 +41,16 @@
 
             <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Vertical" Width="180" Margin="8,0,8,8">
 
-                <Label HorizontalAlignment="Center" Margin="0,0,0,0" FontWeight="Bold" Foreground="RoyalBlue" 
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Image x:Name="ImageAnchor" Grid.Column="0" Source="images\anchor.png"  ToolTip="{x:Static properties:Resources.DragHereToMove}" Cursor="Hand" MouseDown="ImageAnchor_MouseDown" MouseMove="ImageAnchor_MouseMove" MouseUp="ImageAnchor_MouseUp"/>
+                    <Label Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Center" Margin="0,0,0,0" FontWeight="Bold" Foreground="RoyalBlue" 
                        Content="{Binding Source={x:Static properties:Resources.CPU},  Converter={StaticResource ToUpperValue}, Mode=OneWay}"/>
+                </Grid>
+
 
                 <Grid>
                     <Grid.RowDefinitions>

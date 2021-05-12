@@ -160,6 +160,15 @@ namespace IconMeterWPF.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Drag here to move.
+        /// </summary>
+        public static string DragHereToMove {
+            get {
+                return ResourceManager.GetString("DragHereToMove", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Group.
         /// </summary>
         public static string Group {

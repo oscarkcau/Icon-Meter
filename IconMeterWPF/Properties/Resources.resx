@@ -252,4 +252,7 @@
   <data name="KeepAlwaysOnTop" xml:space="preserve">
     <value>Keep always on top</value>
   </data>
+  <data name="DragHereToMove" xml:space="preserve">
+    <value>Drag here to move</value>
+  </data>
 </root>

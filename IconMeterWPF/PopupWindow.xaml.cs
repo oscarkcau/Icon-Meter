@@ -23,36 +23,61 @@ namespace IconMeterWPF
 	{
 		// private fields
 		bool pinned = false;
+		bool isAnchorMouseDown = false;
+		Point mouseDownPosition;
 
+		// constructor
 		public PopupWindow()
 		{
 			InitializeComponent();
 		}
 
+		// event handlers
 		private void UserControl_Loaded(object sender, RoutedEventArgs e)
 		{
 			var vm = this.DataContext as MainViewModel;
 			vm?.PopupMeter?.Resume();
 		}
-
 		private void UserControl_Unloaded(object sender, RoutedEventArgs e)
 		{
 			var vm = this.DataContext as MainViewModel;
 			vm?.PopupMeter?.Pause();
 		}
-
 		private void Image_MouseUp(object sender, MouseButtonEventArgs e)
 		{
 			var img = sender as Image;
 			ImagePressed(img);
 		}
-
 		private void Image_TouchUp(object sender, TouchEventArgs e)
 		{
 			var img = sender as Image;
 			ImagePressed(img);
 		}
+		private void ImageAnchor_MouseDown(object sender, MouseButtonEventArgs e)
+		{
+			isAnchorMouseDown = true;
+			mouseDownPosition = e.GetPosition(this);
+			ImageAnchor.CaptureMouse();
+		}
+		private void ImageAnchor_MouseMove(object sender, MouseEventArgs e)
+		{
+			if (isAnchorMouseDown)
+			{
+				var pos = e.GetPosition(this);
+				var dx = pos.X - mouseDownPosition.X;
+				var dy = pos.Y - mouseDownPosition.Y;
+				var p = this.Parent as Popup;
+				p.HorizontalOffset += dx;
+				p.VerticalOffset += dy;
+			}
+		}
+		private void ImageAnchor_MouseUp(object sender, MouseButtonEventArgs e)
+		{
+			isAnchorMouseDown = false;
+			ImageAnchor.ReleaseMouseCapture();
+		}
 
+		// private methods
 		private void ImagePressed(Image sender)
 		{
 			if (sender == this.ImagePin)
