@@ -682,22 +682,22 @@ namespace IconMeterWPF
 
 			// build the new icon from logical processor readings
 			var list = AllDiskPerformance.Select(p => ((float)p.ActiveTime, brush));
-			Icon icon = IconBuilder.BuildIcon(list, useVerticalBar: settings.UseVerticalBars);
+			Icon icon = IconBuilder.BuildIcon(list, useVerticalBar: settings.UseVerticalBars, label: "D");
 
 			// release resource used by brushes
 			brush.Dispose();
 
-			// dispose the original icon to ensure resources are released
-			if (DiskActiveTimeTrayIcon != null)
-			{
-				DestroyIcon(DiskActiveTimeTrayIcon.Handle);
-				DiskActiveTimeTrayIcon = null;
-			}
-
 			// assign the icon
 			if (icon != null)
 			{
+				var oldIcon = DiskActiveTimeTrayIcon;
 				DiskActiveTimeTrayIcon = icon;
+
+				// dispose the original icon to ensure resources are released
+				if (oldIcon != null)
+				{
+					DestroyIcon(oldIcon.Handle);
+				}
 			}
 		}
 		void BuildDiskActiveTimeTooltip()

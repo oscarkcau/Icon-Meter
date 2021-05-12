@@ -15,14 +15,19 @@ namespace IconMeterWPF
 		const int SM_CXSMICON = 49;
 
 		static readonly int systemTrayIconSize;
+		static System.Drawing.Font drawFont;
+		static System.Drawing.SolidBrush drawBrush;
 
 		static IconBuilder() 
 		{
 			// get the default tray icon size
 			systemTrayIconSize = GetSystemMetrics(SM_CXSMICON);
+
+			drawFont = new System.Drawing.Font("Arial", 5, FontStyle.Bold);
+			drawBrush = new System.Drawing.SolidBrush(Color.FromArgb(128, Color.White));
 		}
 
-		public static Icon BuildIcon(IEnumerable<(float, Brush)> list, bool useVerticalBar = false, bool drawShadow = true)
+		public static Icon BuildIcon(IEnumerable<(float, Brush)> list, bool useVerticalBar = false, bool drawShadow = true, string label = null)
 		{
 			// draw new icon according the input reading values and brushes
 
@@ -49,6 +54,14 @@ namespace IconMeterWPF
 			g.DrawLine(pen, 0, t, t, t);
 			g.DrawLine(pen, t, t, t, 0);
 			g.DrawLine(pen, t, 0, 0, 0);
+
+			if (string.IsNullOrWhiteSpace(label) == false)
+            {
+				if (useVerticalBar)
+					g.DrawString(label, drawFont, drawBrush, 0, 0);
+				else
+					g.DrawString(label, drawFont, drawBrush, iconSize-11, iconSize-13);
+			}
 
 			// compute bar height
 			float barHeight = iconSize / nReadings;

@@ -122,30 +122,30 @@ namespace IconMeterWPF
 			// first get new readings from performance counters
 			UpdateReadings();
 
-			// dispose the original icon to ensure resources are released
-			if (MainTrayIcon != null && MainTrayIcon != DefaultTrayIcon)
-			{
-				DestroyIcon(MainTrayIcon.Handle);
-				MainTrayIcon = null;
-			}
-
 			// update icon image and tooltip of main tray icon
+			var oldIcon = MainTrayIcon;
 			MainTrayIcon = BuildMainNotifyIcon();
 			MainTooltip = BuildMainTooltip();
+
+			// dispose the original icon to ensure resources are released
+			if (oldIcon != null && oldIcon != DefaultTrayIcon)
+			{
+				DestroyIcon(oldIcon.Handle);
+			}
 
 			// if logical processor usage is displaying 
 			if (settings.ShowLogicalProcessorsUsage)
 			{
-				// dispose the original icon to ensure resources are released
-				if (LogicalProcessorsTrayIcon != null && LogicalProcessorsTrayIcon != DefaultTrayIcon)
-				{
-					DestroyIcon(LogicalProcessorsTrayIcon.Handle);
-					LogicalProcessorsTrayIcon = null;
-				}
-
 				// update icon image and tooltip of logical processor tray icon
+				oldIcon = LogicalProcessorsTrayIcon;
 				LogicalProcessorsTrayIcon = BuildLogicalProcessorIcon();
 				LogicalProcessorsTooltip = BuildLogicalProcessorTooltip();
+
+				// dispose the original icon to ensure resources are released
+				if (oldIcon != null && oldIcon != DefaultTrayIcon)
+				{
+					DestroyIcon(oldIcon.Handle);
+				}
 			}
 		}
 
@@ -311,8 +311,9 @@ namespace IconMeterWPF
 			// build the new icon from logical processor readings
 			Icon icon = IconBuilder.BuildIcon(
 				logicalProcessorUsage.Select(x => (x, brush)),
-				useVerticalBar:settings.UseVerticalBars
-				); ;
+				useVerticalBar:settings.UseVerticalBars,
+				label:"P"
+				);
 
 			// release resource used by brushes
 			brush.Dispose();
