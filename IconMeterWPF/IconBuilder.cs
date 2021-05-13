@@ -15,16 +15,15 @@ namespace IconMeterWPF
 		const int SM_CXSMICON = 49;
 
 		static readonly int systemTrayIconSize;
-		static System.Drawing.Font drawFont;
-		static System.Drawing.SolidBrush drawBrush;
+		static readonly Font drawFont;
 
 		static IconBuilder() 
 		{
 			// get the default tray icon size
 			systemTrayIconSize = GetSystemMetrics(SM_CXSMICON);
 
-			drawFont = new System.Drawing.Font("Arial", 5, FontStyle.Bold);
-			drawBrush = new System.Drawing.SolidBrush(Color.FromArgb(128, Color.White));
+			// create drawing objects
+			drawFont = new Font("Arial", 9, FontStyle.Bold, GraphicsUnit.Pixel);
 		}
 
 		public static Icon BuildIcon(IEnumerable<(float, Brush)> list, bool useVerticalBar = false, bool drawShadow = true, string label = null)
@@ -41,59 +40,65 @@ namespace IconMeterWPF
 				32 < systemTrayIconSize ? 32 :
 				systemTrayIconSize;
 
-			// create bitmap and corresponding graphics object
+			// create bitmap and corresponding graphics objects
 			Bitmap bmp = new Bitmap(iconSize, iconSize);
 			Graphics g = System.Drawing.Graphics.FromImage(bmp);
-			Pen shadowPen = new Pen(Color.FromArgb(128, Color.Black));
-
+			
+			
 			// clear background and draw bounding box
 			g.Clear(Color.Transparent);
-			Pen pen = new Pen(Color.DarkGray);
 			int t = iconSize - 1;
-			g.DrawLine(pen, 0, 0, 0, t);
-			g.DrawLine(pen, 0, t, t, t);
-			g.DrawLine(pen, t, t, t, 0);
-			g.DrawLine(pen, t, 0, 0, 0);
+			Pen linePen = Pens.DarkGray;
+			g.DrawLine(linePen, 0, 0, 0, t);
+			g.DrawLine(linePen, 0, t, t, t);
+			g.DrawLine(linePen, t, t, t, 0);
+			g.DrawLine(linePen, t, 0, 0, 0);
 
+			// draw label if it is provided
 			if (string.IsNullOrWhiteSpace(label) == false)
             {
-				if (useVerticalBar)
-					g.DrawString(label, drawFont, drawBrush, 0, 0);
-				else
-					g.DrawString(label, drawFont, drawBrush, iconSize-11, iconSize-13);
+				using (SolidBrush drawBrush = new SolidBrush(Color.FromArgb(128, Color.White)))
+				{
+					SizeF labelSize = g.MeasureString(label, drawFont);
+					if (useVerticalBar)
+						g.DrawString(label, drawFont, drawBrush, 0, 0);
+					else
+						g.DrawString(label, drawFont, drawBrush, iconSize - labelSize.Width, iconSize - labelSize.Height);
+				}
 			}
 
 			// compute bar height
 			float barHeight = iconSize / nReadings;
 
 			// render all bars
-			if (useVerticalBar)
+			using (Pen shadowPen = new Pen(Color.FromArgb(128, Color.Black)))
 			{
-				float left = 0;
-				foreach (var (value, brush) in list)
-				{
-					float height = value * iconSize / 100.0f;
-					g.FillRectangle(brush, left, iconSize - height, barHeight, height);
-					left += barHeight;
-					if (drawShadow)
-						g.DrawLine(shadowPen, left - 1, iconSize - height + 0.5f, left - 1, iconSize);
-				}
-			}
-			else // use horizontal bars
-			{
-				float top = 0;
-				foreach (var (value, brush) in list)
-				{
-					float height = value * iconSize / 100.0f;
-					g.FillRectangle(brush, 0, top, height, barHeight);
-					top += barHeight;
-					if (drawShadow)
-						g.DrawLine(shadowPen, 0, top - 1, height - 0.5f, top - 1);
-				}
-			}
 
-			// remember to dispose objects
-			shadowPen.Dispose();
+				if (useVerticalBar)
+				{
+					float left = 0;
+					foreach (var (value, brush) in list)
+					{
+						float height = value * iconSize / 100.0f;
+						g.FillRectangle(brush, left, iconSize - height, barHeight, height);
+						left += barHeight;
+						if (drawShadow)
+							g.DrawLine(shadowPen, left - 1, iconSize - height + 0.5f, left - 1, iconSize);
+					}
+				}
+				else // use horizontal bars
+				{
+					float top = 0;
+					foreach (var (value, brush) in list)
+					{
+						float height = value * iconSize / 100.0f;
+						g.FillRectangle(brush, 0, top, height, barHeight);
+						top += barHeight;
+						if (drawShadow)
+							g.DrawLine(shadowPen, 0, top - 1, height - 0.5f, top - 1);
+					}
+				}
+			}
 
 			return System.Drawing.Icon.FromHandle(bmp.GetHicon());
 		}
