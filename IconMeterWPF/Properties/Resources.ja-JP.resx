@@ -255,4 +255,7 @@
   <data name="DragHereToMove" xml:space="preserve">
     <value>ここにドラッグして移動します</value>
   </data>
+  <data name="BackgroundColor" xml:space="preserve">
+    <value>背景色</value>
+  </data>
 </root>

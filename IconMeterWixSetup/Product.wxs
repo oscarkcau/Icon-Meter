@@ -60,8 +60,8 @@
   
   <Fragment>
     <DirectoryRef Id="INSTALLFOLDER">
-      <Component Id="cmpBE3C1D05C7C90455322C9F819A57A07A" Guid="*" Win64="$(var.Win64)">
-        <File Id="filE7C602A91344AD969255F20A2CA7411A" KeyPath="yes" Source="$(var.HarvestPath)\Hardcodet.Wpf.TaskbarNotification.dll" />
+      <Component Id="cmp2F5EED07769D01188B6E1DDA2EC5B3FB" Guid="*">
+        <File Id="filB15AFBDD7410AD56772D69B1FD1048A0" KeyPath="yes" Source="$(var.HarvestPath)\Hardcodet.NotifyIcon.Wpf.dll" />
       </Component>
       <Component Id="cmp80C63117D9AED639E1384839F4EA0F03" Guid="*" Win64="$(var.Win64)">
         <File Id="filA0129B89855923C7C9325A5442E752DA" KeyPath="yes" Source="$(var.HarvestPath)\Icon Meter.exe">
@@ -110,7 +110,7 @@
   
   <Fragment>
     <ComponentGroup Id="ProductComponents">
-      <ComponentRef Id="cmpBE3C1D05C7C90455322C9F819A57A07A" />
+      <ComponentRef Id="cmp2F5EED07769D01188B6E1DDA2EC5B3FB" />
       <ComponentRef Id="cmp80C63117D9AED639E1384839F4EA0F03" />
       <ComponentRef Id="cmp169C44EC1BF5C7DE5D16CC178FC4ABA2" />
       <ComponentRef Id="cmpB5AC76F2952CC9DFFEAE55F2225097DA" />

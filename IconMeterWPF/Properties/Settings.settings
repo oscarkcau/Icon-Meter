@@ -53,5 +53,8 @@
     <Setting Name="ShowIndividualDiskUsage" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
+    <Setting Name="TrayIconBackgroundColor" Type="System.Drawing.Color" Scope="User">
+      <Value Profile="(Default)">32, 32, 32</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

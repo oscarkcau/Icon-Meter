@@ -14,27 +14,21 @@ namespace IconMeterWPF
 		static extern int GetSystemMetrics(int nIndex);
 		const int SM_CXSMICON = 49;
 
-		static readonly int systemTrayIconSize;
+		static readonly int iconSize;
 		static readonly Font drawFont;
 
 		static IconBuilder() 
 		{
 			// get the default tray icon size
-			systemTrayIconSize = GetSystemMetrics(SM_CXSMICON);
+			iconSize = GetSystemMetrics(SM_CXSMICON);
 
 			// create drawing objects
-			drawFont = new Font(SystemFonts.DefaultFont.FontFamily, systemTrayIconSize/2, FontStyle.Bold, GraphicsUnit.Pixel);
+			drawFont = new Font(SystemFonts.DefaultFont.FontFamily, iconSize/2, FontStyle.Bold, GraphicsUnit.Pixel);
 		}
 
 		public static Icon BuildIcon(IEnumerable<(float, Brush)> list, bool useVerticalBar = false, bool drawShadow = true, string label = null)
 		{
 			// draw new icon according the input reading values and brushes
-
-			// return default icon if no reading to display
-			int nReadings = list.Count();
-
-			// determine icon size
-			int iconSize = systemTrayIconSize;
 
 			// create bitmap and corresponding graphics objects
 			Bitmap bmp = new Bitmap(iconSize, iconSize);
@@ -42,10 +36,8 @@ namespace IconMeterWPF
 			g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighSpeed;
 
 			// clear background and draw bounding box
-			//g.Clear(Color.Transparent);
-			Color bgColor = Color.Black;
+			Color bgColor = Properties.Settings.Default.TrayIconBackgroundColor;
 			g.Clear(bgColor);
-
 			int t = iconSize - 1;
 			Pen linePen = Pens.DarkGray;
 			g.DrawLine(linePen, 0, 0, 0, t);
@@ -56,12 +48,13 @@ namespace IconMeterWPF
 			// draw label if it is provided
 			if (string.IsNullOrWhiteSpace(label) == false)
             {
+				// pick light or dark font color based on background color
 				float bgIntensity = bgColor.R * 0.2989f + bgColor.G * 0.5870f + bgColor.B * 0.1140f;
-				Color fontColor = bgIntensity > 128 ? Color.Gray : Color.DarkGray;
+				Color fontColor = bgIntensity > 128 ? Color.DimGray : Color.DarkGray;
 
+				// render label with selected font and color
 				using (SolidBrush drawBrush = new SolidBrush(fontColor))
 				{
-					
 					if (useVerticalBar)
 					{
 						g.DrawString(label, drawFont, drawBrush, 1, 1);
@@ -75,12 +68,12 @@ namespace IconMeterWPF
 			}
 
 			// compute bar height
+			int nReadings = list.Count();
 			float barHeight = iconSize / nReadings;
 
 			// render all bars
 			using (Pen shadowPen = new Pen(Color.FromArgb(128, Color.Black)))
 			{
-
 				if (useVerticalBar)
 				{
 					float left = 0;
@@ -107,6 +100,7 @@ namespace IconMeterWPF
 				}
 			}
 
+			// create icon from bitmap
 			return System.Drawing.Icon.FromHandle(bmp.GetHicon());
 		}
 

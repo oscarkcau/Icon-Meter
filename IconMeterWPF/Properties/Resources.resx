@@ -255,4 +255,7 @@
   <data name="DragHereToMove" xml:space="preserve">
     <value>Drag here to move</value>
   </data>
+  <data name="BackgroundColor" xml:space="preserve">
+    <value>Background Color</value>
+  </data>
 </root>

@@ -226,5 +226,17 @@ namespace IconMeterWPF.Properties {
                 this["ShowIndividualDiskUsage"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("32, 32, 32")]
+        public global::System.Drawing.Color TrayIconBackgroundColor {
+            get {
+                return ((global::System.Drawing.Color)(this["TrayIconBackgroundColor"]));
+            }
+            set {
+                this["TrayIconBackgroundColor"] = value;
+            }
+        }
     }
 }

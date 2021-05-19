@@ -255,4 +255,7 @@
   <data name="DragHereToMove" xml:space="preserve">
     <value>拖到这里移动</value>
   </data>
+  <data name="BackgroundColor" xml:space="preserve">
+    <value>背景颜色</value>
+  </data>
 </root>
