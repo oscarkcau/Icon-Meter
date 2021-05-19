@@ -23,7 +23,7 @@ namespace IconMeterWPF
 			systemTrayIconSize = GetSystemMetrics(SM_CXSMICON);
 
 			// create drawing objects
-			drawFont = new Font("Arial", 9, FontStyle.Bold, GraphicsUnit.Pixel);
+			drawFont = new Font(SystemFonts.DefaultFont.FontFamily, systemTrayIconSize/2, FontStyle.Bold, GraphicsUnit.Pixel);
 		}
 
 		public static Icon BuildIcon(IEnumerable<(float, Brush)> list, bool useVerticalBar = false, bool drawShadow = true, string label = null)
@@ -32,21 +32,20 @@ namespace IconMeterWPF
 
 			// return default icon if no reading to display
 			int nReadings = list.Count();
-			//if (nReadings == 0) return null;
 
 			// determine icon size
-			int iconSize =
-				nReadings <= 4 ? 16 :
-				32 < systemTrayIconSize ? 32 :
-				systemTrayIconSize;
+			int iconSize = systemTrayIconSize;
 
 			// create bitmap and corresponding graphics objects
 			Bitmap bmp = new Bitmap(iconSize, iconSize);
 			Graphics g = System.Drawing.Graphics.FromImage(bmp);
-			
-			
+			g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighSpeed;
+
 			// clear background and draw bounding box
-			g.Clear(Color.Transparent);
+			//g.Clear(Color.Transparent);
+			Color bgColor = Color.Black;
+			g.Clear(bgColor);
+
 			int t = iconSize - 1;
 			Pen linePen = Pens.DarkGray;
 			g.DrawLine(linePen, 0, 0, 0, t);
@@ -57,13 +56,21 @@ namespace IconMeterWPF
 			// draw label if it is provided
 			if (string.IsNullOrWhiteSpace(label) == false)
             {
-				using (SolidBrush drawBrush = new SolidBrush(Color.FromArgb(128, Color.White)))
+				float bgIntensity = bgColor.R * 0.2989f + bgColor.G * 0.5870f + bgColor.B * 0.1140f;
+				Color fontColor = bgIntensity > 128 ? Color.Gray : Color.DarkGray;
+
+				using (SolidBrush drawBrush = new SolidBrush(fontColor))
 				{
-					SizeF labelSize = g.MeasureString(label, drawFont);
+					
 					if (useVerticalBar)
-						g.DrawString(label, drawFont, drawBrush, 0, 0);
+					{
+						g.DrawString(label, drawFont, drawBrush, 1, 1);
+					}
 					else
-						g.DrawString(label, drawFont, drawBrush, iconSize - labelSize.Width, iconSize - labelSize.Height);
+					{
+						SizeF labelSize = g.MeasureString(label, drawFont);
+						g.DrawString(label, drawFont, drawBrush, iconSize - labelSize.Width - 1, iconSize - labelSize.Height);
+					}
 				}
 			}
 
