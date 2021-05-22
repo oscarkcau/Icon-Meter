@@ -27,10 +27,18 @@ namespace IconMeterWPF
     {
         public enum DisplayStyleEnum { Normal, Accumulative, Separated };
 
+        private class LineRecord
+		{
+            public double x1, y1, x2, y2;
+            public double originalValue1, originalValue2;
+            public int colorIndex;
+		}
+
         // private fields
-        private readonly List<Brush> brushes = new List<Brush>();
-        private readonly List<Brush> darkBrushes = new List<Brush>();
-        private readonly List<Line> lineToRemove = new List<Line>();
+        private readonly Queue<LineRecord> lineQueue = new Queue<LineRecord>();
+        private readonly Queue<LineRecord> fillLineQueue = new Queue<LineRecord>();
+        private List<Pen> pens = new List<Pen>();
+        private List<Pen> darkPens = new List<Pen>();
         private float[] previousData;
         private float _adjustedMaxValue, _adjustedMaxValue2;
 
@@ -84,7 +92,7 @@ namespace IconMeterWPF
         }
 
         // public properties
-        private float AdjustedMaxValue
+        public float AdjustedMaxValue
 		{
             get => _adjustedMaxValue;
             set { 
@@ -108,9 +116,6 @@ namespace IconMeterWPF
             AdjustedMaxValue = AdjustedMaxValue2 = MaxValue;
             LabelTopValue.Visibility = (IsAutoAdjust) ? Visibility.Visible : Visibility.Hidden;
             LabelBottomValue.Visibility = (IsAutoAdjust) ? Visibility.Visible : Visibility.Hidden;
-
-            brushes.Add(new SolidColorBrush(Color.FromRgb(100, 100, 255)));
-            brushes.Add(new SolidColorBrush(Color.FromRgb(255, 100, 100)));
         }
 
         // event handlers
@@ -145,54 +150,49 @@ namespace IconMeterWPF
             if (IsAutoAdjust)
             {
                 if (DisplayStyle == DisplayStyleEnum.Separated) AdjustMaxValue_Separated();
-                else AdjustMaxValue();
+                else { AdjustMaxValue(); }
             }
+
+            this.InvalidateVisual();
         }
         private void OnLineColorsChanged(DependencyPropertyChangedEventArgs e)
         {
             if (e.NewValue is IEnumerable<Color> values)
             {
-                this.brushes.Clear();
-                this.darkBrushes.Clear();
-                foreach (Color c in values)
-                {
-                    this.brushes.Add(new SolidColorBrush(c));
+                pens = values.Select(c => new Pen(new SolidColorBrush(c), 1)).ToList();
+                darkPens = values.Select(c => new Pen(
+                    new SolidColorBrush(Color.FromRgb((byte)(c.R>>1), (byte)(c.G>>1), (byte)(c.B>>1))), 
+                    1)
+                ).ToList();
+            }
+        }
+		protected override void OnRender(DrawingContext dc)
+		{
+			base.OnRender(dc);
 
-                    byte r = (byte)(c.R / 2);
-                    byte g = (byte)(c.G / 2);
-                    byte b = (byte)(c.B / 2);
-                    this.darkBrushes.Add(new SolidColorBrush(Color.FromRgb(r, g, b)));
-                }
+            dc.DrawRectangle(Brushes.Black, null, new Rect(0, 0, this.ActualWidth, this.ActualHeight));
+
+            foreach (var r in fillLineQueue)
+            {
+                dc.DrawLine(darkPens[r.colorIndex], new Point(r.x1, r.y1), new Point(r.x2, r.y2));
+            }
+
+            foreach (var r in lineQueue)
+            {
+                dc.DrawLine(pens[r.colorIndex], new Point(r.x1, r.y1), new Point(r.x2, r.y2));
             }
         }
 
         // private methods
         private void RemoveOldLines()
 		{
-            lineToRemove.Clear();
+            // shift lines to left by 1 pixel
+            foreach (var r in lineQueue) { r.x1 -= 1; r.x2 -= 1; }
+            foreach (var r in fillLineQueue) { r.x1 -= 1; r.x2 -= 1; }
 
-            // scan all existing lines
-            foreach (var child in MainCanvas.Children)
-            {
-                if (child is Line line)
-                {
-                    // shift lines to left by 1 pixel
-                    line.X1 -= 1;
-                    line.X2 -= 1;
-
-                    // collect lines that are out of the control
-                    if (line.X1 <= 0)
-                    {
-                        lineToRemove.Add(line);
-                    }
-                }
-            }
-
-            // remove all collected lines
-            foreach (var line in lineToRemove)
-            {
-                MainCanvas.Children.Remove(line);
-            }
+            // remove lines that are out of the control
+            while (lineQueue.Count > 0 && lineQueue.Peek().x1 <= 0) lineQueue.Dequeue();
+            while (fillLineQueue.Count > 0 && fillLineQueue.Peek().x1 <= 0) fillLineQueue.Dequeue();
         }
         private void AddNewLines(IEnumerable<float> values)
         {
@@ -209,50 +209,9 @@ namespace IconMeterWPF
                     break;
 			}
         }
-        private void AdjustMaxValue()
-		{
-            AdjustedMaxValue2 = 0;
-
-            float existingMaxValue = float.MinValue;
-            foreach (var child in MainCanvas.Children)
-            {
-                if (child is Line line)
-                {
-                    var tuple = (ValueTuple<float, float>)line.Tag;
-                    if (tuple.Item1 > existingMaxValue) existingMaxValue = tuple.Item1;
-                    if (tuple.Item2 > existingMaxValue) existingMaxValue = tuple.Item2;
-                }
-            }
-
-            float m = MaxValue;
-            if (existingMaxValue > this.MaxValue)
-            {
-                m = (float)Math.Ceiling(existingMaxValue / MaxValue) * MaxValue;
-            }
-
-            if (m != AdjustedMaxValue)
-			{
-                AdjustedMaxValue = m;
-
-                foreach (var child in MainCanvas.Children)
-                {
-                    if (child is Line line)
-                    {
-                        var tuple = (ValueTuple<float, float>)line.Tag;
-                        double y1 = tuple.Item1 * MainCanvas.ActualHeight / AdjustedMaxValue;
-                        double y2 = tuple.Item2 * MainCanvas.ActualHeight / AdjustedMaxValue;
-                        if (y1 > MainCanvas.ActualHeight) y1 = MainCanvas.ActualHeight;
-                        if (y2 > MainCanvas.ActualHeight) y2 = MainCanvas.ActualHeight;
-                        line.Y1 = MainCanvas.ActualHeight - y1;
-                        line.Y2 = MainCanvas.ActualHeight - y2;
-                    }
-                }
-            }
-        }
-
         private void AddNewLine_Normal(IEnumerable<float> values)
 		{
-            if (brushes.Count < values.Count()) return;
+            if (pens.Count < values.Count()) return;
 
             int index = 0;
             float[] cacheY = new float[values.Count()];
@@ -261,22 +220,22 @@ namespace IconMeterWPF
             {
                 if (previousData != null)
                 {
-                    double y1 = previousData[index] * MainCanvas.ActualHeight / AdjustedMaxValue;
-                    double y2 = value * MainCanvas.ActualHeight / AdjustedMaxValue;
-                    if (y1 > MainCanvas.ActualHeight) y1 = MainCanvas.ActualHeight;
-                    if (y2 > MainCanvas.ActualHeight) y2 = MainCanvas.ActualHeight;
-                    Line tip = new Line
+                    double y1 = previousData[index] * ActualHeight / AdjustedMaxValue;
+                    double y2 = value * ActualHeight / AdjustedMaxValue;
+                    if (y1 > ActualHeight) y1 = ActualHeight;
+                    if (y2 > ActualHeight) y2 = ActualHeight;
+
+                    LineRecord r = new LineRecord()
                     {
-                        X1 = MainCanvas.ActualWidth - 2,
-                        Y1 = MainCanvas.ActualHeight - y1,
-                        X2 = MainCanvas.ActualWidth - 1,
-                        Y2 = MainCanvas.ActualHeight - y2,
-                        StrokeThickness = 1,
-                        Stroke = this.brushes[index],
-                        Tag = (previousData[index], value)
+                        x1 = ActualWidth - 2,
+                        y1 = ActualHeight - y1,
+                        x2 = ActualWidth - 1,
+                        y2 = ActualHeight - y2,
+                        colorIndex = index,
+                        originalValue1 = previousData[index],
+                        originalValue2 = value
                     };
-                    Canvas.SetZIndex(tip, 1);
-                    MainCanvas.Children.Add(tip);
+                    this.lineQueue.Enqueue(r);
                 }
 
                 cacheY[index] = value;
@@ -287,8 +246,8 @@ namespace IconMeterWPF
         }
         private void AddNewLine_Accumulative(IEnumerable<float> values)
         {
-            if (brushes.Count < values.Count()) return;
-            if (darkBrushes.Count < values.Count()) return;
+            if (pens.Count < values.Count()) return;
+            if (darkPens.Count < values.Count()) return;
 
             int index = 0;
             float accumatedValue = 0;
@@ -297,39 +256,39 @@ namespace IconMeterWPF
             foreach (float value in values)
             {
                 float adjustedValue = accumatedValue + value;
-                double y1 = accumatedValue * MainCanvas.ActualHeight / AdjustedMaxValue;
-                double y2 = adjustedValue * MainCanvas.ActualHeight / AdjustedMaxValue;
-                if (y1 > MainCanvas.ActualHeight) y1 = MainCanvas.ActualHeight;
-                if (y2 > MainCanvas.ActualHeight) y2 = MainCanvas.ActualHeight;
-                Line line = new Line
+                double y1 = accumatedValue * ActualHeight / AdjustedMaxValue;
+                double y2 = adjustedValue * ActualHeight / AdjustedMaxValue;
+                if (y1 > ActualHeight) y1 = ActualHeight;
+                if (y2 > ActualHeight) y2 = ActualHeight;
+
+                LineRecord r = new LineRecord()
                 {
-                    X1 = MainCanvas.ActualWidth - 1,
-                    Y1 = MainCanvas.ActualHeight - y1,
-                    X2 = MainCanvas.ActualWidth - 1,
-                    Y2 = MainCanvas.ActualHeight - y2,
-                    StrokeThickness = 1,
-                    Stroke = this.darkBrushes[index],
-                    Tag = (accumatedValue, adjustedValue)
+                    x1 = ActualWidth - 1,
+                    y1 = ActualHeight - y1,
+                    x2 = ActualWidth - 1,
+                    y2 = ActualHeight - y2,
+                    colorIndex = index,
+                    originalValue1 = accumatedValue,
+                    originalValue2 = adjustedValue
                 };
-                Canvas.SetZIndex(line, 1);
-                MainCanvas.Children.Add(line);
+                this.fillLineQueue.Enqueue(r);
 
                 if (previousData != null)
                 {
-                    y1 = previousData[index] * MainCanvas.ActualHeight / AdjustedMaxValue;
-                    if (y1 > MainCanvas.ActualHeight) y1 = MainCanvas.ActualHeight;
-                    Line tip = new Line
+                    y1 = previousData[index] * ActualHeight / AdjustedMaxValue;
+                    if (y1 > ActualHeight) y1 = ActualHeight;
+
+                    LineRecord r2 = new LineRecord()
                     {
-                        X1 = MainCanvas.ActualWidth - 2,
-                        Y1 = MainCanvas.ActualHeight - y1,
-                        X2 = MainCanvas.ActualWidth - 1,
-                        Y2 = MainCanvas.ActualHeight - y2,
-                        StrokeThickness = 1,
-                        Stroke = this.brushes[index],
-                        Tag = (previousData[index], adjustedValue)
+                        x1 = ActualWidth - 2,
+                        y1 = ActualHeight - y1,
+                        x2 = ActualWidth - 1,
+                        y2 = ActualHeight - y2,
+                        colorIndex = index,
+                        originalValue1 = previousData[index],
+                        originalValue2 = adjustedValue
                     };
-                    Canvas.SetZIndex(tip, 1);
-                    MainCanvas.Children.Add(tip);
+                    this.lineQueue.Enqueue(r2);
                 }
 
                 accumatedValue += value;
@@ -340,49 +299,44 @@ namespace IconMeterWPF
         }
         private void AddNewLine_Separated(IEnumerable<float> values)
         {
-            if (brushes.Count < values.Count()) return;
-            if (darkBrushes.Count < values.Count()) return;
+            if (pens.Count < values.Count()) return;
+            if (darkPens.Count < values.Count()) return;
 
             int index = 0;
             float[] cacheY = new float[values.Count()];
-            double h = MainCanvas.ActualHeight * 0.45;
+            double h = ActualHeight * 0.45;
 
             foreach (float value in values)
             {
                 double y1 = 0;
                 double y2 = value * h / AdjustedMaxValue;
                 if (y2 > h) y2 = h;
-                Line line = new Line
+
+                LineRecord r = new LineRecord()
                 {
-                    X1 = MainCanvas.ActualWidth - 1,
-                    Y1 = (index % 2 == 0) ? y1 : MainCanvas.ActualHeight - y1,
-                    X2 = MainCanvas.ActualWidth - 1,
-                    Y2 = (index % 2 == 0) ? y2 : MainCanvas.ActualHeight - y2,
-                    StrokeThickness = 1,
-                    Stroke = this.darkBrushes[index],
-                    Tag = (0f, value, index)
+                    x1 = ActualWidth - 1,
+                    y1 = (index % 2 == 0) ? y1 : ActualHeight - y1,
+                    x2 = ActualWidth - 1,
+                    y2 = (index % 2 == 0) ? y2 : ActualHeight - y2,
+                    colorIndex = index,
+                    originalValue1 = 0f,
+                    originalValue2 = value
                 };
-                MainCanvas.Children.Add(line);
-                Canvas.SetZIndex(line, 1);
+                this.fillLineQueue.Enqueue(r);
 
                 if (previousData != null)
                 {
-                    y1 = previousData[index] * h / AdjustedMaxValue;
-                    y2 = value * h / AdjustedMaxValue;
-                    if (y1 > h) y1 = h;
-                    if (y2 > h) y2 = h;
-                    Line tip = new Line
+                    LineRecord r2 = new LineRecord()
                     {
-                        X1 = MainCanvas.ActualWidth - 2,
-                        Y1 = (index % 2 == 0) ? y1 : MainCanvas.ActualHeight - y1,
-                        X2 = MainCanvas.ActualWidth - 1,
-                        Y2 = (index % 2 == 0) ? y2 : MainCanvas.ActualHeight - y2,
-                        StrokeThickness = 1,
-                        Stroke = this.brushes[index],
-                        Tag = (previousData[index], value, index)
+                        x1 = ActualWidth - 2,
+                        y1 = (index % 2 == 0) ? y1 : ActualHeight - y1,
+                        x2 = ActualWidth - 1,
+                        y2 = (index % 2 == 0) ? y2 : ActualHeight - y2,
+                        colorIndex = index,
+                        originalValue1 = previousData[index],
+                        originalValue2 = value
                     };
-                    MainCanvas.Children.Add(tip);
-                    Canvas.SetZIndex(tip, 1);
+                    this.lineQueue.Enqueue(r2);
                 }
 
                 cacheY[index] = value;
@@ -391,26 +345,53 @@ namespace IconMeterWPF
 
             previousData = cacheY;
         }
+        private void AdjustMaxValue()
+        {
+            AdjustedMaxValue2 = 0;
+            double currentMaxValue = double.MinValue;
+            foreach (var r in lineQueue)
+            {
+                if (r.originalValue1 > currentMaxValue) currentMaxValue = r.originalValue1;
+                if (r.originalValue2 > currentMaxValue) currentMaxValue = r.originalValue2;
+            }
+
+            float m = MaxValue;
+            if (currentMaxValue > this.MaxValue)
+            {
+                m = (float)Math.Ceiling(currentMaxValue / MaxValue) * MaxValue;
+            }
+
+            if (m != AdjustedMaxValue)
+            {
+                AdjustedMaxValue = m;
+
+                foreach (var r in lineQueue.Concat(fillLineQueue))
+                {
+                    double y1 = r.originalValue1 * ActualHeight / AdjustedMaxValue;
+                    double y2 = r.originalValue2 * ActualHeight / AdjustedMaxValue;
+                    if (y1 > ActualHeight) y1 = ActualHeight;
+                    if (y2 > ActualHeight) y2 = ActualHeight;
+                    r.y1 = ActualHeight - y1;
+                    r.y2 = ActualHeight - y2;
+                }
+            }
+        }
         private void AdjustMaxValue_Separated()
         {
-            float existingMaxValue1 = float.MinValue;
-            float existingMaxValue2 = float.MinValue;
+            double existingMaxValue1 = double.MinValue;
+            double existingMaxValue2 = double.MinValue;
 
-            foreach (var child in MainCanvas.Children)
+            foreach (var r in lineQueue)
             {
-                if (child is Line line)
-                {
-                    var tuple = (ValueTuple<float, float, int>)line.Tag;
-                    if ((tuple.Item3 % 2) == 0)
-					{
-                        if (tuple.Item1 > existingMaxValue1) existingMaxValue1 = tuple.Item1;
-                        if (tuple.Item2 > existingMaxValue1) existingMaxValue1 = tuple.Item2;
-                    }
-                    else
-					{
-                        if (tuple.Item1 > existingMaxValue2) existingMaxValue2 = tuple.Item1;
-                        if (tuple.Item2 > existingMaxValue2) existingMaxValue2 = tuple.Item2;
-                    }
+                if (r.colorIndex % 2 == 0)
+				{
+                    if (r.originalValue1 > existingMaxValue1) existingMaxValue1 = r.originalValue1;
+                    if (r.originalValue2 > existingMaxValue1) existingMaxValue1 = r.originalValue2;
+                }
+                else
+				{
+                    if (r.originalValue1 > existingMaxValue2) existingMaxValue2 = r.originalValue1;
+                    if (r.originalValue2 > existingMaxValue2) existingMaxValue2 = r.originalValue2;
                 }
             }
 
@@ -431,24 +412,17 @@ namespace IconMeterWPF
                 }
             }
 
-            {
-                double h = MainCanvas.ActualHeight * 0.45;
+            double h = ActualHeight * 0.45;
 
-                foreach (var child in MainCanvas.Children)
-                {
-                    if (child is Line line)
-                    {
-                        var tuple = (ValueTuple<float, float, int>)line.Tag;
-                        int index = tuple.Item3;
-                        double m = (index % 2 == 0) ? AdjustedMaxValue : AdjustedMaxValue2;
-                        double y1 = tuple.Item1 * h / m;
-                        double y2 = tuple.Item2 * h / m;
-                        if (y1 > h) y1 = h;
-                        if (y2 > h) y2 = h;
-                        line.Y1 = (index % 2 == 0) ? y1 : MainCanvas.ActualHeight - y1;
-                        line.Y2 = (index % 2 == 0) ? y2 : MainCanvas.ActualHeight - y2;
-                    }
-                }
+            foreach (var r in lineQueue.Concat(fillLineQueue))
+            {
+                double m = (r.colorIndex % 2 == 0) ? AdjustedMaxValue : AdjustedMaxValue2;
+                double y1 = r.originalValue1 * h / m;
+                double y2 = r.originalValue2 * h / m;
+                if (y1 > h) y1 = h;
+                if (y2 > h) y2 = h;
+                r.y1 = (r.colorIndex % 2 == 0) ? y1 : ActualHeight - y1;
+                r.y2 = (r.colorIndex % 2 == 0) ? y2 : ActualHeight - y2;
             }
         }
         private string GetFormattedSize(float size)
