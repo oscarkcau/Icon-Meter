@@ -37,6 +37,7 @@ namespace IconMeterWPF
         // private fields
         private readonly Queue<LineRecord> lineQueue = new Queue<LineRecord>();
         private readonly Queue<LineRecord> fillLineQueue = new Queue<LineRecord>();
+        private readonly Queue<LineRecord> linePool= new Queue<LineRecord>();
         private List<Pen> pens = new List<Pen>();
         private List<Pen> darkPens = new List<Pen>();
         private float[] previousData;
@@ -191,8 +192,8 @@ namespace IconMeterWPF
             foreach (var r in fillLineQueue) { r.x1 -= 1; r.x2 -= 1; }
 
             // remove lines that are out of the control
-            while (lineQueue.Count > 0 && lineQueue.Peek().x1 <= 0) lineQueue.Dequeue();
-            while (fillLineQueue.Count > 0 && fillLineQueue.Peek().x1 <= 0) fillLineQueue.Dequeue();
+            while (lineQueue.Count > 0 && lineQueue.Peek().x1 <= 0) linePool.Enqueue(lineQueue.Dequeue());
+            while (fillLineQueue.Count > 0 && fillLineQueue.Peek().x1 <= 0) linePool.Enqueue(fillLineQueue.Dequeue());
         }
         private void AddNewLines(IEnumerable<float> values)
         {
@@ -225,16 +226,14 @@ namespace IconMeterWPF
                     if (y1 > ActualHeight) y1 = ActualHeight;
                     if (y2 > ActualHeight) y2 = ActualHeight;
 
-                    LineRecord r = new LineRecord()
-                    {
-                        x1 = ActualWidth - 2,
-                        y1 = ActualHeight - y1,
-                        x2 = ActualWidth - 1,
-                        y2 = ActualHeight - y2,
-                        colorIndex = index,
-                        originalValue1 = previousData[index],
-                        originalValue2 = value
-                    };
+                    LineRecord r = GetLineRecord();
+                    r.x1 = ActualWidth - 2;
+                    r.y1 = ActualHeight - y1;
+                    r.x2 = ActualWidth - 1;
+                    r.y2 = ActualHeight - y2;
+                    r.colorIndex = index;
+                    r.originalValue1 = previousData[index];
+                    r.originalValue2 = value;
                     this.lineQueue.Enqueue(r);
                 }
 
@@ -261,16 +260,14 @@ namespace IconMeterWPF
                 if (y1 > ActualHeight) y1 = ActualHeight;
                 if (y2 > ActualHeight) y2 = ActualHeight;
 
-                LineRecord r = new LineRecord()
-                {
-                    x1 = ActualWidth - 1,
-                    y1 = ActualHeight - y1,
-                    x2 = ActualWidth - 1,
-                    y2 = ActualHeight - y2,
-                    colorIndex = index,
-                    originalValue1 = accumatedValue,
-                    originalValue2 = adjustedValue
-                };
+                LineRecord r = GetLineRecord();
+                r.x1 = ActualWidth - 1;
+                r.y1 = ActualHeight - y1;
+                r.x2 = ActualWidth - 1;
+                r.y2 = ActualHeight - y2;
+                r.colorIndex = index;
+                r.originalValue1 = accumatedValue;
+                r.originalValue2 = adjustedValue;
                 this.fillLineQueue.Enqueue(r);
 
                 if (previousData != null)
@@ -278,16 +275,14 @@ namespace IconMeterWPF
                     y1 = previousData[index] * ActualHeight / AdjustedMaxValue;
                     if (y1 > ActualHeight) y1 = ActualHeight;
 
-                    LineRecord r2 = new LineRecord()
-                    {
-                        x1 = ActualWidth - 2,
-                        y1 = ActualHeight - y1,
-                        x2 = ActualWidth - 1,
-                        y2 = ActualHeight - y2,
-                        colorIndex = index,
-                        originalValue1 = previousData[index],
-                        originalValue2 = adjustedValue
-                    };
+                    LineRecord r2 = GetLineRecord();
+                    r2.x1 = ActualWidth - 2;
+                    r2.y1 = ActualHeight - y1;
+                    r2.x2 = ActualWidth - 1;
+                    r2.y2 = ActualHeight - y2;
+                    r2.colorIndex = index;
+                    r2.originalValue1 = previousData[index];
+                    r2.originalValue2 = adjustedValue;
                     this.lineQueue.Enqueue(r2);
                 }
 
@@ -312,30 +307,26 @@ namespace IconMeterWPF
                 double y2 = value * h / AdjustedMaxValue;
                 if (y2 > h) y2 = h;
 
-                LineRecord r = new LineRecord()
-                {
-                    x1 = ActualWidth - 1,
-                    y1 = (index % 2 == 0) ? y1 : ActualHeight - y1,
-                    x2 = ActualWidth - 1,
-                    y2 = (index % 2 == 0) ? y2 : ActualHeight - y2,
-                    colorIndex = index,
-                    originalValue1 = 0f,
-                    originalValue2 = value
-                };
+                LineRecord r = GetLineRecord();
+                r.x1 = ActualWidth - 1;
+                r.y1 = (index % 2 == 0) ? y1 : ActualHeight - y1;
+                r.x2 = ActualWidth - 1;
+                r.y2 = (index % 2 == 0) ? y2 : ActualHeight - y2;
+                r.colorIndex = index;
+                r.originalValue1 = 0f;
+                r.originalValue2 = value;
                 this.fillLineQueue.Enqueue(r);
 
                 if (previousData != null)
                 {
-                    LineRecord r2 = new LineRecord()
-                    {
-                        x1 = ActualWidth - 2,
-                        y1 = (index % 2 == 0) ? y1 : ActualHeight - y1,
-                        x2 = ActualWidth - 1,
-                        y2 = (index % 2 == 0) ? y2 : ActualHeight - y2,
-                        colorIndex = index,
-                        originalValue1 = previousData[index],
-                        originalValue2 = value
-                    };
+                    LineRecord r2 = GetLineRecord();
+                    r2.x1 = ActualWidth - 2;
+                    r2.y1 = (index % 2 == 0) ? y1 : ActualHeight - y1;
+                    r2.x2 = ActualWidth - 1;
+                    r2.y2 = (index % 2 == 0) ? y2 : ActualHeight - y2;
+                    r2.colorIndex = index;
+                    r2.originalValue1 = previousData[index];
+                    r2.originalValue2 = value;
                     this.lineQueue.Enqueue(r2);
                 }
 
@@ -439,6 +430,11 @@ namespace IconMeterWPF
             s /= 1024;
             return string.Format("{0:N1} G", s) + unit;
         }
+        private LineRecord GetLineRecord()
+		{
+            if (linePool.Count > 0) return linePool.Dequeue();
+            else return new LineRecord();
+		}
 
         // INotifyPropertyChanged implementation
         public event PropertyChangedEventHandler PropertyChanged;
