@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Management;
 using System.Net;
+using System.Net.NetworkInformation;
 using System.Net.Sockets;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
@@ -622,23 +623,36 @@ namespace IconMeterWPF
 			try
 			{
 				bool found = false;
-				var host = Dns.GetHostEntry(Dns.GetHostName());
-				foreach (var ip in host.AddressList)
+				string IPs = "";
+				foreach (NetworkInterface ni in NetworkInterface.GetAllNetworkInterfaces())
 				{
-					if (ip.AddressFamily == AddressFamily.InterNetwork)
+					// skip offline network interfaces 
+					if (ni.OperationalStatus != OperationalStatus.Up) continue;
+					
+					// only accept ethernet or wireless interfaces
+					if (ni.NetworkInterfaceType != NetworkInterfaceType.Ethernet &&
+						ni.NetworkInterfaceType != NetworkInterfaceType.Wireless80211) continue;
+					
+					// skip virtual ethernet interfaces
+					if (ni.Description.Contains("Hyper-v") ||
+						ni.Description.Contains("VirtualBox")) continue;
+
+					// get all IPs of each interface
+					foreach (UnicastIPAddressInformation ip in ni.GetIPProperties().UnicastAddresses)
 					{
-						LocalIP = ip.ToString();
-						found = true;
-						break;
+						if (ip.Address.AddressFamily == AddressFamily.InterNetwork)
+						{
+							found = true;
+							IPs += ip.Address.ToString() + "\n";
+							break;
+						}
 					}
 				}
-				if (!found)
-				{
-					LocalIP = "unknown";
-				}
+				LocalIP = found ? IPs.Trim() : "unknown";
 			}
 			catch (Exception) { LocalIP = "unknown"; }
 		}
+
 		void UpdateReadings_Processes()
 		{
 			// avoid multiple threads working on wmi search

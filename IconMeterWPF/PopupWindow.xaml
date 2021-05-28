@@ -252,8 +252,6 @@
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" />
@@ -266,7 +264,7 @@
                     <TextBlock Grid.Row="1" Grid.Column="0" HorizontalAlignment="Left"
                                Text="{x:Static properties:Resources.LocalIP}"/>
                     <TextBlock Grid.Row="1" Grid.Column="1" FontWeight="Bold" HorizontalAlignment="Right"
-                               Text="{Binding PopupMeter.LocalIP, Mode=OneWay}"/>
+                               Text="{Binding PopupMeter.LocalIP, Mode=OneWay}" TextAlignment="Right"/>
                 </Grid>
 
                 <Grid Margin="0,4,0,0">
