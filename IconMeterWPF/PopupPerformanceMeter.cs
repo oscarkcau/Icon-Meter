@@ -641,7 +641,7 @@ namespace IconMeterWPF
 						ni.NetworkInterfaceType != NetworkInterfaceType.Wireless80211) continue;
 					
 					// skip virtual ethernet interfaces
-					if (ni.Description.Contains("Hyper-v") ||
+					if (ni.Description.Contains("Hyper-V") ||
 						ni.Description.Contains("VirtualBox")) continue;
 
 					// get all IPs of each interface
