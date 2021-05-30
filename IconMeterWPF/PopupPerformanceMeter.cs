@@ -134,6 +134,7 @@ namespace IconMeterWPF
 		bool paused = true;
 		volatile bool wmiSearchStarted = false;
 		volatile bool timerCallbackStarted = false;
+		volatile bool ipsUpdatingStarted = false;
 		int tick = 0;
 
 		// public properties
@@ -345,10 +346,11 @@ namespace IconMeterWPF
 		// event handler
 		private void Timer_Tick(Object source, System.Timers.ElapsedEventArgs e)
 		{
+			// handle reentrant case when system is busy
 			if (timerCallbackStarted) return;
-
 			timerCallbackStarted = true;
 
+			// update all readings in popup window
 			UpdateReadings();
 
 			// update icon image and tooltip of individual disk tray icon if it is in used
@@ -358,6 +360,7 @@ namespace IconMeterWPF
 				BuildDiskActiveTimeTooltip();
 			}
 
+			// remember to reset reentrant flag
 			timerCallbackStarted = false;
 		}
 		private void MainMeter_PropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -608,6 +611,10 @@ namespace IconMeterWPF
 		}
 		void UpdateReadings_IPs()
 		{
+			// since user can manually trigger IP update so we need to handle reentrant case
+			if (ipsUpdatingStarted) return;
+			ipsUpdatingStarted = true;
+
 			// try to get local ips
 			try
 			{
@@ -651,6 +658,9 @@ namespace IconMeterWPF
 				LocalIP = found ? IPs.Trim() : "unknown";
 			}
 			catch (Exception) { LocalIP = "unknown"; }
+
+			// remember to reset reentrant flag
+			ipsUpdatingStarted = false;
 		}
 
 		void UpdateReadings_Processes()
