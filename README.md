@@ -4,12 +4,13 @@
 Icon-Meter is a Small notifyicon system performance meter for MS Windows,
 running on Microsoft Windows 7 or above using the Microsoft .NET Framework.
 
-<img src="capture.png" width="300"/>
-<img src="capture2.png" width="433"/>
+<img src="taskbar_capture.png" width="300"/>
+<img src="popup_capture.png" width="500"/>
 
 I need a small and lightweight system performance meter for my windows tablet thus make a simple application with c#. It displays small notifyicons which visualize the current CPU, memory, disk and network loading in small bars.
 Icon Meter has the following features:
 
+* (Version 2.3.1) Visualize individual disk usage, improve preformance in updating popup window, add buttons for moving popup window and accessing control panel & task manager.
 * (Version 2.3) Introduce popup window to replace simple tooltip text and display more useful system performance information 
 * (Version 2.1) Multi-language support (traditional Chinese, simplified Chinese, English and Japanese)
 * (Version 2.0) Reimplement using WPF for better support for Windows 10
@@ -20,13 +21,6 @@ Icon Meter has the following features:
 * Autostart when Windows start up
 * Quick launch for Task Manager
 * Display numerical readings in popup tooltip message when mouse cursor hovers over the meter
-
-The following coding features were implemented for the function
-
-* Uses **Mutex** to allow only single running instance.
-* Overrides **SetVisibleCore** method for hidden main window during program startup
-* Uses Registry key to enable autostart.
-* Draws dynamic icon using GDI+ 
 
 ## Installation
 
