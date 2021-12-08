@@ -13,6 +13,7 @@ using System.Windows;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 using System.Management;
+using System.Reflection;
 
 namespace IconMeterWPF
 {
@@ -293,6 +294,12 @@ namespace IconMeterWPF
 				list.Add((receive, new SolidBrush(settings.NetworkSendColor)));
 			}
 
+			// return default icon if no items is selected
+			if (list.Count == 0)
+			{
+				return DefaultTrayIcon;
+			}
+
 			// build the new icon
 			Icon icon = IconBuilder.BuildIcon(list, useVerticalBar: settings.UseVerticalBars);
 		
@@ -346,6 +353,18 @@ namespace IconMeterWPF
 			{
 				sb.Append($"{Properties.Resources.Network} {downArrow}:" + nr.ToString("0.0"));
 				sb.Append($" {upArrow}:" + ns.ToString("0.0") + " " + unit);
+			}
+
+			// show product name and version if no meter is selected
+			if (sb.Length == 0)
+			{
+				object[] attributes = Assembly.GetExecutingAssembly().GetCustomAttributes(typeof(AssemblyProductAttribute), false);
+				if (attributes.Length >= 0)
+				{
+					sb.AppendLine(((AssemblyProductAttribute)attributes[0]).Product);
+				}
+				string version = Assembly.GetExecutingAssembly().GetName().Version.ToString();
+				sb.Append(String.Format("{0} {1}", Properties.Resources.Version, version));
 			}
 
 			// make sure the tooltip text has at most 128 characters
