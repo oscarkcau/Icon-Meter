@@ -115,12 +115,15 @@ namespace IconMeterWPF
 				var vm = this.DataContext as MainViewModel;
 				vm?.PauseUpdate();
 
-				// hide popup window
-				var p = this.Parent as Popup;
-				p.IsOpen = false;
-
 				// show setting window
-				vm?.MainWindow.Show();
+				Window w = vm?.MainWindow;
+				if (w != null)
+				{
+					w.Show();
+					w.WindowState = System.Windows.WindowState.Normal;
+					w.Visibility = Visibility.Visible;
+					w.ShowInTaskbar = true;
+				}
 			}
 
 			if (sender == this.ImageTask)
