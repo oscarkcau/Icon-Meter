@@ -403,6 +403,15 @@ namespace IconMeterWPF.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Show only the N most utilized processors.
+        /// </summary>
+        public static string ShowOnlyTheMostUtilizedProcessors {
+            get {
+                return ResourceManager.GetString("ShowOnlyTheMostUtilizedProcessors", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to System.
         /// </summary>
         public static string System {

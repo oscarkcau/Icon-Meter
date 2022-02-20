@@ -258,4 +258,7 @@
   <data name="BackgroundColor" xml:space="preserve">
     <value>Background Color</value>
   </data>
+  <data name="ShowOnlyTheMostUtilizedProcessors" xml:space="preserve">
+    <value>Show only the N most utilized processors</value>
+  </data>
 </root>

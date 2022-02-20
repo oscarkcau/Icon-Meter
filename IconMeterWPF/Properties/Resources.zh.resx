@@ -258,4 +258,7 @@
   <data name="BackgroundColor" xml:space="preserve">
     <value>背景顏色</value>
   </data>
+  <data name="ShowOnlyTheMostUtilizedProcessors" xml:space="preserve">
+    <value>僅顯示使用率最高的N個處理器</value>
+  </data>
 </root>

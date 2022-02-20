@@ -31,6 +31,7 @@ namespace IconMeterWPF
 		float _lastNetworkReceive = 0;
 		float _lastNetworkSend = 0;
 		float[] logicalProcessorUsage = null;
+		IEnumerable<(float usage, int index)> selectedLogicalProcessorUsage = null;
 		string _mainTooltip, _logicalProcessorsTooltip;
 		Icon _defaultTrayIcon, _mainTrayIcon, _logicalProcessorsTrayIcon;
 		IEnumerable<float> _lastNetworkSpeed;
@@ -263,6 +264,17 @@ namespace IconMeterWPF
 			{
 				for (int i = 0; i < logicalProcessorsCounter.Count; i++)
 					logicalProcessorUsage[i] = logicalProcessorsCounter[i].NextValue();
+
+
+				if (settings.ShowOnlyTheMostUtilizedProcessors &&
+					settings.NumberOfShownProcessors < logicalProcessorUsage.Count())
+				{
+					int n = settings.NumberOfShownProcessors;
+					selectedLogicalProcessorUsage = logicalProcessorUsage
+						.Select((usage, index) => (usage, index))
+						.OrderByDescending(t => t.usage)
+						.Take(n);
+				}
 			}
 		}
 		Icon BuildMainNotifyIcon()
@@ -315,11 +327,20 @@ namespace IconMeterWPF
 			Color color = settings.LogicalProcessorColor;
 			Brush brush = new SolidBrush(color);
 
+			IEnumerable<float> usages = logicalProcessorUsage;
+
+			// order and filter processor usages if only the most utilized processors will be shown
+			if (settings.ShowOnlyTheMostUtilizedProcessors && 
+				settings.NumberOfShownProcessors < usages.Count())
+			{
+				usages = selectedLogicalProcessorUsage.Select(x => x.usage);
+			}
+
 			// build the new icon from logical processor readings
 			Icon icon = IconBuilder.BuildIcon(
-				logicalProcessorUsage.Select(x => (x, brush)),
-				useVerticalBar:settings.UseVerticalBars,
-				label:"P"
+				usages.Select(x => (x, brush)),
+				useVerticalBar: settings.UseVerticalBars,
+				label: "P"
 				);
 
 			// release resource used by brushes
@@ -377,11 +398,20 @@ namespace IconMeterWPF
 		{
 			// build notify icon's tooltip text for logical processors
 
+			IEnumerable<(float usage, int index)> usages = logicalProcessorUsage.Select((usage, index) => (usage, index));
+
+
+			if (settings.ShowOnlyTheMostUtilizedProcessors &&
+				settings.NumberOfShownProcessors < logicalProcessorUsage.Count())
+			{
+				usages = selectedLogicalProcessorUsage;
+			}
+
 			// build the text
 			StringBuilder sb = new StringBuilder();
-			for (int i = 0; i < logicalProcessorUsage.Count(); i++)
+			foreach ((float usage, int index) in usages)
 			{
-				sb.AppendLine($"{Properties.Resources.CPU} {i + 1}: {Math.Round(logicalProcessorUsage[i])}%");
+				_ = sb.AppendLine($"{Properties.Resources.CPU} {index + 1}: {Math.Round(usage)}%");
 			}
 
 			// make sure the tooltip text has at most 128 characters

@@ -56,5 +56,11 @@
     <Setting Name="TrayIconBackgroundColor" Type="System.Drawing.Color" Scope="User">
       <Value Profile="(Default)">32, 32, 32</Value>
     </Setting>
+    <Setting Name="ShowOnlyTheMostUtilizedProcessors" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="NumberOfShownProcessors" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">4</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

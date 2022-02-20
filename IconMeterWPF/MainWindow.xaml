@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:IconMeterWPF"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         xmlns:tb="http://www.hardcodet.net/taskbar" 
         xmlns:xcad="http://schemas.xceed.com/wpf/xaml/avalondock" x:Class="IconMeterWPF.MainWindow" 
@@ -71,6 +72,8 @@
             <RowDefinition Height="10"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="10"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
@@ -81,7 +84,7 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto" MinWidth="200"/>
             <ColumnDefinition Width="Auto" SharedSizeGroup="Buttons"/>
             <ColumnDefinition Width="Auto" SharedSizeGroup="Buttons"/>
         </Grid.ColumnDefinitions>
@@ -115,43 +118,63 @@
                           SelectedColor="{Binding Source={x:Static properties:Settings.Default}, Path=NetworkReceiveColor, Converter={StaticResource DrawingColorToWindowsMediaColor}}"/>
 
         <Line Grid.Row="5" Style="{StaticResource horizontalLineStyle}" VerticalAlignment="Center" Height="2" Margin="0,4,0,4"/>
-        <CheckBox VerticalAlignment="Center" Grid.Row="6" Grid.ColumnSpan="2"
+        <CheckBox x:Name="CheckBoxLogicalProcessors" VerticalAlignment="Center" Grid.Row="6" Grid.ColumnSpan="2"
                   Content="{x:Static properties:Resources.LogicalProcessors}"
                   IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=ShowLogicalProcessorsUsage}" Margin="0,4"/>
-        <xctk:ColorPicker x:Name="ButtonColorLogicalProcessor" Grid.Column="2" Margin="4" Grid.Row="6"  MaxWidth="80"
+        <xctk:ColorPicker x:Name="ButtonColorLogicalProcessor" Grid.Column="2" Margin="4" Grid.Row="6" MaxWidth="80"
                           SelectedColor="{Binding Source={x:Static properties:Settings.Default}, Path=LogicalProcessorColor, Converter={StaticResource DrawingColorToWindowsMediaColor}}"/>
-
         <CheckBox VerticalAlignment="Center" Grid.Row="7" Grid.ColumnSpan="2"
+                  Content="{x:Static properties:Resources.ShowOnlyTheMostUtilizedProcessors}"
+                  IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=ShowOnlyTheMostUtilizedProcessors}" 
+                  IsEnabled="{Binding ElementName=CheckBoxLogicalProcessors, Path=IsChecked}"
+                  Margin="16,4,4,4"/>
+
+        <ComboBox Name="cmbNumberOfProcessors"  Grid.Row="7" Grid.Column="2" Grid.ColumnSpan="1"
+                  SelectedValue="{Binding Source={x:Static properties:Settings.Default}, Path=NumberOfShownProcessors, Mode=TwoWay}"
+                  IsEnabled="{Binding ElementName=CheckBoxLogicalProcessors, Path=IsChecked}"
+                  Margin="4,4"
+                  >
+            <ComboBox.ItemsSource>
+                <x:Array Type="{x:Type sys:Int32}">
+                    <sys:Int32>2</sys:Int32>
+                    <sys:Int32>4</sys:Int32>
+                    <sys:Int32>8</sys:Int32>
+                    <sys:Int32>16</sys:Int32>
+                </x:Array>
+            </ComboBox.ItemsSource>
+        </ComboBox>
+
+        <CheckBox VerticalAlignment="Center" Grid.Row="8" Grid.ColumnSpan="2"
                   Content="{x:Static properties:Resources.IndividualDisk}"
                   IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=ShowIndividualDiskUsage}" Margin="0,4"/>
-        <xctk:ColorPicker x:Name="ButtonColorDiskActiveTime" Grid.Column="2" Margin="4" Grid.Row="7"  MaxWidth="80"
+        <xctk:ColorPicker x:Name="ButtonColorDiskActiveTime" Grid.Column="2" Margin="4" Grid.Row="8"  MaxWidth="80"
                           SelectedColor="{Binding Source={x:Static properties:Settings.Default}, Path=IndividualDiskColor, Converter={StaticResource DrawingColorToWindowsMediaColor}}"/>
 
 
-        <Line Grid.Row="8" Style="{StaticResource horizontalLineStyle}" VerticalAlignment="Center" Height="1" Margin="0,4,0,4"/>
-        <Label Grid.Column="0" Grid.Row="9" VerticalContentAlignment="Center" Margin="0,0,0,4"
+        <Line Grid.Row="10" Style="{StaticResource horizontalLineStyle}" VerticalAlignment="Center" Height="1" Margin="0,4,0,4"/>
+        <Label Grid.Column="0" Grid.Row="11" VerticalContentAlignment="Center" Margin="0,0,0,4"
                Content="{x:Static properties:Resources.BackgroundColor}"/>
-        <xctk:ColorPicker x:Name="ButtonColorTrayIconBackground" Grid.Column="2" Margin="4" Grid.Row="9"  MaxWidth="80"
+        <xctk:ColorPicker x:Name="ButtonColorTrayIconBackground" Grid.Column="2" Margin="4" Grid.Row="11"  MaxWidth="80"
                           SelectedColor="{Binding Source={x:Static properties:Settings.Default}, Path=TrayIconBackgroundColor, Converter={StaticResource DrawingColorToWindowsMediaColor}}"/>
-        <CheckBox VerticalAlignment="Center" Grid.Row="10" Grid.ColumnSpan="3"
+        <CheckBox VerticalAlignment="Center" Grid.Row="12" Grid.ColumnSpan="3"
                   Content="{x:Static properties:Resources.UseVerticalBar}"
                   IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=UseVerticalBars}" Margin="0,4"/>
-        <CheckBox VerticalAlignment="Center" Grid.Row="11" Grid.ColumnSpan="3"
+        <CheckBox VerticalAlignment="Center" Grid.Row="13" Grid.ColumnSpan="3"
                   Content="{x:Static properties:Resources.RunAtStartup}"
                   IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=RunAtStartup}" Margin="0,4"/>
 
-        <Line Grid.Row="12" Style="{StaticResource horizontalLineStyle}" VerticalAlignment="Center" Height="1" Margin="0,4,0,4"/>
-        <Label Grid.Column="0" Grid.Row="13" VerticalContentAlignment="Center" Margin="0,0,0,4"
+        <Line Grid.Row="14" Style="{StaticResource horizontalLineStyle}" VerticalAlignment="Center" Height="1" Margin="0,4,0,4"/>
+        <Label Grid.Column="0" Grid.Row="15" VerticalContentAlignment="Center" Margin="0,0,0,4"
                Content="{x:Static properties:Resources.Language}"/>
-        <ComboBox Name="cmbLanguage"  Grid.Row="13" Grid.Column="1" Grid.ColumnSpan="2"
+        <ComboBox Name="cmbLanguage"  Grid.Row="15" Grid.Column="1" Grid.ColumnSpan="2"
                   SelectedValue="{Binding  Source={x:Static properties:Settings.Default}, Path=Language}"
                   SelectedValuePath="Key"
                   DisplayMemberPath="Value" Margin="4,2"
                   />
-        <Line Grid.Row="14" Style="{StaticResource horizontalLineStyle}" VerticalAlignment="Center" Height="2" Margin="0,4,0,4"/>
-        <Button x:Name="ButtonOK" Grid.Column="1" MinHeight="24" Margin="4,4" Grid.Row="15" Click="ButtonOK_Click"
+        <Line Grid.Row="16" Style="{StaticResource horizontalLineStyle}" VerticalAlignment="Center" Height="2" Margin="0,4,0,4"/>
+        <Button x:Name="ButtonOK" Grid.Column="1" MinHeight="24" Margin="4,4" Grid.Row="17" Click="ButtonOK_Click"
                 Content="{x:Static properties:Resources.OK}"/>
-        <Button x:Name="ButtonCancel" Grid.Column="2" MinHeight="24" Margin="4,4" Grid.Row="15" Click="ButtonCancel_Click"
+        <Button x:Name="ButtonCancel" Grid.Column="2" MinHeight="24" Margin="4,4" Grid.Row="17" Click="ButtonCancel_Click"
                 Content="{x:Static properties:Resources.Cancel}"/>
 
 

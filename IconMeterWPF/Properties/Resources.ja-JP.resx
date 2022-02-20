@@ -258,4 +258,7 @@
   <data name="BackgroundColor" xml:space="preserve">
     <value>背景色</value>
   </data>
+  <data name="ShowOnlyTheMostUtilizedProcessors" xml:space="preserve">
+    <value>最も使用率の高いN個のプロセッサーのみを表示する</value>
+  </data>
 </root>
