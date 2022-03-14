@@ -249,11 +249,8 @@
   <data name="IndividualDisk" xml:space="preserve">
     <value>個別硬盘</value>
   </data>
-  <data name="KeepAlwaysOnTop" xml:space="preserve">
-    <value>保持在最前面</value>
-  </data>
   <data name="DragHereToMove" xml:space="preserve">
-    <value>拖到这里移动</value>
+    <value>拖拉这里移动</value>
   </data>
   <data name="BackgroundColor" xml:space="preserve">
     <value>背景颜色</value>

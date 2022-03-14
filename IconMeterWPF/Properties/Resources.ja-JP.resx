@@ -249,9 +249,6 @@
   <data name="IndividualDisk" xml:space="preserve">
     <value>個別のディスク</value>
   </data>
-  <data name="KeepAlwaysOnTop" xml:space="preserve">
-    <value>常にトップを維持</value>
-  </data>
   <data name="DragHereToMove" xml:space="preserve">
     <value>ここにドラッグして移動します</value>
   </data>

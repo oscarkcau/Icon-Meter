@@ -249,9 +249,6 @@
   <data name="IndividualDisk" xml:space="preserve">
     <value>Individual Disk</value>
   </data>
-  <data name="KeepAlwaysOnTop" xml:space="preserve">
-    <value>Keep always on top</value>
-  </data>
   <data name="DragHereToMove" xml:space="preserve">
     <value>Drag here to move</value>
   </data>

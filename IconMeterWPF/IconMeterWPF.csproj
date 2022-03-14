@@ -219,9 +219,6 @@
     <Resource Include="images\arrow_rotate_clockwise.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="images\pin.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="images\anchor.png" />
   </ItemGroup>
   <ItemGroup>

@@ -22,9 +22,8 @@ namespace IconMeterWPF
 	public partial class PopupWindow : UserControl
 	{
 		// private fields
-		bool pinned = false;
-		bool isAnchorMouseDown = false;
-		Point mouseDownPosition;
+		private bool isAnchorMouseDown = false;
+		private Point mouseDownPosition;
 
 		// constructor
 		public PopupWindow()
@@ -35,84 +34,78 @@ namespace IconMeterWPF
 		// event handlers
 		private void UserControl_Loaded(object sender, RoutedEventArgs e)
 		{
-			var vm = this.DataContext as MainViewModel;
+			MainViewModel vm = DataContext as MainViewModel;
 			vm?.PopupMeter?.Resume();
 		}
 		private void UserControl_Unloaded(object sender, RoutedEventArgs e)
 		{
-			var vm = this.DataContext as MainViewModel;
+			MainViewModel vm = DataContext as MainViewModel;
 			vm?.PopupMeter?.Pause();
 		}
 		private void Image_MouseUp(object sender, MouseButtonEventArgs e)
 		{
-			var img = sender as Image;
+			Image img = sender as Image;
 			ImagePressed(img);
 		}
 		private void Image_TouchUp(object sender, TouchEventArgs e)
 		{
-			var img = sender as Image;
+			Image img = sender as Image;
 			ImagePressed(img);
 		}
 		private void ImageAnchor_MouseDown(object sender, MouseButtonEventArgs e)
 		{
+			// set flag
 			isAnchorMouseDown = true;
+
+			// record mouse down position for calculate relative movement
 			mouseDownPosition = e.GetPosition(this);
+
+			// force button to receive mouse events
 			ImageAnchor.CaptureMouse();
 		}
 		private void ImageAnchor_MouseMove(object sender, MouseEventArgs e)
 		{
+			// if it is mouse drag
 			if (isAnchorMouseDown)
 			{
-				var pos = e.GetPosition(this);
-				var dx = pos.X - mouseDownPosition.X;
-				var dy = pos.Y - mouseDownPosition.Y;
-				var p = this.Parent as Popup;
+				// calcute relative mouse movement
+				Point pos = e.GetPosition(this);
+				double dx = pos.X - mouseDownPosition.X;
+				double dy = pos.Y - mouseDownPosition.Y;
+
+				// update popup window position
+				Popup p = Parent as Popup;
 				p.HorizontalOffset += dx;
 				p.VerticalOffset += dy;
 			}
 		}
 		private void ImageAnchor_MouseUp(object sender, MouseButtonEventArgs e)
 		{
+			// reset flag
 			isAnchorMouseDown = false;
+
+			// release mouse capture 
 			ImageAnchor.ReleaseMouseCapture();
+
+			// keep popup be shown even focus is lost
+			Popup p = Parent as Popup;
+			p.StaysOpen = true;
 		}
 
 		// private methods
 		private void ImagePressed(Image sender)
 		{
-			if (sender == this.ImagePin)
-            {
-				if (pinned == false)
-                {
-					pinned = true;
-					ImagePin.RenderTransform = new TranslateTransform(-2, 4);
-					ImagePin.Clip = new RectangleGeometry(new Rect(0, 0, 16, 12));
-					var p = this.Parent as Popup;
-					p.StaysOpen = true;
-
-				}
-				else
-                {
-					pinned = false;
-					ImagePin.RenderTransform = Transform.Identity;
-					ImagePin.Clip = null;
-					var p = this.Parent as Popup;
-					p.StaysOpen = false;
-					p.IsOpen = false;
-				}
-			}				
-
-			if (sender == this.ImageClose)
+			if (sender == ImageClose)
 			{
 				// hide popup window
-				var p = this.Parent as Popup;
+				Popup p = Parent as Popup;
 				p.IsOpen = false;
 			}
 
-			if (sender == this.ImageConfig)
+			if (sender == ImageConfig)
 			{
 				// pause update readings
-				var vm = this.DataContext as MainViewModel;
+				MainViewModel vm = DataContext as MainViewModel;
 				vm?.PauseUpdate();
 
 				// show setting window
@@ -120,28 +113,28 @@ namespace IconMeterWPF
 				if (w != null)
 				{
 					w.Show();
-					w.WindowState = System.Windows.WindowState.Normal;
+					w.WindowState = WindowState.Normal;
 					w.Visibility = Visibility.Visible;
 					w.ShowInTaskbar = true;
 				}
 			}
 
-			if (sender == this.ImageTask)
+			if (sender == ImageTask)
 			{
 				// start task manager
 				System.Diagnostics.Process.Start("taskmgr");
 			}
 
-			if (sender == this.ImageControl)
+			if (sender == ImageControl)
 			{
 				// start control panel
 				System.Diagnostics.Process.Start("control");
 			}
 			
-			if (sender == this.ImageAbout)
+			if (sender == ImageAbout)
 			{
 				// hide popup window
-				var p = this.Parent as Popup;
+				Popup p = Parent as Popup;
 				p.IsOpen = false;
 
 				// show about dialog
@@ -149,9 +142,9 @@ namespace IconMeterWPF
 				aboutBox.ShowDialog();
 			}
 
-			if (sender == this.ImageRefresh)
+			if (sender == ImageRefresh)
 			{
-				var vm = this.DataContext as MainViewModel;
+				MainViewModel vm = DataContext as MainViewModel;
 				vm?.PopupMeter.UpdateIPs();
 			}
 		}

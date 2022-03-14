@@ -189,12 +189,10 @@
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
                     <Label Grid.Column="0" Grid.ColumnSpan="3" HorizontalAlignment="Center" Margin="0,0,0,0" FontWeight="Bold" Foreground="RoyalBlue" 
                        Content="{Binding Source={x:Static properties:Resources.Memory},  Converter ={StaticResource ToUpperValue}}"/>
-                    <Image x:Name="ImagePin" Grid.Column="1" Source="images\pin.png"  ToolTip="{x:Static properties:Resources.KeepAlwaysOnTop}" Cursor="Hand" MouseUp="Image_MouseUp" TouchUp="Image_TouchUp"/>
-                    <Image x:Name="ImageClose" Grid.Column="2" Source="images\cross.png"  ToolTip="{x:Static properties:Resources.Close}" Cursor="Hand" MouseUp="Image_MouseUp" TouchUp="Image_TouchUp" Margin="4,0,0,0" />
+                    <Image x:Name="ImageClose" Grid.Column="1" Source="images\cross.png"  ToolTip="{x:Static properties:Resources.Close}" Cursor="Hand" MouseUp="Image_MouseUp" TouchUp="Image_TouchUp" Margin="4,0,0,0" />
                 </Grid>
                 
                 <local:LineChart x:Name="MemoryChart" Height="50" Margin="0,0,0,4" 

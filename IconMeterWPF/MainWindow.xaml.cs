@@ -38,8 +38,8 @@ namespace IconMeterWPF
 		[StructLayout(LayoutKind.Sequential)]
 		internal struct Win32Point
 		{
-			public Int32 X;
-			public Int32 Y;
+			public int X;
+			public int Y;
 		};
 
 		// private field
@@ -51,7 +51,7 @@ namespace IconMeterWPF
 			InitializeComponent();
 
 			// add reference to MainViewModel
-			var vm = this.DataContext as MainViewModel;
+			MainViewModel vm = DataContext as MainViewModel;
 			vm.MainWindow = this;
 	
 			// setup property changed listener for tray icon update
@@ -75,7 +75,7 @@ namespace IconMeterWPF
 		private void Meter_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
 		{
 			// update tray icons if needed
-			var vm = this.DataContext as MainViewModel;
+			MainViewModel vm = DataContext as MainViewModel;
 			if (e.PropertyName == "MainTrayIcon")
 			{
 				MainTaskbarIcon.Icon = vm.Meter.MainTrayIcon;
@@ -91,7 +91,7 @@ namespace IconMeterWPF
 			{
 				Dispatcher.Invoke(() =>
 			   {
-				   var vm = this.DataContext as MainViewModel;
+				   MainViewModel vm = DataContext as MainViewModel;
 				   IndividualDiskTaskbarIcon.Icon = vm.PopupMeter.DiskActiveTimeTrayIcon;
 			   });
 			}
@@ -99,31 +99,31 @@ namespace IconMeterWPF
 		private void ButtonOK_Click(object sender, RoutedEventArgs e)
         {
 			// hide setting window
-			this.Hide();
+			Hide();
 
 			// save settings and resume update readings
-			var vm = this.DataContext as MainViewModel;
+			MainViewModel vm = DataContext as MainViewModel;
 			vm.SaveSettings();
 			vm.ResumeUpdate();
 		}
         private void ButtonCancel_Click(object sender, RoutedEventArgs e)
 		{
 			// hide setting window
-			this.Hide();
+			Hide();
 
 			// discard new settings and resume update readings
-			var vm = this.DataContext as MainViewModel;
+			MainViewModel vm = DataContext as MainViewModel;
 			vm.ReloadSettings();
 			vm.ResumeUpdate();
 		}
 		private void MenuItemSettings_Click(object sender, RoutedEventArgs e)
 		{
 			// pause update readings
-			var vm = this.DataContext as MainViewModel;
+			MainViewModel vm = DataContext as MainViewModel;
 			vm.PauseUpdate();
 
 			// show setting window
-			this.Show();
+			Show();
 			WindowState = System.Windows.WindowState.Normal;
 			Visibility = Visibility.Visible;
 			ShowInTaskbar = true;
@@ -137,7 +137,7 @@ namespace IconMeterWPF
 		{
 			MainTaskbarIcon.Visibility = Visibility.Collapsed;
 			LogicalProcessorsTaskbarIcon.Visibility = Visibility.Collapsed;
-			System.Windows.Application.Current.Shutdown();
+			Application.Current.Shutdown();
 		}
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
@@ -145,10 +145,10 @@ namespace IconMeterWPF
             e.Cancel = true;
 
 			// hide settings window
-            this.Hide();
+            Hide();
 
 			// discard new settings and resume update readings
-			var vm = this.DataContext as MainViewModel;
+			MainViewModel vm = DataContext as MainViewModel;
 			vm.ReloadSettings();
 			vm.ResumeUpdate();
 		}
@@ -171,12 +171,12 @@ namespace IconMeterWPF
 		private Point GetMousePosition()
 		{
 			// get raw mouse position
-			var w32Mouse = new Win32Point();
+			Win32Point w32Mouse = new Win32Point();
 			GetCursorPos(ref w32Mouse);
-			var p = new Point(w32Mouse.X, w32Mouse.Y);
+			Point p = new Point(w32Mouse.X, w32Mouse.Y);
 
 			// scale to current DPI setting
-			var transform = PresentationSource.FromVisual(this).CompositionTarget.TransformFromDevice;
+			Matrix transform = PresentationSource.FromVisual(this).CompositionTarget.TransformFromDevice;
 			return transform.Transform(p);
 		}
 
@@ -190,6 +190,7 @@ namespace IconMeterWPF
 
 			// show the popup
 			popup.IsOpen = true;
+			popup.StaysOpen = false;
 
 			// set this window to be foreground window, which ensures the popup hides when user click somewhere else on the screen
 			HwndSource source = (HwndSource)PresentationSource.FromVisual(this);
@@ -226,12 +227,12 @@ namespace IconMeterWPF
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
             System.Drawing.Color c = (System.Drawing.Color)value;
-            return System.Windows.Media.Color.FromArgb(c.A, c.R, c.G, c.B);
+            return Color.FromArgb(c.A, c.R, c.G, c.B);
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
-            System.Windows.Media.Color c = (System.Windows.Media.Color)value;
+			Color c = (System.Windows.Media.Color)value;
             return System.Drawing.Color.FromArgb(c.A, c.R, c.G, c.B);
         }
     }
@@ -240,7 +241,7 @@ namespace IconMeterWPF
 	{
 		public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
 		{
-			var str = value as string;
+			string str = value as string;
 			return string.IsNullOrEmpty(str) ? string.Empty : str.ToUpper();
 		}
 
@@ -254,7 +255,7 @@ namespace IconMeterWPF
 	{
 		public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
 		{
-			var str = value as string;
+			string str = value as string;
 			return string.IsNullOrEmpty(str) ? string.Empty : str.ToLower();
 		}
 
