@@ -258,4 +258,7 @@
   <data name="ShowOnlyTheMostUtilizedProcessors" xml:space="preserve">
     <value>仅显示使用率最高的N个处理器</value>
   </data>
+  <data name="UseDarkMode" xml:space="preserve">
+    <value>使用深色模式</value>
+  </data>
 </root>

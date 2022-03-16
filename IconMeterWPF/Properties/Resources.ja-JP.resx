@@ -258,4 +258,7 @@
   <data name="ShowOnlyTheMostUtilizedProcessors" xml:space="preserve">
     <value>最も使用率の高いN個のプロセッサーのみを表示する</value>
   </data>
+  <data name="UseDarkMode" xml:space="preserve">
+    <value>ダークモードを使用</value>
+  </data>
 </root>

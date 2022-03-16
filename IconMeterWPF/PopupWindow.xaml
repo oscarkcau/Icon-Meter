@@ -6,8 +6,18 @@
              xmlns:local="clr-namespace:IconMeterWPF"
              xmlns:properties="clr-namespace:IconMeterWPF.Properties"
              mc:Ignorable="d" 
-             d:DesignHeight="460" d:DesignWidth="420" Loaded="UserControl_Loaded" Unloaded="UserControl_Unloaded">
-    <Border BorderThickness="1" CornerRadius="8" BorderBrush="DarkGray" Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}">
+             d:DesignHeight="460" d:DesignWidth="420" Loaded="UserControl_Loaded" Unloaded="UserControl_Unloaded"
+             >
+  <UserControl.Resources>
+    <Style TargetType="TextBlock">
+      <Setter Property="Foreground" Value="{StaticResource PopupForeground}" />
+    </Style>
+    <Style TargetType="Label">
+      <Setter Property="Foreground" Value="{StaticResource PopupHeader}" />
+    </Style>
+  </UserControl.Resources>
+
+  <Border BorderThickness="1" CornerRadius="8" BorderBrush="DarkGray" Background="{StaticResource PopupBackground}">
         <Grid>
             <Grid.Resources>
                 <local:ToUpperValueConverter x:Key="ToUpperValue"/>
@@ -47,7 +57,7 @@
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
                     <Image x:Name="ImageAnchor" Grid.Column="0" Source="images\anchor.png"  ToolTip="{x:Static properties:Resources.DragHereToMove}" Cursor="Hand" MouseDown="ImageAnchor_MouseDown" MouseMove="ImageAnchor_MouseMove" MouseUp="ImageAnchor_MouseUp"/>
-                    <Label Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Center" Margin="0,0,0,0" FontWeight="Bold" Foreground="RoyalBlue" 
+                    <Label Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Center" Margin="0,0,0,0" FontWeight="Bold" 
                        Content="{Binding Source={x:Static properties:Resources.CPU},  Converter={StaticResource ToUpperValue}, Mode=OneWay}"/>
                 </Grid>
 
@@ -89,7 +99,7 @@
 
                 <Line Style="{StaticResource horizontalLineStyle}" VerticalAlignment="Center" Height="2" Margin="-8,4,-8,0"/>
 
-                <Label HorizontalAlignment="Center" Margin="0,0,0,0" FontWeight="Bold" Foreground="RoyalBlue" 
+                <Label HorizontalAlignment="Center" Margin="0,0,0,0" FontWeight="Bold"  
                        Content="{Binding Source={x:Static properties:Resources.Processes},  Converter ={StaticResource ToUpperValue}}"/>
                 <ItemsControl ItemsSource="{Binding PopupMeter.PerformanceSortedByProcessorTime, Mode=OneWay }">
                     <ItemsControl.ItemTemplate>
@@ -99,8 +109,15 @@
                                     <ColumnDefinition Width="*" />
                                     <ColumnDefinition Width="Auto" />
                                 </Grid.ColumnDefinitions>
-                                <TextBlock Grid.Column="0" Text="{Binding Path=Name, Mode=OneWay}" HorizontalAlignment="Left"/>
-                                <TextBlock Grid.Column="1" Text="{Binding Path=FormattedProcessorTime, Mode=OneWay}" Margin="4,0,0,0" FontWeight="Bold" HorizontalAlignment="Right"/>
+                                <TextBlock Grid.Column="0" 
+                                           Text="{Binding Path=Name, Mode=OneWay}" 
+                                           Foreground="{StaticResource PopupForeground}"
+                                           HorizontalAlignment="Left"/>
+                                <TextBlock Grid.Column="1" 
+                                           Text="{Binding Path=FormattedProcessorTime, Mode=OneWay}" 
+                                           Foreground="{StaticResource PopupForeground}"
+                                           Margin="4,0,0,0" FontWeight="Bold" 
+                                           HorizontalAlignment="Right"/>
                             </Grid>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
@@ -113,8 +130,13 @@
                                     <ColumnDefinition Width="*" />
                                     <ColumnDefinition Width="Auto" />
                                 </Grid.ColumnDefinitions>
-                                <TextBlock Grid.Column="0" Text="{Binding Path=Name, Mode=OneWay}" HorizontalAlignment="Left"/>
-                                <TextBlock Grid.Column="1" Text="{Binding Path=FormattedWorkingSet, Mode=OneWay}" Margin="4,0,0,0" FontWeight="Bold" HorizontalAlignment="Right"/>
+                                <TextBlock Grid.Column="0" 
+                                           Text="{Binding Path=Name, Mode=OneWay}" HorizontalAlignment="Left"
+                                           Foreground="{StaticResource PopupForeground}"/>
+                                <TextBlock Grid.Column="1" 
+                                           Text="{Binding Path=FormattedWorkingSet, Mode=OneWay}" 
+                                           Foreground="{StaticResource PopupForeground}"
+                                           Margin="4,0,0,0" FontWeight="Bold" HorizontalAlignment="Right"/>
                             </Grid>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
@@ -122,8 +144,7 @@
 
                 <Line Style="{StaticResource horizontalLineStyle}" VerticalAlignment="Center" Height="2" Margin="-8,4,-8,0"/>
 
-                <Label HorizontalAlignment="Center" Margin="0,0,0,0" FontWeight="Bold" Foreground="RoyalBlue" 
-                       Content="{Binding Source={x:Static properties:Resources.LoadAverage},  Converter ={StaticResource ToUpperValue}}"/>
+                <Label HorizontalAlignment="Center" Margin="0,0,0,0" FontWeight="Bold"                        Content="{Binding Source={x:Static properties:Resources.LoadAverage},  Converter ={StaticResource ToUpperValue}}"/>
                 <local:LineChart x:Name="LoadChart" Height="50" Margin="0,0,0,0" 
                                  NextData="{Binding PopupMeter.LastLoadAverage, Mode=OneWay}" 
                                  LineColors="{Binding PopupMeter.LoadAverageColors, Mode=OneWay}"
@@ -166,7 +187,7 @@
 
                 <Line Style="{StaticResource horizontalLineStyle}" VerticalAlignment="Center" Height="2" Margin="-8,4,-8,0"/>
 
-                <Label HorizontalAlignment="Center" Margin="0,0,0,0" FontWeight="Bold" Foreground="RoyalBlue" 
+                <Label HorizontalAlignment="Center" Margin="0,0,0,0" FontWeight="Bold" 
                        Content="{Binding Source={x:Static properties:Resources.Uptime},  Converter ={StaticResource ToUpperValue}}"/>
                 <TextBlock HorizontalAlignment="Center" >
                             <Run Text="{Binding PopupMeter.UpTimeDay, Mode=OneWay}"/>
@@ -190,7 +211,7 @@
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
-                    <Label Grid.Column="0" Grid.ColumnSpan="3" HorizontalAlignment="Center" Margin="0,0,0,0" FontWeight="Bold" Foreground="RoyalBlue" 
+                    <Label Grid.Column="0" Grid.ColumnSpan="3" HorizontalAlignment="Center" Margin="0,0,0,0" FontWeight="Bold" 
                        Content="{Binding Source={x:Static properties:Resources.Memory},  Converter ={StaticResource ToUpperValue}}"/>
                     <Image x:Name="ImageClose" Grid.Column="1" Source="images\cross.png"  ToolTip="{x:Static properties:Resources.Close}" Cursor="Hand" MouseUp="Image_MouseUp" TouchUp="Image_TouchUp" Margin="4,0,0,0" />
                 </Grid>
@@ -224,7 +245,7 @@
 
                 <Line Style="{StaticResource horizontalLineStyle}" VerticalAlignment="Center" Height="2" Margin="-8,4,-8,0"/>
 
-                <Label HorizontalAlignment="Center" Margin="0,0,0,0" FontWeight="Bold" Foreground="RoyalBlue" 
+                <Label HorizontalAlignment="Center" Margin="0,0,0,0" FontWeight="Bold" 
                        Content="{Binding Source={x:Static properties:Resources.VirtualMemory},  Converter ={StaticResource ToUpperValue}}"/>
                 <ProgressBar Height="16" Background="DarkGray" Foreground="RoyalBlue" Minimum="0" Maximum="1" Value="{Binding PopupMeter.LastCommittedMemoryLoad, Mode=OneWay}" />
                 <TextBlock  HorizontalAlignment="Center" Margin="0,4,0,0">
@@ -241,7 +262,7 @@
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
-                    <Label Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Center" Margin="0,0,0,0" FontWeight="Bold" Foreground="RoyalBlue" 
+                    <Label Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Center" Margin="0,0,0,0" FontWeight="Bold" 
                        Content="{Binding Source={x:Static properties:Resources.Network},  Converter ={StaticResource ToUpperValue}}"/>
                     <Image x:Name="ImageRefresh" Grid.Column="1" Source="images\arrow_rotate_clockwise.png"  ToolTip="{x:Static properties:Resources.RefreshIP}" Cursor="Hand" MouseUp="Image_MouseUp" TouchUp="Image_TouchUp"/>
                 </Grid>
@@ -294,7 +315,7 @@
                                  MaxValue="1024" IsAutoAdjust="True"/>
 
                 <Line Style="{StaticResource horizontalLineStyle}" VerticalAlignment="Center" Height="2" Margin="-8,4,-8,0"/>
-                <Label HorizontalAlignment="Center" Margin="0,0,0,0" FontWeight="Bold" Foreground="RoyalBlue" 
+                <Label HorizontalAlignment="Center" Margin="0,0,0,0" FontWeight="Bold" 
                        Content="{Binding Source={x:Static properties:Resources.Disk},  Converter ={StaticResource ToUpperValue}}"/>
 
                 <ItemsControl ItemsSource="{Binding PopupMeter.AllDiskPerformance, Mode=OneWay}">
@@ -311,12 +332,30 @@
                                     <ColumnDefinition Width="*" />
                                     <ColumnDefinition Width="Auto" />
                                 </Grid.ColumnDefinitions>
-                                <TextBlock Grid.Row="0" Grid.Column="0" TextAlignment="Left" Text="{x:Static properties:Resources.Disk}"/>
-                                <TextBlock Grid.Row="0" Grid.Column="1" TextAlignment="Left" Margin="4,0,0,0" Text="{Binding Path=Name, Mode=OneWay}"/>
-                                <TextBlock Grid.Row="0" Grid.Column="2" TextAlignment="Right" Text="{Binding Path=FormattedActiveTime, Mode=OneWay}" FontWeight="Bold" />
-                                <ProgressBar Grid.Row="0" Grid.Column="3" Width="72" Height="16" Margin="4,0,0,0" Background="DimGray" Foreground="RoyalBlue" Minimum="0" Maximum="100" Value="{Binding Path=ActiveTime, Mode=OneWay}"/>
-                                <TextBlock Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" TextAlignment="Right" Text="{Binding Path=FormattedReadSpeed, Mode=OneWay}" Foreground="RoyalBlue"/>
-                                <TextBlock Grid.Row="1" Grid.Column="3" TextAlignment="Right" Text="{Binding Path=FormattedWriteSpeed, Mode=OneWay}" Foreground="DarkRed"/>
+                                <TextBlock Grid.Row="0" Grid.Column="0" 
+                                           TextAlignment="Left" 
+                                           Text="{x:Static properties:Resources.Disk}"
+                                           Foreground="{StaticResource PopupForeground}"/>
+                                <TextBlock Grid.Row="0" Grid.Column="1" 
+                                           TextAlignment="Left" Margin="4,0,0,0" 
+                                           Text="{Binding Path=Name, Mode=OneWay}"
+                                           Foreground="{StaticResource PopupForeground}"/>
+                                <TextBlock Grid.Row="0" Grid.Column="2" 
+                                           TextAlignment="Right" 
+                                           Text="{Binding Path=FormattedActiveTime, Mode=OneWay}"
+                                           Foreground="{StaticResource PopupForeground}"
+                                           FontWeight="Bold" />
+                                <ProgressBar Grid.Row="0" Grid.Column="3" Width="72" Height="16" 
+                                             Margin="4,0,0,0" Background="DimGray" Foreground="RoyalBlue"
+                                             Minimum="0" Maximum="100" 
+                                             Value="{Binding Path=ActiveTime, Mode=OneWay}"/>
+                                <TextBlock Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3"
+                                           TextAlignment="Right" 
+                                           Text="{Binding Path=FormattedReadSpeed, Mode=OneWay}" 
+                                           Foreground="{StaticResource PopupHeader}"/>
+                                <TextBlock Grid.Row="1" Grid.Column="3" TextAlignment="Right" 
+                                           Text="{Binding Path=FormattedWriteSpeed, Mode=OneWay}" 
+                                           Foreground="{StaticResource PopupRed}"/>
                             </Grid>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>

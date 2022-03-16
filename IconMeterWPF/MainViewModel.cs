@@ -18,8 +18,8 @@ namespace IconMeterWPF
 	class MainViewModel : INotifyPropertyChanged
 	{
 		// private fields
-		PerformanceMeter _meter;
-		PopupPerformanceMeter _popupMeter;
+		private PerformanceMeter _meter;
+		private PopupPerformanceMeter _popupMeter;
 
 		// properties
 		public Window MainWindow { get; set; }
@@ -34,28 +34,28 @@ namespace IconMeterWPF
 			// initial all public ICommand objects
 			InitCommands();
 
-			// load settings from file and reset meter
+			// create meters
 			Meter = new PerformanceMeter();
 			PopupMeter = new PopupPerformanceMeter(Meter);
 		}
 
 		// private methods
-		void InitCommands()
+		private void InitCommands()
 		{
-			//
 			// init ICommand objects for binding
-			//
 			StartTaskManager = new RelayCommand(_StartTaskManager);
 			ShowPopup = new RelayCommand(_ShowPopup);
 		}
-		void _StartTaskManager(object obj = null)
+
+		private void _StartTaskManager(object obj = null)
 		{
 			// start Task Manager
 			Process p = new Process();
 			p.StartInfo.FileName = "taskmgr";
 			p.Start();
 		}
-		void _ShowPopup(object obj = null)
+
+		private void _ShowPopup(object obj = null)
 		{
 			// show popup window
 			var w = this.MainWindow as MainWindow;
@@ -96,7 +96,7 @@ namespace IconMeterWPF
 				Properties.Settings.Default.Save();
 
 				// start a new instance of application
-				System.Diagnostics.Process.Start(Application.ResourceAssembly.Location);
+				Process.Start(Application.ResourceAssembly.Location);
 
 				// close the current instance of application
 				Application.Current.Shutdown();
@@ -104,9 +104,14 @@ namespace IconMeterWPF
 			// otherwise save setting and reset meter
 			else
 			{
+				// save settings
 				Properties.Settings.Default.Save();
+
+				// reset meters
 				Meter.ResetPerformanceMeter();
-				this.UpdateAutoStartSetting();
+
+				// save auto start setting too
+				UpdateAutoStartSetting();
 			}
 		}
         public void PauseUpdate()

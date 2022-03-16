@@ -258,4 +258,7 @@
   <data name="ShowOnlyTheMostUtilizedProcessors" xml:space="preserve">
     <value>Show only the N most utilized processors</value>
   </data>
+  <data name="UseDarkMode" xml:space="preserve">
+    <value>Use Dark Mode</value>
+  </data>
 </root>

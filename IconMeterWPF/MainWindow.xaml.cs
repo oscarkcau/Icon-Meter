@@ -105,6 +105,11 @@ namespace IconMeterWPF
 			MainViewModel vm = DataContext as MainViewModel;
 			vm.SaveSettings();
 			vm.ResumeUpdate();
+
+			// apply color theme
+			(Application.Current as App).ColorTheme =
+				Properties.Settings.Default.UseDarkMode ? ColorTheme.Dark : ColorTheme.Light;
+			popup.Child = new PopupWindow();
 		}
         private void ButtonCancel_Click(object sender, RoutedEventArgs e)
 		{

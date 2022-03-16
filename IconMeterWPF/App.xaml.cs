@@ -14,7 +14,28 @@ namespace IconMeterWPF
 	/// </summary>
 	public partial class App : Application
 	{
-		Mutex myMutex;
+		// Mutex object for ensuring only single instance of application is allowed
+		private Mutex myMutex;
+
+		private ColorTheme colorTheme = ColorTheme.Light;
+
+		public ColorTheme ColorTheme
+		{
+			get { return colorTheme; }
+			set
+			{
+				if (value != colorTheme)
+				{
+					colorTheme = value;
+
+					foreach (ResourceDictionary d in Resources.MergedDictionaries)
+					{
+						if (d is ThemeResourceDictionary td)
+							td.UpdateSource();
+					}
+				}
+			}
+		}
 
 		private void Application_Startup(object sender, StartupEventArgs e)
 		{
@@ -31,12 +52,11 @@ namespace IconMeterWPF
 			myMutex = new Mutex(true, "IconMeter-windlknwgcouhq", out bool aIsNewInstance);
 			if (!aIsNewInstance)
 			{
-				App.Current.Shutdown();
+				Current.Shutdown();
 				return;
 			}
 
-			var settings = IconMeterWPF.Properties.Settings.Default;
-//			settings.Language = "";
+			Properties.Settings settings = IconMeterWPF.Properties.Settings.Default;
 
 			// if no language is selected (i.e. default setting of first run)
 			if (settings.Language == "")
@@ -56,11 +76,14 @@ namespace IconMeterWPF
 			}
 
 			// set the language being used
-			System.Threading.Thread.CurrentThread.CurrentUICulture = 
+			Thread.CurrentThread.CurrentUICulture = 
 				new System.Globalization.CultureInfo(settings.Language);
 
+			// apply color theme
+			ColorTheme = settings.UseDarkMode ? ColorTheme.Dark : ColorTheme.Light;
+
 			// create main window
-			var w = new MainWindow();
+			MainWindow w = new MainWindow();
 			w.Show();
 		}
 	}

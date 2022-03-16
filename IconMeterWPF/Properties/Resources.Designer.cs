@@ -439,6 +439,15 @@ namespace IconMeterWPF.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Use Dark Mode.
+        /// </summary>
+        public static string UseDarkMode {
+            get {
+                return ResourceManager.GetString("UseDarkMode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to User.
         /// </summary>
         public static string User {

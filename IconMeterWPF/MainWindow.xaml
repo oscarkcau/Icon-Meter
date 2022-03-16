@@ -82,6 +82,8 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="10"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="10"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" MinWidth="200"/>
@@ -163,18 +165,24 @@
                   Content="{x:Static properties:Resources.RunAtStartup}"
                   IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=RunAtStartup}" Margin="0,4"/>
 
-        <Line Grid.Row="14" Style="{StaticResource horizontalLineStyle}" VerticalAlignment="Center" Height="1" Margin="0,4,0,4"/>
-        <Label Grid.Column="0" Grid.Row="15" VerticalContentAlignment="Center" Margin="0,0,0,4"
+        <Line Grid.Row="14" Style="{StaticResource horizontalLineStyle}" VerticalAlignment="Center" Height="2" Margin="0,4,0,4"/>
+        <CheckBox VerticalAlignment="Center" Grid.Row="15" Grid.ColumnSpan="3"
+                  Content="{x:Static properties:Resources.UseDarkMode}"
+                  IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=UseDarkMode}" Margin="0,4"/>
+      
+        <Line Grid.Row="16" Style="{StaticResource horizontalLineStyle}" VerticalAlignment="Center" Height="1" Margin="0,4,0,4"/>
+        <Label Grid.Column="0" Grid.Row="17" VerticalContentAlignment="Center" Margin="0,0,0,4"
                Content="{x:Static properties:Resources.Language}"/>
-        <ComboBox Name="cmbLanguage"  Grid.Row="15" Grid.Column="1" Grid.ColumnSpan="2"
+        <ComboBox Name="cmbLanguage"  Grid.Row="17" Grid.Column="1" Grid.ColumnSpan="2"
                   SelectedValue="{Binding  Source={x:Static properties:Settings.Default}, Path=Language}"
                   SelectedValuePath="Key"
                   DisplayMemberPath="Value" Margin="4,2"
                   />
-        <Line Grid.Row="16" Style="{StaticResource horizontalLineStyle}" VerticalAlignment="Center" Height="2" Margin="0,4,0,4"/>
-        <Button x:Name="ButtonOK" Grid.Column="1" MinHeight="24" Margin="4,4" Grid.Row="17" Click="ButtonOK_Click"
+      
+        <Line Grid.Row="18" Style="{StaticResource horizontalLineStyle}" VerticalAlignment="Center" Height="2" Margin="0,4,0,4"/>
+        <Button x:Name="ButtonOK" Grid.Column="1" MinHeight="24" Margin="4,4" Grid.Row="19" Click="ButtonOK_Click"
                 Content="{x:Static properties:Resources.OK}"/>
-        <Button x:Name="ButtonCancel" Grid.Column="2" MinHeight="24" Margin="4,4" Grid.Row="17" Click="ButtonCancel_Click"
+        <Button x:Name="ButtonCancel" Grid.Column="2" MinHeight="24" Margin="4,4" Grid.Row="19" Click="ButtonCancel_Click"
                 Content="{x:Static properties:Resources.Cancel}"/>
 
 
