@@ -10,6 +10,8 @@ running on Microsoft Windows 7 or above using the Microsoft .NET Framework.
 I need a small and lightweight system performance meter for my windows tablet thus make a simple application with c#. It displays small notifyicons which visualize the current CPU, memory, disk and network loading in small bars.
 Icon Meter has the following features:
 
+* (Version 2.3.2) Add option to show the N most utilized logicial processors in notify icon, add new dark color mode for popup window,
+and remove pin button to simplify user input.
 * (Version 2.3.1) Visualize individual disk usage, improve preformance in updating popup window, add buttons for moving popup window and accessing control panel & task manager.
 * (Version 2.3) Introduce popup window to replace simple tooltip text and display more useful system performance information 
 * (Version 2.1) Multi-language support (traditional Chinese, simplified Chinese, English and Japanese)
