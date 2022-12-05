@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
@@ -85,6 +86,41 @@ namespace IconMeterWPF
 			// create main window
 			MainWindow w = new MainWindow();
 			w.Show();
-		}
-	}
+
+            // fix a bug that tray icons always become visible
+			// after the screen resolution or system UI scale is changed
+            SystemEvents.DisplaySettingsChanged += SystemEvents_DisplaySettingsChanged;
+        }
+
+        private void SystemEvents_DisplaySettingsChanged(object sender, EventArgs e)
+        {
+            // fix a bug that tray icons always become visible
+            // after the screen resolution or system UI scale is changed,
+            // correct the icon visibility by updating the corresponding property values.
+
+            // get the setting object
+            var settings = IconMeterWPF.Properties.Settings.Default;
+
+            // store the original property values
+            bool b1 = settings.ShowLogicalProcessorsUsage;
+            bool b2 = settings.ShowIndividualDiskUsage;
+
+            // set the visibility to true
+            settings.ShowLogicalProcessorsUsage = true;
+            settings.ShowIndividualDiskUsage = true;
+
+            // restore the original values after a short period
+            Task.Delay(1000).ContinueWith(t => {
+                settings.ShowLogicalProcessorsUsage = b1;
+                settings.ShowIndividualDiskUsage = b2;
+            });
+        }
+
+        private void Application_Exit(object sender, ExitEventArgs e)
+        {
+			// detach static event handler when application is disposed,
+			// otherwise memory leaks will result.
+            SystemEvents.DisplaySettingsChanged -= SystemEvents_DisplaySettingsChanged;
+        }
+    }
 }
