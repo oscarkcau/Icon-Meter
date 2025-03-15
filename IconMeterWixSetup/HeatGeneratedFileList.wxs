@@ -67,6 +67,11 @@
                     <File Id="fil191AFECD354E11F36FD7B9C3550A8C3C" KeyPath="yes" Source="$(var.HarvestPath)\ja-JP\Xceed.Wpf.AvalonDock.resources.dll" />
                 </Component>
             </Directory>
+            <Directory Id="dir4B74599EEC7C992EE101A3FAC2E3F9DA" Name="nl-BE">
+                <Component Id="cmp07503BD29D47F33D182921BEA0700F92" Guid="*">
+                    <File Id="fil9FECFA5164130AA230A03ACC56D253FC" KeyPath="yes" Source="$(var.HarvestPath)\nl-BE\Xceed.Wpf.AvalonDock.resources.dll" />
+                </Component>
+            </Directory>
             <Directory Id="dir339F53F3A11C56B053FD1FEC9B438810" Name="pt-BR">
                 <Component Id="cmp78E3AC4B6177179C5F50ECB1A8B16D85" Guid="*">
                     <File Id="fil449CD491C0135989D68E91371269A3B8" KeyPath="yes" Source="$(var.HarvestPath)\pt-BR\Xceed.Wpf.AvalonDock.resources.dll" />
@@ -123,6 +128,7 @@
             <ComponentRef Id="cmp0B9527E49327DF46736C8F6F58634C01" />
             <ComponentRef Id="cmpDF1E81AEB47B4C82F152D486F36FAFFF" />
             <ComponentRef Id="cmp7746FE0DEDBE5684F977FE2DB4787E3E" />
+            <ComponentRef Id="cmp07503BD29D47F33D182921BEA0700F92" />
             <ComponentRef Id="cmp78E3AC4B6177179C5F50ECB1A8B16D85" />
             <ComponentRef Id="cmp1540E6C17030090C628A142AB815893D" />
             <ComponentRef Id="cmp0D4BE05FC1DE55590C9709CA01911525" />

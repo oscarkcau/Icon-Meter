@@ -8,11 +8,11 @@ using System.Windows;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("Icon Meter")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("Small notifyicon system performance meter")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Maybe Useless Software")]
 [assembly: AssemblyProduct("Icon Meter")]
-[assembly: AssemblyCopyright("Copyright ©  2022 Oscar Au")]
+[assembly: AssemblyCopyright("Copyright ©  2025 Oscar Au")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -51,7 +51,7 @@ using System.Windows;
 // You can specify all the values or you can default the Build and Revision Numbers
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("2.3.2.0")]
-[assembly: AssemblyFileVersion("2.3.2.0")]
+[assembly: AssemblyVersion("2.4.0.0")]
+[assembly: AssemblyFileVersion("2.4.0.0")]
 [assembly: NeutralResourcesLanguage("en")]
 
