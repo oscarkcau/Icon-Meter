@@ -163,7 +163,9 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <EmbeddedResource Include="Properties\LanguageResource.ja-JP.resx" />
+    <EmbeddedResource Include="Properties\LanguageResource.ja-JP.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\LanguageResource.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>LanguageResource.Designer.cs</LastGenOutput>
@@ -231,10 +233,10 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Extended.Wpf.Toolkit">
-      <Version>4.1.0</Version>
+      <Version>4.7.25104.5739</Version>
     </PackageReference>
     <PackageReference Include="Hardcodet.NotifyIcon.Wpf">
-      <Version>1.1.0</Version>
+      <Version>2.0.1</Version>
     </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
