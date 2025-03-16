@@ -60,6 +60,14 @@ namespace IconMeterWPF.Properties {
             }
         }
         
+         /// <summary>
+        ///   Looks up a localized string similar to German.
+        /// </summary>
+        internal static string de {
+            get {
+                return ResourceManager.GetString("de", resourceCulture);
+            }
+        }       
         /// <summary>
         ///   Looks up a localized string similar to English.
         /// </summary>
