@@ -39,6 +39,11 @@
                     <File Id="filB1C9AEB28739722A7265C14C29D55B54" KeyPath="yes" Source="$(var.HarvestPath)\de\Xceed.Wpf.AvalonDock.resources.dll" />
                 </Component>
             </Directory>
+            <Directory Id="dirA4D3CBE83CC778D611403A81761AECB0" Name="de-DE">
+                <Component Id="cmp7B1C44F676988F2C3CD581D661901954" Guid="*">
+                    <File Id="fil1E5C9A9260C2077F1F866D1469ACE08F" KeyPath="yes" Source="$(var.HarvestPath)\de-DE\Icon Meter.resources.dll" />
+                </Component>
+            </Directory>
             <Directory Id="dir9AE38F4F5CB5E565E774521E138F44FD" Name="es">
                 <Component Id="cmp6EFE3E0288B5FA57D98FB920AB342897" Guid="*">
                     <File Id="fil87AEDF35E30560161D787B0A3BF3750B" KeyPath="yes" Source="$(var.HarvestPath)\es\Xceed.Wpf.AvalonDock.resources.dll" />
@@ -122,6 +127,7 @@
             <ComponentRef Id="cmpC85BD7478E073743A39F17DF06865203" />
             <ComponentRef Id="cmpE3F8869BEF0F274473285F8661074660" />
             <ComponentRef Id="cmp5C894AE3FF956FCDDF4DFFE3BA89B9C1" />
+            <ComponentRef Id="cmp7B1C44F676988F2C3CD581D661901954" />
             <ComponentRef Id="cmp6EFE3E0288B5FA57D98FB920AB342897" />
             <ComponentRef Id="cmp3EB7F17B0DCBDF3729FDAAAF0CF6B665" />
             <ComponentRef Id="cmpFB118A47202A6B98ED49B3C952C22F35" />

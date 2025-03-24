@@ -123,10 +123,13 @@
   <data name="ja-JP" xml:space="preserve">
     <value>日本語</value>
   </data>
+  <data name="zh" xml:space="preserve">
+    <value>繁体字中国語</value>
+  </data>
   <data name="zh-CN" xml:space="preserve">
     <value>簡体字中国語</value>
   </data>
-  <data name="zh" xml:space="preserve">
-    <value>繁体字中国語</value>
+  <data name="de-DE" xml:space="preserve">
+    <value>ドイツ語</value>
   </data>
 </root>

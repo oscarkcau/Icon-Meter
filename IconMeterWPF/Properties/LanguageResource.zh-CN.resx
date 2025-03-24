@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="en" xml:space="preserve">
+    <value>英语</value>
+  </data>
   <data name="ja-JP" xml:space="preserve">
     <value>日语</value>
   </data>
@@ -126,7 +129,7 @@
   <data name="zh-CN" xml:space="preserve">
     <value>简体中文</value>
   </data>
-  <data name="en" xml:space="preserve">
-    <value>英语</value>
+  <data name="de-DE" xml:space="preserve">
+    <value>德语</value>
   </data>
 </root>
