@@ -261,4 +261,7 @@
   <data name="UseDarkMode" xml:space="preserve">
     <value>Use Dark Mode</value>
   </data>
+  <data name="in_use" xml:space="preserve">
+    <value>in use</value>
+  </data>
 </root>

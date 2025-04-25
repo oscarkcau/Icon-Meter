@@ -618,7 +618,7 @@ namespace IconMeterWPF
 			// try to get local ips
 			try
 			{
-				string response = new WebClient().DownloadString("http://icanhazip.com");
+				string response = new WebClient().DownloadString("https://icanhazip.com");
 				PublicIP = response.Trim();
 			}
 			catch (Exception) 

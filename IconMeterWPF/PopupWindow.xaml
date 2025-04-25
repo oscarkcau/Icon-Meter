@@ -189,7 +189,7 @@
 
                 <Label HorizontalAlignment="Center" Margin="0,0,0,0" FontWeight="Bold" 
                        Content="{Binding Source={x:Static properties:Resources.Uptime},  Converter ={StaticResource ToUpperValue}}"/>
-                <TextBlock HorizontalAlignment="Center" >
+                <TextBlock HorizontalAlignment="Center" TextWrapping="Wrap">
                             <Run Text="{Binding PopupMeter.UpTimeDay, Mode=OneWay}"/>
                             <Run Text="{x:Static properties:Resources.Days}"/>
                             <Run Text=","/>
@@ -248,11 +248,11 @@
                 <Label HorizontalAlignment="Center" Margin="0,0,0,0" FontWeight="Bold" 
                        Content="{Binding Source={x:Static properties:Resources.VirtualMemory},  Converter ={StaticResource ToUpperValue}}"/>
                 <ProgressBar Height="16" Background="DarkGray" Foreground="RoyalBlue" Minimum="0" Maximum="1" Value="{Binding PopupMeter.LastCommittedMemoryLoad, Mode=OneWay}" />
-                <TextBlock  HorizontalAlignment="Center" Margin="0,4,0,0">
+                <TextBlock  HorizontalAlignment="Left" TextWrapping="Wrap" Margin="0,4,0,0">
                             <Run FontWeight="Bold" Text="{Binding PopupMeter.CommittedMemoryInUse, Mode=OneWay}"/>
                             <Run Text="{x:Static properties:Resources.Of}"/>
                             <Run FontWeight="Bold" Text="{Binding PopupMeter.TotalCommittedMemory, Mode=OneWay}"/>
-                            <Run Text="{Binding Source={x:Static properties:Resources.InUse}, Converter ={StaticResource ToLowerValue}, Mode=OneWay}"/>
+                            <Run Text="{Binding Source={x:Static properties:Resources.in_use}, Mode=OneWay}"/>
                 </TextBlock>
 
                 <Line Style="{StaticResource horizontalLineStyle}" VerticalAlignment="Center" Height="2" Margin="-8,4,-8,0"/>
@@ -273,8 +273,8 @@
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto" />
                         <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
                     <TextBlock Grid.Row="0" Grid.Column="0" HorizontalAlignment="Left"
                                Text="{x:Static properties:Resources.PublicIP}"/>
@@ -321,13 +321,12 @@
                 <ItemsControl ItemsSource="{Binding PopupMeter.AllDiskPerformance, Mode=OneWay}">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                            <Grid Margin="0,0,0,4">
+                            <StackPanel Orientation="Vertical" Margin="0,0,8,0">
+                                <Grid Margin="0,0,0,4">
                                 <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto"/>
                                     <RowDefinition Height="Auto"/>
                                 </Grid.RowDefinitions>
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto" />
                                     <ColumnDefinition Width="Auto" />
                                     <ColumnDefinition Width="*" />
                                     <ColumnDefinition Width="Auto" />
@@ -340,23 +339,35 @@
                                            TextAlignment="Left" Margin="4,0,0,0" 
                                            Text="{Binding Path=Name, Mode=OneWay}"
                                            Foreground="{StaticResource PopupForeground}"/>
-                                <TextBlock Grid.Row="0" Grid.Column="2" 
-                                           TextAlignment="Right" 
-                                           Text="{Binding Path=FormattedActiveTime, Mode=OneWay}"
-                                           Foreground="{StaticResource PopupForeground}"
-                                           FontWeight="Bold" />
-                                <ProgressBar Grid.Row="0" Grid.Column="3" Width="72" Height="16" 
-                                             Margin="4,0,0,0" Background="DimGray" Foreground="RoyalBlue"
-                                             Minimum="0" Maximum="100" 
-                                             Value="{Binding Path=ActiveTime, Mode=OneWay}"/>
-                                <TextBlock Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3"
-                                           TextAlignment="Right" 
+                                <ProgressBar Grid.Row="0" Grid.Column="3" Width="60" Height="16"
+                                            Margin="4,0,0,0" Background="DimGray" Foreground="RoyalBlue"
+                                            Minimum="0" Maximum="100" 
+                                            Value="{Binding Path=ActiveTime, Mode=OneWay}"/>
+                            </Grid>
+                            <Grid Margin="0,0,0,4">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                    <TextBlock Grid.Row="0" Grid.Column="0" 
+                                        TextAlignment="Left" Margin="0,0,0,0"
+                                        Text="{Binding Path=FormattedActiveTime, Mode=OneWay}"
+                                        Foreground="{StaticResource PopupForeground}"
+                                        FontWeight="Bold" />
+                                    <TextBlock Grid.Row="0" Grid.Column="1" Width="64"
+                                           TextAlignment="Right" Margin="4,0,0,0"
                                            Text="{Binding Path=FormattedReadSpeed, Mode=OneWay}" 
                                            Foreground="{StaticResource PopupHeader}"/>
-                                <TextBlock Grid.Row="1" Grid.Column="3" TextAlignment="Right" 
+                                    <TextBlock Grid.Row="0" Grid.Column="2" Width="64"
+                                           TextAlignment="Right" Margin="4,0,0,0"
                                            Text="{Binding Path=FormattedWriteSpeed, Mode=OneWay}" 
                                            Foreground="{StaticResource PopupRed}"/>
                             </Grid>
+                            </StackPanel>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>
